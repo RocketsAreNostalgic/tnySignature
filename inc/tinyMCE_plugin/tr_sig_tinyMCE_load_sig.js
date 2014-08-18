@@ -5,7 +5,7 @@
          ed.addCommand('TRSIG', function() {
            
                 var return_text = '';
-                return_text = '[SIGNATURE]';
+                return_text = '[signature]All the best,[/signature]';
                 ed.execCommand('mceInsertContent', 0, return_text);
          });
          // Register buttons

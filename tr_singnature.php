@@ -14,19 +14,33 @@ Author URI: http://www.orionrush.com
 /***********************************************************************
  * Definitions
 /*********************************************************************/
-define('trsig_MAPSPLUGIN_PATH', plugin_dir_path( __FILE__ ));
-define('trsig_MAPSPLUGIN_URL', plugin_dir_url( __FILE__ ));
+define('TRSIG_PATH', plugin_dir_path( __FILE__ ));
+define('TRSIG_URL', plugin_dir_url( __FILE__ ));
 /***********************************************************************
  * Includes
 /*********************************************************************/
-require_once ( trsig_MAPSPLUGIN_PATH . 'inc/tr_sig_tinyMCE.php');
+require_once ( TRSIG_PATH . 'inc/tr_sig_tinyMCE.php');
 
 /***********************************************************************
  * Shortcode
 /*********************************************************************/
-add_shortcode('SIGNATURE', 'trsig_shortcode');
-function trsig_shortcode($attr) {
-		return '<style type="text/css">ir.tom_sig { background: "'. trsig_MAPSPLUGIN_URL . 'img/signature.png"}</style><span class="ir tom_sig"></span>';
+
+/*
+ * Generate the shortcode
+ *
+ * @uses:   shortcode_atts()
+ * @uses:   const TRSIG_URL
+ * @param:  array $atts // 'author'
+ * @param:  string $content // the text between the opening and closing shortcode elements
+ * @return  markup string
+ */
+function trsig_shortcode( $atts, $content = 'All the best,' )
+{
+    $a = shortcode_atts( array(
+        'author' => 'Tom',
+        'image' => TRSIG_URL . 'img/signature.png',
+    ), $atts );
+
+    return '<p>' . $content . '</p></ br><span class = "ir.tom_sig" style =" background: " ' . $a['image'] . '">' . $a['author'] . '</span>';
 }
-
-
+add_shortcode('signature', 'trsig_shortcode');
