@@ -19,9 +19,14 @@ define('TRSIG_PATH', plugin_dir_path( __FILE__ ));
 define('TRSIG_URL', plugin_dir_url( __FILE__ ));
 
 /***********************************************************************
- * TinyMCE button
+ * Includes
 /*********************************************************************/
+//TinyMCE button
 require_once ( TRSIG_PATH . 'inc/tr_sig_tinyMCE.php');
+//Admin Page
+require_once ( TRSIG_PATH . 'inc/tr_sig_admin.php');
+
+
 
 /*
  * Generate the shortcode
