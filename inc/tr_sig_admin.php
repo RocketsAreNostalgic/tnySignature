@@ -22,7 +22,9 @@ function tr_sig_admin_init() { // white-list options
     add_settings_section('tr_sig_main', 'Main Settings', 'tr_sig_section_text', 'plugin');
     add_settings_field('tr_sig_text_string', 'Plugin Text Input', 'tr_sig_setting_string', 'plugin', 'tr_sig_main');
     wp_enqueue_media();
-    wpcf_enqueue_scripts('custom-header');
+    if (function_exists('wpcf_enqueue_scripts')){
+        wpcf_enqueue_scripts( 'custom-header' ); // why are we relying on a a Views function here, what is custom-header?
+	}
 }
 
 function tr_sig_setting_string(){
