@@ -1,0 +1,10 @@
+# Include your project-specific ignores in this file
+# Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
+
+*.codekit
+.codekit-cache
+*.sublime-workspace
+.idea* # Php storm
+.DS_Store
+npm-debug.log
+node_modules/*
