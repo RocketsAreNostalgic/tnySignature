@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) die();
 /*
  * Plugin Name: tr signature
  * Description: A signature shortcode & tinymce button for Tom Rush.com using the HPB5 ir hack.
- * Version: 0.1.1
+ * Version: 0.1.2
  * License: GPL
  * Author: Ben Rush
  * Author URI: http://www.orionrush.com
