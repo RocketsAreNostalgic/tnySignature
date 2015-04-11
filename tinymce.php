@@ -36,4 +36,4 @@ function tr_sig_tinyMCE_buttons() {
       add_filter( 'mce_buttons', 'tr_sig_register_button' );
    }
 }
-add_action('init', 'tr_sig_tinyMCE_buttons');
+//add_action('init', 'tr_sig_tinyMCE_buttons');

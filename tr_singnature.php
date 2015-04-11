@@ -23,8 +23,9 @@ define('TRSIG_URL', plugin_dir_url( __FILE__ ));
 /*********************************************************************/
 //TinyMCE button
 require_once ( TRSIG_PATH . 'inc/tr_sig_tinyMCE.php');
-//Admin Page
-require_once ( TRSIG_PATH . 'inc/tr_sig_admin.php');
+
+//Admin Page - We've not finished it, and so far (oddly) it's interfering with the Featured Image functionality on posts and pages.
+//require_once ( TRSIG_PATH . 'inc/tr_sig_admin.php');
 
 
 
