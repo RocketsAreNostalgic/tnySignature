@@ -1,10 +1,12 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) die();
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 /**
-* ========================================
-* Here we add any buttons to the tinyMCE menu to make it easy for editors
-* http://wp.smashingmagazine.com/2012/05/01/wordpress-shortcodes-complete-guide/
-* ======================================== */
+ * ========================================
+ * Here we add any buttons to the tinyMCE menu to make it easy for editors
+ * http://wp.smashingmagazine.com/2012/05/01/wordpress-shortcodes-complete-guide/
+ * ======================================== */
 
 /*
  * Register all buttons and add a divider pipe charecter to each one
@@ -13,8 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) die();
  * @return  array $buttons
  */
 function tr_sig_register_button( $buttons ) {
-   array_push( $buttons, "|", "trsig" );
-   return $buttons;
+	array_push( $buttons, "|", "trsig" );
+
+	return $buttons;
 }
 
 /*
@@ -28,12 +31,12 @@ function tr_sig_register_button( $buttons ) {
  * @wp_action   init
  */
 function tr_sig_tinyMCE_buttons() {
-   if ( !current_user_can('edit_posts') && !current_user_can('edit_pages') ) {
-      return;
-   }
-   // display only if the rich editor is enabled.
-   if ( get_user_option('rich_editing') == 'true' ) {
-      add_filter( 'mce_buttons', 'tr_sig_register_button' );
-   }
+	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+		return;
+	}
+	// display only if the rich editor is enabled.
+	if ( get_user_option( 'rich_editing' ) == 'true' ) {
+		add_filter( 'mce_buttons', 'tr_sig_register_button' );
+	}
 }
 //add_action('init', 'tr_sig_tinyMCE_buttons');
