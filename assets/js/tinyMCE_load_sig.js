@@ -12,7 +12,7 @@
 				// Register buttons
 				ed.addButton( 'TRSIG', {
 					title: 'Signature shortcode',
-					image: url + '/img/icon.png',
+					image: url + '../../img/icon.png',
 					cmd: 'TRSIG'
 				} );
 			},

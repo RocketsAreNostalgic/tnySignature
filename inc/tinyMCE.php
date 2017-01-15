@@ -27,7 +27,7 @@ function tr_sig_register_button( $buttons ) {
  * @returns:    $plugin_array
  */
 function tr_sig_add_plugin( $plugin_array ) {
-	$plugin_array['TRSIG'] = plugins_url( '/tinyMCE_plugin/tr_sig_tinyMCE_load_sig.min.js', __FILE__ );
+	$plugin_array['TRSIG'] = plugins_url( '../assets/js/tinyMCE_load_sig.min.js', __FILE__ );
 
 	return $plugin_array;
 }

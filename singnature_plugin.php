@@ -1,11 +1,10 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	die();
-}
+namespace OrionRush\Signature;
+if ( ! defined( 'ABSPATH' ) ) { exit; }
 /*
  * Plugin Name: tr signature
- * Description: A signature shortcode & tinymce button for Tom Rush.com using the HPB5 ir hack.
- * Version: 0.1.2
+ * Description: A tinymce button to add a signature for a post or page.
+ * Version: 0.1.3
  * License: GPL
  * Author: Ben Rush
  * Author URI: http://www.orionrush.com
@@ -24,10 +23,10 @@ define( 'TRSIG_URL', plugin_dir_url( __FILE__ ) );
  * Includes
  * /*********************************************************************/
 //TinyMCE button
-require_once( TRSIG_PATH . 'inc/tr_sig_tinyMCE.php' );
+require_once( TRSIG_PATH . 'lib/tinyMCE.php' );
 
 //Admin Page - We've not finished it, and so far (oddly) it's interfering with the Featured Image functionality on posts and pages.
-//require_once ( TRSIG_PATH . 'inc/tr_sig_admin.php');
+//require_once ( TRSIG_PATH . 'lib/admin.php');
 
 
 /*
