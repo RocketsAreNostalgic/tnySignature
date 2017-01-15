@@ -2,8 +2,8 @@
 namespace OrionRush\Signature;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 /*
- * Plugin Name: tr signature
- * Description: A tinymce button to add a signature for a post or page.
+ * Plugin Name: Signature
+ * Description: A tinymce button which will add a users signature to their posts and pages.
  * Version: 0.1.3
  * License: GPL
  * Author: Ben Rush
