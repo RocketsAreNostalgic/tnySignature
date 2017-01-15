@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return: array of buttons with dividers
  */
 function tr_sig_register_button( $buttons ) {
-	array_push( $buttons, "TRSIG" );
+	array_push( $buttons, "SIGNATURE" );
 
 	return $buttons;
 }
@@ -27,7 +27,7 @@ function tr_sig_register_button( $buttons ) {
  * @returns:    $plugin_array
  */
 function tr_sig_add_plugin( $plugin_array ) {
-	$plugin_array['TRSIG'] = plugins_url( '../assets/js/tinyMCE_load_sig.min.js', __FILE__ );
+	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
 
 	return $plugin_array;
 }

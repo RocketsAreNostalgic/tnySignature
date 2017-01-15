@@ -40,7 +40,7 @@
 			}
 		},
 		{
-			"file": "inc/tinyMCE_plugin/tr_sig_tinyMCE_load_sig.js",
+			"file": "inc/tinyMCE_plugin/load_tinyMCE_plugin.js",
 			"settings":
 			{
 				"buffer_size": 1327,
@@ -275,7 +275,7 @@
 				},
 				{
 					"buffer": 2,
-					"file": "inc/tinyMCE_plugin/tr_sig_tinyMCE_load_sig.js",
+					"file": "inc/tinyMCE_plugin/load_tinyMCE_plugin.js",
 					"semi_transient": false,
 					"settings":
 					{
