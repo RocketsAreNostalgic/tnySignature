@@ -2,6 +2,8 @@
 namespace OrionRush\Signature\Admin;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
+// http://wordpress.stackexchange.com/questions/139660/error-options-page-not-found-on-settings-page-submission-for-an-oop-plugin
+// https://codex.wordpress.org/Settings_API#Options_Form_Rendering
 
 /***********************************************************************
  * Add Admin Options Page
