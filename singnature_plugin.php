@@ -2,8 +2,8 @@
 namespace OrionRush\Signature;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 /*
- * Plugin Name: Signature
- * Description: A tinymce button which will add a users signature to their posts and pages.
+ * Plugin Name: Tiny Signature
+ * Description: The plugin adds button to the rich text editor which allows post writers to add their signature to their posts and pages.
  * Version: 0.1.3
  * License: GPL
  * Author: Ben Rush
