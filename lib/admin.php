@@ -62,14 +62,11 @@ function plugin_options() {
 	<div class="wrap">
 	<h2>Signature Plugin</h2>
 	<p>Here is where the form would go if I actually had options.</p>
-	<!--    <form method="post" action="options.php">-->
-	<!--        --><?php //settings_fields('tr_sig_options');
-	?>
-	<!--        --><?php //do_settings_sections('plugin');
-	?>
-	<!--        <input name="Submit" type="submit" value="--><?php //esc_attr_e('Save Changes');
-	?><!--"/>-->
-	<!--    </form>-->
+	<form method="post" action="options.php">
+	<?php settings_fields('orionrush_signature_options'); ?>
+	<?php do_settings_sections('orionrush_signature_options'); ?>
+        <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>"/>
+	</form>
 	<?php
 	$modal_update_href = esc_url( add_query_arg( array(
 		'page'     => 'signature_options',
@@ -83,7 +80,8 @@ function plugin_options() {
 		   data-update="<?php esc_attr_e( 'Set as default image' ); ?>"><?php _e( 'Set default image' ); ?>
 		</a> |
 	</p>
-	</div><?php
+	</div>
+    <?php }
 }
 
 // Add to the top of our data-update-link page

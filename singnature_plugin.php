@@ -39,8 +39,8 @@ require_once( SIGNATURE_PATH . 'lib/admin.php' );
  * @param:  array $atts // author, image, height, width
  * @return  markup as a string
  */
-function trsig_shortcode( $atts, $content = 'All the best,' ) {
 	$path = SIGNATURE_URL . 'img/signature.png';
+function shortcode( $atts, $content = 'All the best,' ) {
 	$a    = shortcode_atts( array(
 		'author' => 'Tom',
 		'image'  => $path,
@@ -60,4 +60,4 @@ function trsig_shortcode( $atts, $content = 'All the best,' ) {
         margin-bottom: ' . $a["height"] . '">' . $a["author"] . '</div>';
 }
 
-add_shortcode( 'signature', 'trsig_shortcode' );
+add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
