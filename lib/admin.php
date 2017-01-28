@@ -1,7 +1,7 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
-	die();
-}
+namespace OrionRush\Signature\Admin;
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 
 /***********************************************************************
  * Add Admin Options Page
