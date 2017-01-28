@@ -39,7 +39,6 @@ require_once( SIGNATURE_PATH . 'lib/admin.php' );
  * @param:  array $atts // author, image, height, width
  * @return  markup as a string
  */
-	$path = SIGNATURE_URL . 'img/signature.png';
 function shortcode( $atts, $content = 'All the best,' ) {
 	$a    = shortcode_atts( array(
 		'author' => 'Tom',
