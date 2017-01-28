@@ -16,19 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 /***********************************************************************
  * Definitions
  * /*********************************************************************/
+define( 'SIGNATURE_PLUGIN_NAME', "Signature" );
+define( 'SIGNATURE_PLUGN', __FILE__ );  // The location of this plugin
 define( 'SIGNATURE_PATH', plugin_dir_path( __FILE__ ) );
-define( 'SIGNATURE_URL', plugin_dir_url( __FILE__ ) );
+define( 'SIGNATURE_URL', plugin_dir_url( __FILE__ ) ); // URL to the plugin
 
 /***********************************************************************
  * Includes
  * /*********************************************************************/
-//TinyMCE button
-require_once( SIGNATURE_PATH . 'lib/tinyMCE.php' );
 
-//Admin Page - We've not finished it, and so far (oddly) it's interfering with the Featured Image functionality on posts and pages.
-//require_once ( SIGNATURE_PATH . 'lib/admin.php');
-
-
+require_once( SIGNATURE_PATH . 'lib/activation.php' );
+require_once( SIGNATURE_PATH . 'lib/tinyMCE.php' ); //TinyMCE Plugin
+require_once( SIGNATURE_PATH . 'lib/admin.php' );
+//Admin Page - We've not finished it, and so far (oddly) it's interfering with the
+// Featured Image functionality on posts and pages.
 /*
  * Generate the shortcode
  *

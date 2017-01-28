@@ -9,40 +9,56 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
  * Add Admin Options Page
  * /*********************************************************************/
 if ( is_admin() ) { // admin actions
-	add_action( 'admin_menu', 'tr_sig_plugin_menu' );
-	add_action( 'admin_init', 'tr_sig_admin_init' );
+	add_action( 'admin_menu', __NAMESPACE__ . '\\plugin_menu' );
+	add_action( 'admin_init', __NAMESPACE__ . '\\admin_init' );
+}
+/**
+ *  Adds the option page.
+ */
+function plugin_menu() {
+	add_options_page( 'Signature Plugin Options', 'Signature Plugin', 'manage_options', 'signature_options', __NAMESPACE__ . '\\plugin_options' );
 }
 
-function tr_sig_plugin_menu() {
-	add_options_page( 'Signature Plugin Options', 'Signature Plugin', 'manage_options', 'tr_sig', 'tr_sig_plugin_options' );
-}
+/**
+ * Registers the settings groups, and enqueues any custom js.
+ */
+function admin_init() { // white-list options
+	register_setting( 'signature_group', __('new_option_name', 'signature'),    __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
+	register_setting( 'signature_group', __('some_other_option','signature'),   __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
+	register_setting( 'signature_group', __('option_etc','signature'),          __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
 
+	add_settings_section( 'signature_main', 'Main Settings', __NAMESPACE__ . '\\section_text', 'orionrush_signature_options' );
+	add_settings_field( 'signature_text_string', 'Plugin Text Input', __NAMESPACE__ . '\\setting_string', 'orionrush_signature_options', 'signature_main' );
 
-function tr_sig_admin_init() { // white-list options
-	register_setting( 'tr_sig_group', 'new_option_name', 'tr_sig_options_validate' );
-	register_setting( 'tr_sig_group', 'some_other_option', 'tr_sig_options_validate' );
-	register_setting( 'tr_sig_group', 'option_etc', 'tr_sig_options_validate' );
-	add_settings_section( 'tr_sig_main', 'Main Settings', 'tr_sig_section_text', 'plugin' );
-	add_settings_field( 'tr_sig_text_string', 'Plugin Text Input', 'tr_sig_setting_string', 'plugin', 'tr_sig_main' );
 	wp_enqueue_media();
-	if ( function_exists( 'wpcf_enqueue_scripts' ) ) {
-		wpcf_enqueue_scripts( 'custom-header' ); // why are we relying on a a Views function here, what is custom-header?
-	}
+
+    add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_scripts' );
 }
 
-function tr_sig_setting_string() {
-	$options = get_option( 'plugin_options' );
+function enqueue_admin_scripts ($hook){
+
+    if ( 'edit.php' != $hook ) {
+        return;
+    }
+    wp_enqueue_script( 'signature_admin_script', SIGNATURE_PATH . '/signature_admin_script.min.js' );
+}
+
+function setting_string() {
+	$options = get_option( __NAMESPACE__ . '\\plugin_options' );
 	echo "<input id='plugin_text_string' name='plugin_options[text_string]' size='40' type='text' value='{$options['text_string']}' />";
 }
 
-function tr_sig_section_text() {
-
+function section_text() {
+    echo "A bit of explanatory text about the plugin.";
 }
 
-function tr_sig_plugin_options() {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	} ?>
+function plugin_options() {
+
+    if ( !current_user_can('edit_posts') ) {
+
+        wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+
+    } else { ?>
 	<div class="wrap">
 	<h2>Signature Plugin</h2>
 	<p>Here is where the form would go if I actually had options.</p>
@@ -56,8 +72,8 @@ function tr_sig_plugin_options() {
 	<!--    </form>-->
 	<?php
 	$modal_update_href = esc_url( add_query_arg( array(
-		'page'     => 'tr_sig',
-		'_wpnonce' => wp_create_nonce( 'tr_sig_options' ),
+		'page'     => 'signature_options',
+		'_wpnonce' => wp_create_nonce( 'orionrush_signature_options' ),
 	), admin_url( 'upload.php' ) ) );
 	?>
 	<p>
@@ -72,10 +88,10 @@ function tr_sig_plugin_options() {
 
 // Add to the top of our data-update-link page
 if ( isset( $_REQUEST['file'] ) ) {
-	check_admin_referer( "tr_sig_options" );
+	check_admin_referer( "signature_options" );
 
 	// Process and save the image id
-	$options                  = get_option( 'tr_sig_options', true );
+	$options                  = get_option( 'orionrush_signature_options', true );
 	$options['default_image'] = absint( $_REQUEST['file'] );
-	update_option( 'tr_sig_options', $options );
+	update_option( 'orionrush_signature_options', $options );
 }
