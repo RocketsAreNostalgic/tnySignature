@@ -1,10 +1,13 @@
 <?php
 namespace OrionRush\Signature\TinyMCE;
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+// http://wordpress.stackexchange.com/questions/36568/solution-to-render-shortcodes-in-admin-editor
 
 /*
  * ========================================
- * Adds the Google Maps plugin to tinyMCE editor
+ * Adds the signature button tinyMCE editor
  * ========================================
  */
 
@@ -43,11 +46,17 @@ function tinyMCE_buttons() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
-	// display only if the rich editor is enabled.
-	if ( get_user_option( 'rich_editing' ) == 'true' ) {
+
+	// Only show on enabled post types from admin page
+	$settings = \OrionRush\Signature\Admin\get_settings();
+	$post_test = in_array( get_post_type(), $settings['post_types'] );
+
+	global $current_screen;
+	// display only if the rich editor is enabled & we are on an active post type.
+	if (  in_array( $current_screen->post_type, $settings['post_types'] ) && get_user_option( 'rich_editing' ) == 'true' ) {
 		add_filter( 'mce_external_plugins', __NAMESPACE__ . '\\add_plugin' );
 		add_filter( 'mce_buttons', __NAMESPACE__ . '\\register_button' );
 	}
 }
-
-add_action( 'init', __NAMESPACE__ . '\\tinyMCE_buttons' );
+// have to use a hook late enough to get $current_screen, init is to early
+add_action( 'admin_head', __NAMESPACE__ . '\\tinyMCE_buttons' );

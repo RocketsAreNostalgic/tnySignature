@@ -1,95 +1,117 @@
 <?php
 namespace OrionRush\Signature\Admin;
-if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-// http://wordpress.stackexchange.com/questions/139660/error-options-page-not-found-on-settings-page-submission-for-an-oop-plugin
-// https://codex.wordpress.org/Settings_API#Options_Form_Rendering
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) {	exit; }
 
-/***********************************************************************
- * Add Admin Options Page
- * /*********************************************************************/
-if ( is_admin() ) { // admin actions
-	add_action( 'admin_menu', __NAMESPACE__ . '\\plugin_menu' );
-	add_action( 'admin_init', __NAMESPACE__ . '\\admin_init' );
-}
-/**
- *  Adds the option page.
- */
-function plugin_menu() {
-	add_options_page( 'Signature Plugin Options', 'Signature Plugin', 'manage_options', 'signature_options', __NAMESPACE__ . '\\plugin_options' );
+if ( is_admin() ) {
+	add_action( 'admin_menu', __NAMESPACE__ . '\\add_admin_menu' );
+	add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_init' );
+	add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
+} else {
+	return;
 }
 
-/**
- * Registers the settings groups, and enqueues any custom js.
- */
-function admin_init() { // white-list options
-	register_setting( 'signature_group', __('new_option_name', 'signature'),    __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
-	register_setting( 'signature_group', __('some_other_option','signature'),   __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
-	register_setting( 'signature_group', __('option_etc','signature'),          __NAMESPACE__ . '\\options_validate', 'orionrush_signature_options' );
-
-	add_settings_section( 'signature_main', 'Main Settings', __NAMESPACE__ . '\\section_text', 'orionrush_signature_options' );
-	add_settings_field( 'signature_text_string', 'Plugin Text Input', __NAMESPACE__ . '\\setting_string', 'orionrush_signature_options', 'signature_main' );
-
-	wp_enqueue_media();
-
-    add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_scripts' );
+function add_admin_menu() {
+	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
+		$settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tny_signature', __NAMESPACE__ . '\\options_page' );
+		add_action( 'load-' . $settings_page, __NAMESPACE__ . '\\load_admin_assets' );
+	}
 }
 
-function enqueue_admin_scripts ($hook){
-
-    if ( 'edit.php' != $hook ) {
-        return;
-    }
-    wp_enqueue_script( 'signature_admin_script', SIGNATURE_PATH . '/signature_admin_script.min.js' );
+function load_admin_assets() {
+	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
 }
 
-function setting_string() {
-	$options = get_option( __NAMESPACE__ . '\\plugin_options' );
-	echo "<input id='plugin_text_string' name='plugin_options[text_string]' size='40' type='text' value='{$options['text_string']}' />";
+function enqueue_admin_assets() {
+	// We currently have no additional style or scripts
+	//  wp_enqueue_style('orionrush-duplicate-detector-admin', plugins_url('/assets/styles/admin.css', DD_DIR), array());
+	//  wp_enqueue_script('orionrush-duplicate-detector-admin', plugins_url('/assets/scripts/admin-min.js', DD_DIR), array('jquery-ui-sortable'));
 }
 
-function section_text() {
-    echo "A bit of explanatory text about the plugin.";
+function register_settings_init() {
+	register_setting(
+		'orionrush_tny_signature',
+		'orionrush_tny_signature',
+		__NAMESPACE__ . '\\settings_sanitize'
+	);
+
+	add_settings_section(
+		'orionrush_tny_signature_site_integration',
+		__( 'Tny Signature Site Settings', 'orionrush_tny_signature' ),
+		'__return_false',
+		'orionrush_tny_signature'
+	);
+	add_settings_field(
+		'orionrush_tny_signature_post_types',
+		__( 'Post Types', 'orionrush_tny_signature' ),
+		__NAMESPACE__ . '\\control_post_types',
+		'orionrush_tny_signature',
+		'orionrush_tny_signature_site_integration'
+	);
 }
 
-function plugin_options() {
-
-    if ( !current_user_can('edit_posts') ) {
-
-        wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-
-    } else { ?>
-	<div class="wrap">
-	<h2>Signature Plugin</h2>
-	<p>Here is where the form would go if I actually had options.</p>
-	<form method="post" action="options.php">
-	<?php settings_fields('orionrush_signature_options'); ?>
-	<?php do_settings_sections('orionrush_signature_options'); ?>
-        <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>"/>
-	</form>
+function options_page() { ?>
+    <div class="wrap">
+        <form action="options.php" method="POST">
+			<?php
+			settings_fields( 'orionrush_tny_signature' );
+			do_settings_sections( 'orionrush_tny_signature' );
+			submit_button();
+			?>
+        </form>
+    </div>
 	<?php
-	$modal_update_href = esc_url( add_query_arg( array(
-		'page'     => 'signature_options',
-		'_wpnonce' => wp_create_nonce( 'orionrush_signature_options' ),
-	), admin_url( 'upload.php' ) ) );
-	?>
-	<p>
-		<a id="choose-from-library-link" href="#"
-		   data-update-link="<?php echo esc_attr( $modal_update_href ); ?>"
-		   data-choose="<?php esc_attr_e( 'Choose a Default Image' ); ?>"
-		   data-update="<?php esc_attr_e( 'Set as default image' ); ?>"><?php _e( 'Set default image' ); ?>
-		</a> |
-	</p>
-	</div>
-    <?php }
 }
 
-// Add to the top of our data-update-link page
-if ( isset( $_REQUEST['file'] ) ) {
-	check_admin_referer( "signature_options" );
+function get_defaults() {
+	return array(
+		'post_types' => array( 'post', 'page' )
+	);
+}
 
-	// Process and save the image id
-	$options                  = get_option( 'orionrush_signature_options', true );
-	$options['default_image'] = absint( $_REQUEST['file'] );
-	update_option( 'orionrush_signature_options', $options );
+function get_settings() {
+	return wp_parse_args( (array) get_option( 'orionrush_tny_signature' ), get_defaults() );
+}
+
+function get_setting( $key ) {
+	$settings = get_settings();
+	if ( isset( $settings[ $key ] ) ) {
+		return $settings[ $key ];
+	}
+
+	return false;
+}
+
+function settings_sanitize( $input ) {
+	$output = array(
+		'post_types' => array()
+	);
+	if ( isset( $input['post_types'] ) ) {
+		$post_types = get_post_types();
+		foreach ( (array) $input['post_types'] as $post_type ) {
+			if ( array_key_exists( $post_type, $post_types ) ) {
+				$output['post_types'][] = $post_type;
+			}
+		}
+	}
+
+	return $output;
+}
+
+function control_post_types() {
+	$key      = 'post_types';
+	$settings = get_settings();
+	$saved    = get_setting( $key );
+	$message  = __( "Select which post types Tny Signature should work with.", 'dupdetect' );
+	print "\n" . '<em></em>' . $message . '<br/><br/>';
+	print "\n" . '<fieldset>';
+	foreach ( get_post_types( array( 'public' => true ) ) as $post_type => $label ) {
+		$id      = 'orionrush_tny_signature_' . $key . '_' . $post_type;
+		$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
+		$object  = get_post_type_object( $label );
+		$label   = $object->labels->name;
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="orionrush_tny_signature[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
+	}
+	print "\n" . '</fieldset>';
 }
