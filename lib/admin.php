@@ -1,9 +1,8 @@
 <?php
 namespace OrionRush\Signature\Admin;
-
-// Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {	exit; }
 
+// Add admin menu items
 if ( is_admin() ) {
 	add_action( 'admin_menu', __NAMESPACE__ . '\\add_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_init' );
@@ -12,6 +11,9 @@ if ( is_admin() ) {
 	return;
 }
 
+/**
+ * Add the menu if user can manage options
+ */
 function add_admin_menu() {
 	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
 		$settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tny_signature', __NAMESPACE__ . '\\options_page' );
@@ -19,16 +21,25 @@ function add_admin_menu() {
 	}
 }
 
+/**
+ * Hook to add scripts and styles
+ */
 function load_admin_assets() {
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
 }
 
+/**
+ * Enqueue any admin scripts and styles
+ */
 function enqueue_admin_assets() {
 	// We currently have no additional style or scripts
 	//  wp_enqueue_style('orionrush-duplicate-detector-admin', plugins_url('/assets/styles/admin.css', DD_DIR), array());
 	//  wp_enqueue_script('orionrush-duplicate-detector-admin', plugins_url('/assets/scripts/admin-min.js', DD_DIR), array('jquery-ui-sortable'));
 }
 
+/**
+ * Register settings, add a section and a settings field
+ */
 function register_settings_init() {
 	register_setting(
 		'orionrush_tny_signature',
@@ -51,6 +62,9 @@ function register_settings_init() {
 	);
 }
 
+/**
+ * Add a options form.
+ */
 function options_page() { ?>
     <div class="wrap">
         <form action="options.php" method="POST">
@@ -64,16 +78,33 @@ function options_page() { ?>
 	<?php
 }
 
+/**
+ * Set the defaults array for this plugin.
+ *
+ * @return array
+ */
 function get_defaults() {
 	return array(
 		'post_types' => array( 'post', 'page' )
 	);
 }
 
+/**
+ * Returns an array of settings for our plugin option.
+ *
+ * @return array
+ */
 function get_settings() {
 	return wp_parse_args( (array) get_option( 'orionrush_tny_signature' ), get_defaults() );
 }
 
+/**
+ * Run a check to see if a particular setting has been previously set
+ *
+ * @param $key
+ *
+ * @return bool
+ */
 function get_setting( $key ) {
 	$settings = get_settings();
 	if ( isset( $settings[ $key ] ) ) {
@@ -83,6 +114,13 @@ function get_setting( $key ) {
 	return false;
 }
 
+/**
+ * Sanitize the settings array
+ *
+ * @param $input
+ *
+ * @return array
+ */
 function settings_sanitize( $input ) {
 	$output = array(
 		'post_types' => array()
@@ -99,6 +137,9 @@ function settings_sanitize( $input ) {
 	return $output;
 }
 
+/**
+ * Print a checkboxes fieldset of active post types
+ */
 function control_post_types() {
 	$key      = 'post_types';
 	$settings = get_settings();
