@@ -41,10 +41,10 @@ function tnysig_delete_all_options( $blog_id = null ) {
 	// User meta
 	$blogusers = get_users( 'blog_id=' . $blog_id . '&fields=ID' );
 	foreach ( $blogusers as $user_id ) {
-		delete_user_meta( $user_id, 'tnysig_signature_farewell' );           // Custom farewell
-		delete_user_meta( $user_id, 'tnysig_signature_name' );               // Custom sign off name
-		delete_user_meta( $user_id, 'tnysig_user_signature_image_url' );     // Custom signature image url
-		delete_user_meta( $user_id, 'tnysig_user_signature_image_id' );      // Custom signature image id
+		delete_user_meta( $user_id, 'tnysig_signature_farewell' );          // Custom farewell
+		delete_user_meta( $user_id, 'tnysig_signature_name' );              // Custom sign off name
+		delete_user_meta( $user_id, 'tnysig_user_signature_image_url' );    // Custom signature image url
+		delete_user_meta( $user_id, 'tnysig_user_signature_image_id' );     // Custom signature image id
 		delete_user_meta( $user_id, 'tnysig_settings_notice-dismissed' );   // Dismissed notice on profile page
 		delete_user_meta( $user_id, 'tnysig_editor_notice-dismissed' );     // Dismissed notice on post/page editor
 	}
