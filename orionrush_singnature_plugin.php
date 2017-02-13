@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /***********************************************************************
  * Definitions
  * /********************************************************************/
-
 define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature', 'tnysig' );
 define( 'SIGNATURE_DEFAULT_FAREWELL', __( 'All the best,', 'tnysig' ) );
 
@@ -36,30 +35,22 @@ require_once( SIGNATURE_PATH . 'lib/notice-ajax.php' );
 require_once( SIGNATURE_PATH . 'lib/notices.php' );
 require_once( SIGNATURE_PATH . 'lib/shortcode.php' );
 require_once( SIGNATURE_PATH . 'lib/tinyMCE.php' );
+require_once( SIGNATURE_PATH . 'lib/helpers.php' );
 
-
+/***********************************************************************
+ * Activation
+ * /********************************************************************/
 function activate() {
 	do_action( 'tnysig_activate' );
 }
+
 register_activation_hook( SIGNATURE_PLUGN, __NAMESPACE__ . '\\activate' );
 
-
-function load_textdomain() {
-	load_plugin_textdomain('tnysig', false, dirname(plugin_basename(__FILE__)) . '/lang');
-}
-add_action('plugins_loaded', __NAMESPACE__ . '\\load_textdomain');
-
-
-
 /***********************************************************************
- * Simple Logging when WP_DEBUG_LOG == true
- * *********************************************************************/
-function write_log ( $log )  {
-	if ( true === WP_DEBUG_LOG ) {
-		if ( is_array( $log ) || is_object( $log ) ) {
-			error_log( print_r( $log, true ) );
-		} else {
-			error_log( $log );
-		}
-	}
+ * Languages
+ * /********************************************************************/
+function load_textdomain() {
+	load_plugin_textdomain( 'tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
+
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
