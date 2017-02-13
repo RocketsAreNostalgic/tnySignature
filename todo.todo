@@ -1,0 +1,10 @@
+todo:
+
+In the post/page edit screen - 
+Instead of just dumping in the shortcode, we want to 
+-- add a modal
+-- drop in a custom fairwell
+-- preview the rendered shortcode in the wyswiwyg editor / but not in the code editor
+
+-- we need to add translateable strings for js to capture via wp_serilise?
+
