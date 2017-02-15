@@ -1,7 +1,7 @@
 <?php
 namespace OrionRush\Signature\UserProfile;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	die();
 }
 
 /**
@@ -36,7 +36,8 @@ function user_profile_fields( $user ) {
             <p><?php echo sprintf( __( '%s The signature button in the post and page text editor will add a custom sign-off and signature to your message.', 'orionrush_tnysig' ), $icon ) ?></p>
             <tbody class="form-table">
             <tr>
-                <th><label for="user_signature_image"><?php _e( 'Sign-off farewell', 'orionrush_tnysig' ); ?></label></th>
+                <th><label for="user_signature_image"><?php _e( 'Sign-off farewell', 'orionrush_tnysig' ); ?></label>
+                </th>
                 <td>
                     <input type="text" name="signature_farewell" id="signature_farewell"
                            placeholder="<?php echo SIGNATURE_DEFAULT_FAREWELL ?>"
@@ -78,7 +79,8 @@ function user_profile_fields( $user ) {
                 </td>
             </tr>
             <tr>
-                <th><label for="user_signature_image"><?php _e( 'Sign-off preview:', 'orionrush_tnysig' ); ?></label></th>
+                <th><label for="user_signature_image"><?php _e( 'Sign-off preview:', 'orionrush_tnysig' ); ?></label>
+                </th>
                 <td>
                     <div class="signature-demo">
                         <p class="sample">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus

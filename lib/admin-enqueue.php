@@ -1,7 +1,7 @@
 <?php
 namespace OrionRush\Signature\Admin;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	die();
 }
 
 /**
@@ -26,7 +26,7 @@ function load_custom_css( $page ) {
 	}
 
 	// Load styles regardless of if orionrush_tnysig_settings_notice-dismissed has been set
-	if (  $page == 'profile.php' || $page == 'user-edit.php' ) {
+	if ( $page == 'profile.php' || $page == 'user-edit.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
 		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode
 

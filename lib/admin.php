@@ -1,6 +1,8 @@
 <?php
 namespace OrionRush\Signature\Admin;
-if ( ! defined( 'ABSPATH' ) ) {	exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 // Add admin menu items
 if ( is_admin() ) {

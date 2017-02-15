@@ -1,7 +1,7 @@
 <?php
 namespace OrionRush\Signature\Shortcode;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	die();
 }
 
 /*

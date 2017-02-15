@@ -1,7 +1,7 @@
 <?php
 namespace OrionRush\Signature\NoticeAjax;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	die();
 }
 
 /**

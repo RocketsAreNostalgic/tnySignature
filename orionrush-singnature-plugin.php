@@ -1,8 +1,6 @@
 <?php
 namespace OrionRush\Signature;
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+if ( ! defined( 'ABSPATH' ) ) die();
 
 /*
  * Plugin Name: Tny Signature
@@ -11,16 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
  * License: GPL
  * Author: Ben Rush
  * Author URI: http://www.rocketsarenostalgic.net
- * Text Domain: tnysig
+ * Text Domain: orionrush_tnysig
  */
 
 /***********************************************************************
  * Definitions
  * /********************************************************************/
-define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature', 'orionrush_tnysig' );
+define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature' );
 define( 'SIGNATURE_DEFAULT_FAREWELL', __( 'All the best,', 'orionrush_tnysig' ) );
 
-define( 'SIGNATURE_PLUGN', __FILE__ );                      // Plugin location
+define( 'SIGNATURE_PLUGIN', __FILE__ );                      // Plugin location
 define( 'SIGNATURE_PATH', plugin_dir_path( __FILE__ ) );    // File path to the plugin directory
 define( 'SIGNATURE_URL', plugin_dir_url( __FILE__ ) );      // URL to the plugin
 
@@ -40,11 +38,7 @@ require_once( SIGNATURE_PATH . 'lib/helpers.php' );
 /***********************************************************************
  * Activation
  * /********************************************************************/
-function activate() {
-	do_action( 'tnysig_activate' );
-}
-
-register_activation_hook( SIGNATURE_PLUGN, __NAMESPACE__ . '\\activate' );
+register_activation_hook( SIGNATURE_PLUGIN, __NAMESPACE__ . '\\Activation\\activate' );
 
 /***********************************************************************
  * Languages

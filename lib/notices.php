@@ -1,7 +1,7 @@
 <?php
 namespace OrionRush\Signature\Notices;
 if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+	die();
 }
 
 // To access the current user, in  contexts like profiles the global $user_id is available
