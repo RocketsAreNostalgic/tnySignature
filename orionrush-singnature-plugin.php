@@ -3,13 +3,15 @@ namespace OrionRush\Signature;
 if ( ! defined( 'ABSPATH' ) ) die();
 
 /*
- * Plugin Name: Tny Signature
- * Description: The plugin adds button to the rich text editor which allows post writers to add their signature to their posts and pages.
- * Version: 0.2.0
- * License: GPL
- * Author: Ben Rush
- * Author URI: http://www.rocketsarenostalgic.net
- * Text Domain: orionrush_tnysig
+ * Plugin Name:   Tny Signature
+ * Description:   The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
+ * Version:       0.2.0
+ * Author:        Ben Rush
+ * Author URI:    http://www.orionrush.com
+ * Plugin URI:    http://www.rocketsarenostalgic.net
+ * License:       GPL
+ * License URI:   https://wordpress.org/about/gpl/
+ * Text Domain:   orionrush_tnysig
  */
 
 /***********************************************************************
