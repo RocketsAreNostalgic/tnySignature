@@ -46,5 +46,3 @@ function activate( $blah = null, $phpv = "5.6", $wpv = "4.7" ) {
 
 	return;
 }
-
-add_action( 'tnysig_activate', __NAMESPACE__ . '\\activate' );
