@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) die();
 define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature' );
 define( 'SIGNATURE_DEFAULT_FAREWELL', __( 'All the best,', 'orionrush_tnysig' ) );
 
-define( 'SIGNATURE_PLUGIN', __FILE__ );                      // Plugin location
+define( 'SIGNATURE_PLUGIN', __FILE__ );                     // Plugin location
 define( 'SIGNATURE_PATH', plugin_dir_path( __FILE__ ) );    // File path to the plugin directory
 define( 'SIGNATURE_URL', plugin_dir_url( __FILE__ ) );      // URL to the plugin
 
