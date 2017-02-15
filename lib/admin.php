@@ -146,7 +146,7 @@ function control_post_types() {
 	$key      = 'post_types';
 	$settings = get_settings();
 	$saved    = get_setting( $key );
-	$message  = __( "Select which post types Tny Signature should work with.", 'dupdetect' );
+	$message  = __( "Select which post types Tny Signature should work with.", 'orionrush_tnysig' );
 	print "\n" . '<em></em>' . $message . '<br/><br/>';
 	print "\n" . '<fieldset>';
 	foreach ( get_post_types( array( 'public' => true ) ) as $post_type => $label ) {
