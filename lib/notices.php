@@ -20,7 +20,7 @@ function activation_notice() {
 			$b    = '</a>';
 			?>
             <div class="notice notice-success is-dismissible signature-notice" data-notice="tnysig_activation_notice">
-                <p><?php echo sprintf( __( '%s Don\'t forget to set up your %scustom signature%s.', 'tnysig' ), $icon, $a, $b ) ?></p>
+                <p><?php echo sprintf( __( '%s Don\'t forget to set up your %scustom signature%s.', 'orionrush_tnysig' ), $icon, $a, $b ) ?></p>
             </div>
 		<?php }
 	}
@@ -43,7 +43,7 @@ function user_profile_notice() {
 			$b    = '</a>';
 			?>
             <div class="notice notice-info is-dismissible signature-notice" data-notice="tnysig_settings_notice">
-                <p><?php echo sprintf( __( '%s Don\'t forget to set your %s custom signature%s below.', 'tnysig' ), $icon, $a, $b ) ?></p>
+                <p><?php echo sprintf( __( '%s Don\'t forget to set your %s custom signature%s below.', 'orionrush_tnysig' ), $icon, $a, $b ) ?></p>
             </div>
 		<?php }
 	}
@@ -65,7 +65,7 @@ function user_editor_notice() {
 			$b    = '</a>';
 			?>
             <div class="notice notice-info is-dismissible signature-notice" data-notice="tnysig_editor_notice">
-                <p><?php echo sprintf( __( '%s It looks like you may not have set up a custom signature in your %suser profile%s.', 'tnysig' ), $icon, $a, $b ) ?></p>
+                <p><?php echo sprintf( __( '%s It looks like you may not have set up a custom signature in your %suser profile%s.', 'orionrush_tnysig' ), $icon, $a, $b ) ?></p>
             </div>
 		<?php }
 	}

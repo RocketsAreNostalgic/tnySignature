@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /***********************************************************************
  * Definitions
  * /********************************************************************/
-define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature', 'tnysig' );
-define( 'SIGNATURE_DEFAULT_FAREWELL', __( 'All the best,', 'tnysig' ) );
+define( 'SIGNATURE_PLUGIN_NAME', 'Tny Signature', 'orionrush_tnysig' );
+define( 'SIGNATURE_DEFAULT_FAREWELL', __( 'All the best,', 'orionrush_tnysig' ) );
 
 define( 'SIGNATURE_PLUGN', __FILE__ );                      // Plugin location
 define( 'SIGNATURE_PATH', plugin_dir_path( __FILE__ ) );    // File path to the plugin directory
@@ -50,7 +50,7 @@ register_activation_hook( SIGNATURE_PLUGN, __NAMESPACE__ . '\\activate' );
  * Languages
  * /********************************************************************/
 function load_textdomain() {
-	load_plugin_textdomain( 'tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
+	load_plugin_textdomain( 'orionrush_tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
 
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
