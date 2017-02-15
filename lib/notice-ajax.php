@@ -18,11 +18,11 @@ function ajax_dismissed_notice_handler() {
 
 	if ( $notice_type == 'tnysig_activation_notice' ) {
 		// if an admin notice save it as an option.
-		update_option( $notice_type . '-dismissed', true );
+		update_option( 'orionrush_' . $notice_type . '-dismissed', true );
 	} else {
 		// if not an admin notice, put it in user meta to
 		$user_id = get_current_user_id();
-		update_user_meta( $user_id, $notice_type . '-dismissed', true );
+		update_user_meta( $user_id, 'orionrush_' . $notice_type . '-dismissed', true );
 	}
 	die();
 }
