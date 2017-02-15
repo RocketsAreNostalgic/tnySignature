@@ -35,18 +35,18 @@ function tnysig_delete_all_options( $blog_id = null ) {
 		$blog_id = get_current_blog_id();
 	}
 	// Plugin options
-	delete_option( 'orionrush_tny_signature' );                             // Plugin options
-	delete_option( 'tnysig_activation_notice-dismissed' );                  // Dismissed notice on plugin activation on plugin page
+	delete_option( 'orionrush_tnysig_options' );                             // Plugin options
+	delete_option( 'orionrush_tnysig_activation_notice-dismissed' );                  // Dismissed notice on plugin activation on plugin page
 
 	// User meta
 	$blogusers = get_users( 'blog_id=' . $blog_id . '&fields=ID' );
 	foreach ( $blogusers as $user_id ) {
-		delete_user_meta( $user_id, 'tnysig_signature_farewell' );          // Custom farewell
-		delete_user_meta( $user_id, 'tnysig_signature_name' );              // Custom sign off name
-		delete_user_meta( $user_id, 'tnysig_user_signature_image_url' );    // Custom signature image url
-		delete_user_meta( $user_id, 'tnysig_user_signature_image_id' );     // Custom signature image id
-		delete_user_meta( $user_id, 'tnysig_settings_notice-dismissed' );   // Dismissed notice on profile page
-		delete_user_meta( $user_id, 'tnysig_editor_notice-dismissed' );     // Dismissed notice on post/page editor
+		delete_user_meta( $user_id, 'orionush_tnysig_farewell' );          // Custom farewell
+		delete_user_meta( $user_id, 'orionrush_tnysig_name' );              // Custom sign off name
+		delete_user_meta( $user_id, 'orionrush_tnysig_editor_notice-dismissed' );    // Custom signature image url
+		delete_user_meta( $user_id, 'orionrush_tnysig_image_id' );     // Custom signature image id
+		delete_user_meta( $user_id, 'orionrush_tnysig_settings_notice-dismissed' );   // Dismissed notice on profile page
+		delete_user_meta( $user_id, 'orionrush_tnysig_editor_notice-dismissed' );     // Dismissed notice on post/page editor
 	}
 
 }

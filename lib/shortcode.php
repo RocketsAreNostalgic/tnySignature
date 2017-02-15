@@ -30,7 +30,7 @@ function shortcode( $a, $farewell ) {
 		$author_id = $user_id;
 	}
 
-	$author = trim( get_user_meta( $author_id, 'tnysig_signature_name', true ) );
+	$author = trim( get_user_meta( $author_id, 'orionrush_tnysig_name', true ) );
 	if ( ! $author ) {
 		$author = trim( get_user_meta( $author_id, 'first_name', true ) . ' ' . get_user_meta( $author_id, 'last_name', true ) );
 	}
@@ -42,14 +42,14 @@ function shortcode( $a, $farewell ) {
 	// If there is no instnace farewell, use the default or fallback.
 	$farewell = trim( $farewell );
 	if ( ! $farewell ) {
-		$farewell = get_user_meta( $author_id, 'tnysig_signature_farewell', true );
+		$farewell = get_user_meta( $author_id, 'orionrush_tnysig_farewell', true );
 	}
 	if ( ! $farewell ) {
 		$farewell = SIGNATURE_DEFAULT_FAREWELL;
 	}
 
 	// Process the image attributes
-	$img_id     = get_user_meta( $author_id, 'tnysig_user_signature_image_id', true );
+	$img_id     = get_user_meta( $author_id, 'orionrush_tnysig_image_id', true );
 	$img_array  = [];
 	$img_url    = '';
 	$img_width  = '';

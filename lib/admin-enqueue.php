@@ -21,18 +21,18 @@ function load_custom_css( $page ) {
 	wp_register_style( 'signature_admin_css', SIGNATURE_URL . 'assets/css/signature_admin.css', false, '0.0.1' );
 
 	// If we haven't dismissed a notice, and we're on the correct page load css
-	if ( ! get_user_meta( $user_id, 'tnysig_editor_notice-dismissed' ) && $page == 'post-new.php' || $page == 'post.php' ) {
+	if ( ! get_user_meta( $user_id, 'orionrush_tnysig_editor_notice-dismissed' ) && $page == 'post-new.php' || $page == 'post.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 
-	// Load styles regardless of if tnysig_settings_notice-dismissed has been set
+	// Load styles regardless of if orionrush_tnysig_settings_notice-dismissed has been set
 	if (  $page == 'profile.php' || $page == 'user-edit.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
 		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode
 
 	}
 
-	if ( ! get_user_meta( $user_id, 'tnysig_settings_notice-dismissed' ) && $page == 'plugins.php' ) {
+	if ( ! get_user_meta( $user_id, 'orionrush_tnysig_settings_notice-dismissed' ) && $page == 'plugins.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 }

@@ -22,7 +22,7 @@ function user_profile_fields( $user ) {
 			$author = get_user_meta( $user_id, 'nickname', true );
 		}
 
-		$image = get_the_author_meta( 'tnysig_user_signature_image_id', $user_id );
+		$image = get_the_author_meta( 'orionrush_tnysig_image_id', $user_id );
 		if ( $image ) {
 			$image = wp_get_attachment_image( $image, 'medium', false, array( 'id' => 'signature-image-preview' ) );
 		} else {
@@ -40,7 +40,7 @@ function user_profile_fields( $user ) {
                 <td>
                     <input type="text" name="signature_farewell" id="signature_farewell"
                            placeholder="<?php echo SIGNATURE_DEFAULT_FAREWELL ?>"
-                           value="<?php echo esc_attr( get_the_author_meta( 'tnysig_signature_farewell', $user_id ) ); ?>"
+                           value="<?php echo esc_attr( get_the_author_meta( 'orionrush_tnysig_farewell', $user_id ) ); ?>"
                            class="regular-text"/><br/>
                     <span class="description"><?php _e( 'Please add a post "farewell"', 'tnysig' ); ?></span>
                 </td>
@@ -49,7 +49,7 @@ function user_profile_fields( $user ) {
                 <th><label for="user_signature_image"><?php _e( 'Sign-off name', 'tnysig' ); ?></label></th>
                 <td>
                     <input type="text" name="signature_name" id="signature_name" placeholder="<?php echo $author ?>"
-                           value="<?php echo esc_attr( get_the_author_meta( 'tnysig_signature_name', $user_id ) ); ?>"
+                           value="<?php echo esc_attr( get_the_author_meta( 'orionrush_tnysig_name', $user_id ) ); ?>"
                            class="regular-text"/><br/>
                     <span class="description"><?php _e( 'The name you would like to present to screen readers for the visually impaired.', 'tnysig' ) ?></span>
                 </td>
@@ -71,7 +71,7 @@ function user_profile_fields( $user ) {
                             <span class="description"><?php _e( 'For best results use a PNG or GIF with a transparent background.', 'tnysig' ); ?></span><br/>
                             <!--hidden-->
                             <input type="hidden" name="user_signature_image_id" id="user_signature_image_id"
-                                   value="<?php echo get_the_author_meta( 'tnysig_user_signature_image_id', $user_id ); ?>"
+                                   value="<?php echo get_the_author_meta( 'orionrush_tnysig_image_id', $user_id ); ?>"
                                    class="regular-text"/>
                         </div>
                     </div>
@@ -110,9 +110,9 @@ function save_additional_user_meta( $user_id ) {
 		return false;
 	}
 
-	update_user_meta( $user_id, 'tnysig_signature_farewell', sanitize_text_field( $_POST['signature_farewell'] ) );
-	update_user_meta( $user_id, 'tnysig_signature_name', sanitize_text_field( $_POST['signature_name'] ) );
-	update_user_meta( $user_id, 'tnysig_user_signature_image_id', sanitize_text_field( $_POST['user_signature_image_id'] ) );
+	update_user_meta( $user_id, 'orionrush_tnysig_farewell', sanitize_text_field( $_POST['signature_farewell'] ) );
+	update_user_meta( $user_id, 'orionrush_tnysig_name', sanitize_text_field( $_POST['signature_name'] ) );
+	update_user_meta( $user_id, 'orionrush_tnysig_image_id', sanitize_text_field( $_POST['user_signature_image_id'] ) );
 
 }
 

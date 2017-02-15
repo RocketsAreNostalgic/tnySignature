@@ -16,7 +16,7 @@ if ( is_admin() ) {
  */
 function add_admin_menu() {
 	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
-		$settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tny_signature', __NAMESPACE__ . '\\options_page' );
+		$settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tnysig_options', __NAMESPACE__ . '\\options_page' );
 		add_action( 'load-' . $settings_page, __NAMESPACE__ . '\\load_admin_assets' );
 	}
 }
@@ -42,23 +42,23 @@ function enqueue_admin_assets() {
  */
 function register_settings_init() {
 	register_setting(
-		'orionrush_tny_signature',
-		'orionrush_tny_signature',
+		'orionrush_tnysig_options',
+		'orionrush_tnysig_options',
 		__NAMESPACE__ . '\\settings_sanitize'
 	);
 
 	add_settings_section(
-		'orionrush_tny_signature_site_integration',
-		__( 'Tny Signature Site Settings', 'orionrush_tny_signature' ),
+		'orionrush_tnysig_options_site_integration',
+		__( 'Tny Signature Site Settings', 'orionrush_tnysig_options' ),
 		'__return_false',
-		'orionrush_tny_signature'
+		'orionrush_tnysig_options'
 	);
 	add_settings_field(
-		'orionrush_tny_signature_post_types',
-		__( 'Post Types', 'orionrush_tny_signature' ),
+		'orionrush_tnysig_options_post_types',
+		__( 'Post Types', 'orionrush_tnysig_options' ),
 		__NAMESPACE__ . '\\control_post_types',
-		'orionrush_tny_signature',
-		'orionrush_tny_signature_site_integration'
+		'orionrush_tnysig_options',
+		'orionrush_tnysig_options_site_integration'
 	);
 }
 
@@ -69,8 +69,8 @@ function options_page() { ?>
     <div class="wrap">
         <form action="options.php" method="POST">
 			<?php
-			settings_fields( 'orionrush_tny_signature' );
-			do_settings_sections( 'orionrush_tny_signature' );
+			settings_fields( 'orionrush_tnysig_options' );
+			do_settings_sections( 'orionrush_tnysig_options' );
 			submit_button();
 			?>
         </form>
@@ -95,7 +95,7 @@ function get_defaults() {
  * @return array
  */
 function get_settings() {
-	return wp_parse_args( (array) get_option( 'orionrush_tny_signature' ), get_defaults() );
+	return wp_parse_args( (array) get_option( 'orionrush_tnysig_options' ), get_defaults() );
 }
 
 /**
@@ -148,11 +148,11 @@ function control_post_types() {
 	print "\n" . '<em></em>' . $message . '<br/><br/>';
 	print "\n" . '<fieldset>';
 	foreach ( get_post_types( array( 'public' => true ) ) as $post_type => $label ) {
-		$id      = 'orionrush_tny_signature_' . $key . '_' . $post_type;
+		$id      = 'orionrush_tnysig_options_' . $key . '_' . $post_type;
 		$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
 		$object  = get_post_type_object( $label );
 		$label   = $object->labels->name;
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="orionrush_tny_signature[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="orionrush_tnysig_options[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
 	}
 	print "\n" . '</fieldset>';
 }
