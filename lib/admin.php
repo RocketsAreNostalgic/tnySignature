@@ -14,7 +14,10 @@ if ( is_admin() ) {
 }
 
 /**
- * Add the menu if user can manage options
+ * Add the menu if user can manage options.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function add_admin_menu() {
 	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
@@ -24,14 +27,20 @@ function add_admin_menu() {
 }
 
 /**
- * Hook to add scripts and styles
+ * Hook to add scripts and styles.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function load_admin_assets() {
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
 }
 
 /**
- * Enqueue any admin scripts and styles
+ * Enqueue any admin scripts and styles.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function enqueue_admin_assets() {
 	// We currently have no additional style or scripts
@@ -40,7 +49,10 @@ function enqueue_admin_assets() {
 }
 
 /**
- * Register settings, add a section and a settings field
+ * Register settings, add a section and a settings field.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function register_settings_init() {
 	register_setting(
@@ -66,6 +78,9 @@ function register_settings_init() {
 
 /**
  * Add a options form.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function options_page() { ?>
     <div class="wrap">
@@ -88,6 +103,9 @@ function options_page() { ?>
  * Set the defaults array for this plugin.
  *
  * @return array
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function get_defaults() {
 	return array(
@@ -99,6 +117,9 @@ function get_defaults() {
  * Returns an array of settings for our plugin option.
  *
  * @return array
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function get_settings() {
 	return wp_parse_args( (array) get_option( 'orionrush_tnysig_options' ), get_defaults() );
@@ -110,6 +131,9 @@ function get_settings() {
  * @param $key
  *
  * @return bool
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function get_setting( $key ) {
 	$settings = get_settings();
@@ -126,6 +150,9 @@ function get_setting( $key ) {
  * @param $input
  *
  * @return array
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function settings_sanitize( $input ) {
 	$output = array(
@@ -146,10 +173,10 @@ function settings_sanitize( $input ) {
 /**
  * Get public posts types that tny-signature can work with.
  *
- * @since 0.0.3
- * @author orionrush
- *
  * @return array
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function get_public_post_types() {
 
@@ -166,6 +193,9 @@ function get_public_post_types() {
 
 /**
  * Print a checkboxes fieldset of active post types
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function control_post_types() {
 	$key      = 'post_types';
