@@ -140,16 +140,40 @@ function settings_sanitize( $input ) {
 }
 
 /**
+ * Get public posts types that tny-signature can work with.
+ *
+ * @since 0.0.3
+ * @author orionrush
+ *
+ * @return array
+ */
+function get_public_post_types() {
+
+	$post_types = get_post_types( array( 'public' => true ) );
+
+	// remove media attachments from the list as DD wont work on them.
+	$remove = array_search( 'attachment', $post_types );
+	if ( $remove !== false ) {
+		unset( $post_types[ $remove ] );
+	}
+
+	return $post_types;
+}
+
+/**
  * Print a checkboxes fieldset of active post types
  */
 function control_post_types() {
 	$key      = 'post_types';
 	$settings = get_settings();
 	$saved    = get_setting( $key );
-	$message  = __( "Select which post types Tny Signature should work with.", 'orionrush_tnysig' );
+	$message  = __( "Select which public post types Tny Signature should work with.", 'orionrush_tnysig' );
 	print "\n" . '<em></em>' . $message . '<br/><br/>';
 	print "\n" . '<fieldset>';
-	foreach ( get_post_types( array( 'public' => true ) ) as $post_type => $label ) {
+
+	$post_types = get_public_post_types();
+
+	foreach ( $post_types as $post_type => $label ) {
 		$id      = 'orionrush_tnysig_options_' . $key . '_' . $post_type;
 		$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
 		$object  = get_post_type_object( $label );
