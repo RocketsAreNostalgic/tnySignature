@@ -76,6 +76,10 @@ function options_page() { ?>
 			submit_button();
 			?>
         </form>
+        <?php
+        $message2  = sprintf(__( "Set your personal signature settings on your %sProfile Page%s.", 'orionrush_tnysig' ), '<a href="' . get_edit_user_link() . '#tny-signature">', '</a>');
+        print "\n" . $message2;
+        ?>
     </div>
 	<?php
 }
@@ -168,6 +172,7 @@ function control_post_types() {
 	$settings = get_settings();
 	$saved    = get_setting( $key );
 	$message  = __( "Select which public post types Tny Signature should work with.", 'orionrush_tnysig' );
+
 	print "\n" . '<em></em>' . $message . '<br/><br/>';
 	print "\n" . '<fieldset>';
 
