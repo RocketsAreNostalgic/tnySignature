@@ -2,7 +2,7 @@
 namespace OrionRush\Signature;
 if ( ! defined( 'ABSPATH' ) ) die();
 
-/*
+/**
  * Plugin Name:   Tny Signature
  * Description:   The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
  * Version:       0.2.0

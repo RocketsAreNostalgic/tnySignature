@@ -8,7 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 // however on posts and pages must access it via get_current_user_id()
 
 /**
- * Dismissible plugin activation notice
+ * Dismissible plugin activation notice.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function activation_notice() {
 	global $pagenow;
@@ -31,7 +34,10 @@ add_action( 'user_admin_notices', __NAMESPACE__ . '\\activation_notice', 10, 1 )
 add_action( 'network_admin_notices', __NAMESPACE__ . '\\activation_notice', 10, 1 );
 
 /**
- * Dismissible notice on profile pages
+ * Dismissible notice on profile pages.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function user_profile_notice() {
 	global $pagenow;
@@ -53,7 +59,10 @@ add_action( 'admin_notices', __NAMESPACE__ . '\\user_profile_notice', 10, 1 );
 add_action( 'user_admin_notices', __NAMESPACE__ . '\\user_profile_notice', 10, 1 );
 
 /**
- * Dismissible notice on post editors
+ * Dismissible notice on post editors.
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function user_editor_notice() {
 	global $pagenow;

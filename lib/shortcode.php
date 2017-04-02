@@ -4,12 +4,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
 
-/*
+/**
  * A shortcode that generates a personal farewell sign off image for posts and pages.
  *
  * @uses:   const SIGNATURE_DEFAULT_FAREWELL
+ *
  * @param:  string $farewell // the text between the opening and closing shortcode elements
+ *
  * @return  mixed|void // Markup as a string
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function shortcode( $a, $farewell ) {
 	global $pagenow;
@@ -76,6 +81,9 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
  * @param $author
  *
  * @return string
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function signature_shortcode_filter( $img_url, $img_height, $img_width, $farewell, $author ) {
 	if ( $img_url ) {

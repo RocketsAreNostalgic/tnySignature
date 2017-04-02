@@ -8,6 +8,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * AJAX handler to store the state of dismissible notices
  * http://wordpress.stackexchange.com/a/251191/13551
  *
+ * @since 0.0.2
+ * @author orionrush
  */
 function ajax_dismissed_notice_handler() {
 	if ( ! isset( $_POST['tnysig_nonce'] ) || ! wp_verify_nonce( $_POST['tnysig_nonce'], 'tnysig-nonce' ) ) {

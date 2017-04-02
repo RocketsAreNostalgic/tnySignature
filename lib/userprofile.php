@@ -9,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * more info: http://justintadlock.com/archives/2009/09/10/adding-and-using-custom-user-profile-fields
  *
  * @param $user
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function user_profile_fields( $user ) {
 
@@ -104,6 +107,9 @@ add_action( 'edit_user_profile', __NAMESPACE__ . '\\user_profile_fields' );
  * @param $user_id
  *
  * @return bool
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function save_additional_user_meta( $user_id ) {
 

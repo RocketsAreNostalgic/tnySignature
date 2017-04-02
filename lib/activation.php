@@ -10,6 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @param string $wpv - Minimum WP Version
  * @param string $phpv - Minimum PHP Version
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function activate( $blah = null, $phpv = "5.6", $wpv = "4.7" ) {
 

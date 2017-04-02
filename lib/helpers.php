@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param $log // the message or array to be printed to the log
  * @param bool $force // Force a log even if WP_DEBUG_LOG is not enabled
  *
+ * @since 0.0.2
+ * @author orionrush
  */
 
 function write_log( $log, $force = false ) {

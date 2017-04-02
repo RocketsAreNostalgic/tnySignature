@@ -5,17 +5,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 // http://wordpress.stackexchange.com/questions/36568/solution-to-render-shortcodes-in-admin-editor
 
-/*
+/**
  * ========================================
  * Adds the signature button tinyMCE editor
  * ========================================
  */
 
-/*
+/**
  * Register all buttons
  *
  * @param:  array of buttons
  * @return: array of buttons with dividers
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function register_button( $buttons ) {
 	array_push( $buttons, "SIGNATURE" );
@@ -23,11 +26,14 @@ function register_button( $buttons ) {
 	return $buttons;
 }
 
-/*
+/**
  * Add the plugin js for each button
  *
- * @param:      $plugin_array
- * @returns:    $plugin_array
+ * @param $plugin_array
+ * @returns $plugin_array
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function add_plugin( $plugin_array ) {
 	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
@@ -35,12 +41,15 @@ function add_plugin( $plugin_array ) {
 	return $plugin_array;
 }
 
-/*
+/**
  * Add the plugin buttons to the tinymce rich text area
  *
- * @wp_filter:  mce_buttons
- * @wp_filter:  mce_external_plugins
- * @wp_hook:    init
+ * @wp_filter mce_buttons
+ * @wp_filter mce_external_plugins
+ * @wp_hook init
+ *
+ * @since 0.0.2
+ * @author orionrush
  */
 function tinyMCE_buttons() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
