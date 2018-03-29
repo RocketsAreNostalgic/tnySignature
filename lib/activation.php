@@ -35,7 +35,7 @@ function activate( $blah = null, $phpv = "5.6", $wpv = "4.7" ) {
 
 	if ( $flag !== null ) {
 
-		$name   = SIG_PLUGIN_NAME;
+		$name   = SIGNATURE_PLUGIN_NAME;
 		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s' );
 
 		wp_die( sprintf( $format, $name, $flag, $target_version, $current_version ), 'Plugin Activation Error', array(
