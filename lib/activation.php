@@ -44,7 +44,7 @@ function activate( $blah = null, $phpv = "5.6", $wpv = "4.7" ) {
 		) );
 		deactivate_plugins( plugin_basename( DD_PLUGIN ) );
 	} else if ( get_option( 'orionrush_signature_options' ) === false ) {
-		add_option( 'orionrush_signature_options', \OrionRush\DuplicateDetector\Admin\get_defaults() );
+		add_option( 'orionrush_signature_options', \OrionRush\Signature\Admin\get_defaults() );
 	}
 
 	return;
