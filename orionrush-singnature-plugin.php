@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) die();
 /**
  * Plugin Name:   Tny Signature
  * Description:   The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
- * Version:       0.2.0
+ * Version:       0.2.1
  * Author:        Ben Rush
  * Author URI:    http://www.orionrush.com
  * Plugin URI:    http://www.rocketsarenostalgic.net
