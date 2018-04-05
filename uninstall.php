@@ -35,7 +35,8 @@ function tnysig_delete_all_options( $blog_id = null ) {
 		$blog_id = get_current_blog_id();
 	}
 	// Plugin options
-	delete_option( 'orionrush_tnysig_options' );                             // Plugin options
+	delete_option( 'orionrush_tnysig_options' );                                      // Plugin options
+	delete_option( 'orionrush_signature_options' );                                   // Legacy Plugin options
 	delete_option( 'orionrush_tnysig_activation_notice-dismissed' );                  // Dismissed notice on plugin activation on plugin page
 
 	// User meta

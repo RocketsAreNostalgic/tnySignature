@@ -1,7 +1,18 @@
 <?php
 namespace OrionRush\Signature\Helpers;
-if ( ! defined( 'ABSPATH' ) ) {
-	die();
+if ( ! defined( 'ABSPATH' ) ) {	die(); }
+
+/**
+ * Adds a settings link to the plugin instance in the plugins managment list.
+ *
+ * @param $links
+ * @return mixed
+ *
+ * @since 0.2.1
+ */
+function plugin_add_settings_link( $links = array() ) {
+	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=orionrush_tnysig_options') ) .'">Settings</a>';
+	return $links;
 }
 
 /**

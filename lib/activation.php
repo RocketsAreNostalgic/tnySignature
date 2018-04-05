@@ -36,15 +36,15 @@ function activate( $blah = null, $phpv = "5.6", $wpv = "4.7" ) {
 	if ( $flag !== null ) {
 
 		$name   = SIGNATURE_PLUGIN_NAME;
-		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s' );
+		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s', 'orionrush_tnysig' );
 
 		wp_die( sprintf( $format, $name, $flag, $target_version, $current_version ), 'Plugin Activation Error', array(
 			'response'  => 500,
 			'back_link' => true
 		) );
 		deactivate_plugins( plugin_basename( DD_PLUGIN ) );
-	} else if ( get_option( 'orionrush_signature_options' ) === false ) {
-		add_option( 'orionrush_signature_options', \OrionRush\Signature\Admin\get_defaults() );
+	} else if ( get_option( 'orionrush_tnysig_options' ) === false ) {
+		add_option( 'orionrush_tnysig_options', \OrionRush\Signature\Admin\get_defaults() );
 	}
 
 	return;

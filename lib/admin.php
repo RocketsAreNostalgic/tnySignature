@@ -1,8 +1,6 @@
 <?php
 namespace OrionRush\Signature\Admin;
-if ( ! defined( 'ABSPATH' ) ) {
-	die();
-}
+if ( ! defined( 'ABSPATH' ) ) { die(); }
 
 // Add admin menu items
 if ( is_admin() ) {
@@ -21,7 +19,8 @@ if ( is_admin() ) {
  */
 function add_admin_menu() {
 	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
-		$settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tnysig_options', __NAMESPACE__ . '\\options_page' );
+
+        $settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tnysig_options', __NAMESPACE__ . '\\options_page' );
 		add_action( 'load-' . $settings_page, __NAMESPACE__ . '\\load_admin_assets' );
 	}
 }
@@ -44,8 +43,8 @@ function load_admin_assets() {
  */
 function enqueue_admin_assets() {
 	// We currently have no additional style or scripts
-	//  wp_enqueue_style('orionrush-duplicate-detector-admin', plugins_url('/assets/styles/admin.css', DD_DIR), array());
-	//  wp_enqueue_script('orionrush-duplicate-detector-admin', plugins_url('/assets/scripts/admin-min.js', DD_DIR), array('jquery-ui-sortable'));
+	//  wp_enqueue_style('orionrush-tnysignature-admin', plugins_url('/assets/styles/admin.css', SIGNATURE_PATH), array());
+	//  wp_enqueue_script('orionrush-tnysignature-admin', plugins_url('/assets/scripts/admin-min.js', SIGNATURE_PATH), array('jquery-ui-sortable'));
 }
 
 /**
@@ -100,7 +99,7 @@ function options_page() { ?>
 }
 
 /**
- * Set the defaults array for this plugin.
+ * Set the defaults options array for this plugin.
  *
  * @return array
  *

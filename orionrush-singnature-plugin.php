@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) die();
 /**
  * Plugin Name:   Tny Signature
  * Description:   The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
- * Version:       0.2.1
+ * Version:       0.2.2
  * Author:        Ben Rush
  * Author URI:    http://www.orionrush.com
  * Plugin URI:    http://www.rocketsarenostalgic.net
@@ -37,16 +37,14 @@ require_once( SIGNATURE_PATH . 'lib/shortcode.php' );
 require_once( SIGNATURE_PATH . 'lib/tinyMCE.php' );
 require_once( SIGNATURE_PATH . 'lib/helpers.php' );
 
-/***********************************************************************
- * Activation
- * /********************************************************************/
+// Activation
 register_activation_hook( SIGNATURE_PLUGIN, __NAMESPACE__ . '\\Activation\\activate' );
 
-/***********************************************************************
- * Languages
- * /********************************************************************/
+// Languages
 function load_textdomain() {
 	load_plugin_textdomain( 'orionrush_tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
-
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
+
+// Plugin setting link
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), '\\OrionRush\\Signature\\Helpers\\plugin_add_settings_link');
