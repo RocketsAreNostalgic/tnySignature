@@ -11,3 +11,7 @@ div.signature.image-replace {
   overflow: hidden;
   margin-bottom: 10px;
 }
+
+.post-content-inside p.signature.author {
+    padding: 0;
+}
