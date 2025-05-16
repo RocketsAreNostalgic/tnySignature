@@ -50,14 +50,28 @@ function register_button( $buttons ) {
  */
 function add_plugin( $plugin_array ) {
 	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
-	
-	// Localize the script with translated strings
-	wp_localize_script( 'editor', 'tnySignatureL10n', array(
-		'buttonTitle' => __( 'Signature shortcode', 'ran-tnysig' ),
-	));
-
 	return $plugin_array;
 }
+
+/**
+ * Localize the TinyMCE script with translated strings.
+ * This is called after the text domain is loaded.
+ *
+ * @since 0.3.3
+ * @return void
+ */
+function localize_tinymce_script() {
+	wp_localize_script(
+		'editor',
+		'tnySignatureL10n',
+		array(
+			'buttonTitle'     => __( 'Signature shortcode', 'ran-tnysig' ),
+			'defaultFarewell' => \RAN\TnySignature\get_default_farewell(),
+			'pluginUrl'       => TNYSIGNATURE_URL,
+		)
+	);
+}
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\localize_tinymce_script', 20 );
 
 /**
  * Add the plugin buttons to the TinyMCE rich text area.
@@ -82,8 +96,7 @@ function tiny_mce_buttons() {
 	global $current_screen;
 	// Display only if the rich editor is enabled & we are on an active post type.
 	if (
-		in_array( $current_screen->post_type, $settings['post_types'], true ) &&
-		get_user_option( 'rich_editing' ) === 'true'
+		in_array( $current_screen->post_type, $settings['post_types'], true ) && get_user_option( 'rich_editing' ) === 'true'
 	) {
 		add_filter( 'mce_external_plugins', __NAMESPACE__ . '\\add_plugin' );
 		add_filter( 'mce_buttons', __NAMESPACE__ . '\\register_button' );

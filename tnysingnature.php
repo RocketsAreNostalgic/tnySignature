@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /***********************************************************************
  * Definitions
  */
-define( 'TNYSIGNATURE_PLUGIN_NAME', __( 'Tny Signature', 'ran-tnysig' ) );
-define( 'TNYSIGNATURE_DEFAULT_FAREWELL', 'All the best,' ); // Don't translate here, it's handled in get_default_farewell()
+define( 'TNYSIGNATURE_PLUGIN_NAME', 'Tny Signature' ); // Don't use translation function here.
+define( 'TNYSIGNATURE_DEFAULT_FAREWELL', 'All the best,' ); // Don't translate here, it's handled in get_default_farewell().
 define( 'TNYSIGNATURE_PLUGIN', __FILE__ );
 define( 'TNYSIGNATURE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TNYSIGNATURE_URL', plugin_dir_url( __FILE__ ) );
@@ -63,14 +63,15 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), __NAMESPACE__ 
 function load_textdomain() {
 	load_plugin_textdomain( 'ran-tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
-add_action( 'init', __NAMESPACE__ . '\\load_textdomain' );
+add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
 
 /**
  * Get the translated default farewell text.
+ * This function should be called after the text domain is loaded.
  *
  * @since 0.3.1
  * @return string Translated farewell text
  */
 function get_default_farewell() {
-	return __( TNYSIGNATURE_DEFAULT_FAREWELL, 'ran-tnysig' );
+	return __( 'All the best,', 'ran-tnysig' );
 }

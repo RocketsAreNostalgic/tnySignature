@@ -30,7 +30,7 @@ function shortcode( $atts, $farewell ) {
 	// $atts is not used in this implementation but is required by the shortcode API.
 
 	// Enqueue the CSS.
-	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'dist/css/signature_rendered.min.css', array(), '0.3.2' );
+	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.min.css', array(), '0.3.2' );
 
 	// Get the post author if on the front end.
 	$author_id = get_the_author_meta( 'ID' );
@@ -98,15 +98,21 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
  */
 function signature_shortcode_filter( $img_url, $img_height, $img_width, $farewell, $author ) {
 	if ( $img_url ) {
-		return '<p class="signature farewell">' . esc_html( $farewell ) . '</p><br />
-        <div class="signature image-replace"
-        style="background-image: url(' . esc_url( $img_url ) . '); height: ' . esc_attr( $img_height ) . 'px; width: ' . esc_attr( $img_width ) . 'px;"
-        title="' . esc_attr( $author ) . '">
-            <p class="signature author">' . esc_html( $author ) . '</p>
-        </div>';
+		return '<div class="signature-container" role="complementary" aria-label="' . esc_attr__( 'Author Signature', 'ran-tnysig' ) . '">
+			<p class="signature farewell" aria-label="' . esc_attr__( 'Farewell message', 'ran-tnysig' ) . '">' . esc_html( $farewell ) . '</p><br />
+			<div class="signature image-replace"
+			style="background-image: url(' . esc_url( $img_url ) . '); height: ' . esc_attr( $img_height ) . 'px; width: ' . esc_attr( $img_width ) . 'px;"
+			title="' . esc_attr( $author ) . '"
+			role="img"
+			aria-label="' . esc_attr( sprintf( __( 'Signature of %s', 'ran-tnysig' ), $author ) ) . '">
+				<p class="signature author">' . esc_html( $author ) . '</p>
+			</div>
+		</div>';
 	} else {
-		return '<p class="signature farewell"><em>' . esc_html( $farewell ) . '</em></p>
-        <p class="signature author">' . esc_html( $author ) . '</p>';
+		return '<div class="signature-container" role="complementary" aria-label="' . esc_attr__( 'Author Signature', 'ran-tnysig' ) . '">
+			<p class="signature farewell" aria-label="' . esc_attr__( 'Farewell message', 'ran-tnysig' ) . '"><em>' . esc_html( $farewell ) . '</em></p>
+			<p class="signature author" aria-label="' . esc_attr__( 'Author name', 'ran-tnysig' ) . '">' . esc_html( $author ) . '</p>
+		</div>';
 	}
 }
 

@@ -30,7 +30,7 @@ function load_custom_css( $page ) {
 	}
 
 	// Admin styles.
-	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'dist/css/signature_admin.min.css', false, '0.3.2' );
+	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/css/signature_admin.min.css', false, '0.3.2' );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
 	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( $page === 'post-new.php' || $page === 'post.php' ) ) {
@@ -60,7 +60,7 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
 function ajax_load_scripts() {
 	wp_enqueue_script(
 		'tynsig_ajax_notice_dismiss',
-		TNYSIGNATURE_URL . 'dist/js/notice-dismiss.min.js',
+		TNYSIGNATURE_URL . 'assets/js/notice-dismiss.min.js',
 		array( 'jquery' ),
 		'0.3.2',
 		true
@@ -95,8 +95,19 @@ function load_custom_profile_js() {
 	}
 
 	wp_enqueue_media();
-	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'dist/js/media_uploader.min.js', array( 'jquery' ), '0.3.2', true );
-	wp_localize_script( 'signature_user_profile_js', 'TNYSINGNATURE', array( 'sigurl' => TNYSIGNATURE_URL ) );
+	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'assets/js/media_uploader_improved.min.js', array( 'jquery', 'wp-media-utils' ), '0.3.3', true );
+	wp_localize_script(
+		'signature_user_profile_js',
+		'TNYSINGNATURE',
+		array(
+			'sigurl' => TNYSIGNATURE_URL,
+			'i18n'   => array(
+				'title'      => __( 'Select or Upload Signature Image', 'ran-tnysig' ),
+				'button'     => __( 'Use this image', 'ran-tnysig' ),
+				'defaultAlt' => __( 'Default placeholder image', 'ran-tnysig' ),
+			),
+		)
+	);
 }
 
 add_action( 'admin_print_scripts-profile.php', __NAMESPACE__ . '\\load_custom_profile_js', 11 );

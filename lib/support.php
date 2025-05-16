@@ -46,7 +46,7 @@ function get_plugin_atts() {
 function plugin_add_settings_link( $links = array() ) {
 	// Only show settings link to administrators.
 	if ( current_user_can( 'manage_options' ) ) {
-		$links[] = '<a href="' . esc_url( get_admin_url( null, 'options-general.php?page=tnysignature' ) ) . '">' . __( 'Settings', 'ran-tnygooglekey' ) . '</a>';
+		$links[] = '<a href="' . esc_url( get_admin_url( null, 'options-general.php?page=tnysignature' ) ) . '">' . __( 'Settings', 'ran-tnysig' ) . '</a>';
 	}
 	return $links;
 }

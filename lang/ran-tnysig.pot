@@ -1,0 +1,201 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Tny Signature\n"
+"POT-Creation-Date: 2025-05-16 12:44+0100\n"
+"PO-Revision-Date: 2025-05-16 12:44+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: tnysingnature.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+"X-Poedit-SearchPathExcluded-1: node_modules\n"
+"X-Poedit-SearchPathExcluded-2: vendor\n"
+
+#: lib/activation.php:58
+#, php-format
+msgid ""
+"Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are "
+"currently running version: %s"
+msgstr ""
+
+#: lib/admin-enqueue.php:105 lib/userprofile.php:100
+msgid "Select or Upload Signature Image"
+msgstr ""
+
+#: lib/admin-enqueue.php:106 lib/userprofile.php:101
+msgid "Use this image"
+msgstr ""
+
+#: lib/admin-enqueue.php:107 lib/userprofile.php:51
+msgid "Default placeholder image"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+#: lib/admin.php:36 lib/admin.php:37 lib/userprofile.php:55
+msgid "Tny Signature"
+msgstr ""
+
+#: lib/admin.php:88
+msgid "Tny Signature Site Settings"
+msgstr ""
+
+#: lib/admin.php:94
+msgid "Post Types"
+msgstr ""
+
+#: lib/admin.php:121
+msgid "Profile Page"
+msgstr ""
+
+#. translators: %s: Profile page link HTML
+#: lib/admin.php:126
+#, php-format
+msgid "Set your personal signature settings on your %s."
+msgstr ""
+
+#: lib/admin.php:242
+msgid "Select which public post types Tny Signature should work with."
+msgstr ""
+
+#: lib/helpers.php:27 lib/support.php:49
+msgid "Settings"
+msgstr ""
+
+#. translators: %1$s: icon HTML, %2$s: opening link tag, %3$s: closing link tag
+#: lib/notices.php:48
+#, php-format
+msgid "%1$s Don't forget to set up your %2$scustom signature%3$s."
+msgstr ""
+
+#. translators: %1$s: icon HTML, %2$s: opening link tag, %3$s: closing link tag
+#: lib/notices.php:97
+#, php-format
+msgid "%1$s Don't forget to set your %2$s custom signature%3$s below."
+msgstr ""
+
+#. translators: %1$s: icon HTML, %2$s: opening link tag, %3$s: closing link tag
+#: lib/notices.php:145
+#, php-format
+msgid ""
+"%1$s It looks like you may not have set up a custom signature in your "
+"%2$suser profile%3$s."
+msgstr ""
+
+#: lib/shortcode.php:101 lib/shortcode.php:112
+msgid "Author Signature"
+msgstr ""
+
+#: lib/shortcode.php:102 lib/shortcode.php:113
+msgid "Farewell message"
+msgstr ""
+
+#: lib/shortcode.php:107
+#, php-format
+msgid "Signature of %s"
+msgstr ""
+
+#: lib/shortcode.php:114
+msgid "Author name"
+msgstr ""
+
+#: lib/tinyMCE.php:68
+msgid "Signature shortcode"
+msgstr ""
+
+#: lib/userprofile.php:46
+msgid "Your signature image"
+msgstr ""
+
+#: lib/userprofile.php:63
+#, php-format
+msgid ""
+"%s The signature button in the post and page text editor will add a custom "
+"sign-off and signature to your message."
+msgstr ""
+
+#: lib/userprofile.php:66
+msgid "Sign-off farewell"
+msgstr ""
+
+#: lib/userprofile.php:74
+msgid "Please add a post \"farewell\""
+msgstr ""
+
+#: lib/userprofile.php:78
+msgid "Sign-off name"
+msgstr ""
+
+#: lib/userprofile.php:84
+msgid ""
+"The name you would like to present to screen readers for the visually "
+"impaired."
+msgstr ""
+
+#: lib/userprofile.php:88
+msgid "Sign-off image"
+msgstr ""
+
+#: lib/userprofile.php:98
+msgid "Upload Image"
+msgstr ""
+
+#: lib/userprofile.php:105
+msgid "Remove"
+msgstr ""
+
+#: lib/userprofile.php:107
+msgid "Remove signature image"
+msgstr ""
+
+#: lib/userprofile.php:108
+msgid "For best results use a PNG or GIF with a transparent background."
+msgstr ""
+
+#: lib/userprofile.php:119
+msgid "Sign-off preview:"
+msgstr ""
+
+#: lib/userprofile.php:122
+msgid "Signature Preview"
+msgstr ""
+
+#: lib/userprofile.php:123
+msgid "Sample post content"
+msgstr ""
+
+#: lib/userprofile.php:123
+msgid ""
+"Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus "
+"saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. "
+"Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis "
+"voluptatibus...."
+msgstr ""
+
+#: tnysingnature.php:76
+msgid "All the best,"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"The plugin adds button to the rich text editor which allows authors to add a "
+"sign-off to their posts and pages."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Benjamin Rush"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/bnjmnrsh"
+msgstr ""

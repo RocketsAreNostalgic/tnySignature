@@ -122,7 +122,7 @@ function options_page() { ?>
 		);
 
 		$message = sprintf(
-			/* translators: %s: Profile page link HTML */
+		/* translators: %s: Profile page link HTML */
 			esc_html__( 'Set your personal signature settings on your %s.', 'ran-tnysig' ),
 			$profile_link
 		);
