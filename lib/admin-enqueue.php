@@ -10,6 +10,8 @@
 
 namespace RAN\TnySignature\Admin;
 
+use RAN\TnySignature\Support as Support;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -29,8 +31,12 @@ function load_custom_css( $page ) {
 		return false;
 	}
 
+	// Get plugin version for cache busting.
+	$plugin_data = Support\get_plugin_atts();
+	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
+
 	// Admin styles.
-	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/css/signature_admin.min.css', false, '0.3.2' );
+	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/css/signature_admin.min.css', false, $ver );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
 	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( $page === 'post-new.php' || $page === 'post.php' ) ) {
@@ -58,11 +64,15 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
  * @return void
  */
 function ajax_load_scripts() {
+	// Get plugin version for cache busting.
+	$plugin_data = Support\get_plugin_atts();
+	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
+
 	wp_enqueue_script(
 		'tynsig_ajax_notice_dismiss',
 		TNYSIGNATURE_URL . 'assets/js/notice-dismiss.min.js',
 		array( 'jquery' ),
-		'0.3.2',
+		$ver,
 		true
 	);
 	wp_localize_script(
@@ -94,8 +104,12 @@ function load_custom_profile_js() {
 		return false;
 	}
 
+	// Get plugin version for cache busting.
+	$plugin_data = Support\get_plugin_atts();
+	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.3' );
+
 	wp_enqueue_media();
-	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'assets/js/media_uploader_improved.min.js', array( 'jquery', 'wp-media-utils' ), '0.3.3', true );
+	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'assets/js/media_uploader_improved.min.js', array( 'jquery', 'wp-media-utils' ), $ver, true );
 	wp_localize_script(
 		'signature_user_profile_js',
 		'TNYSINGNATURE',

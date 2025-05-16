@@ -12,6 +12,8 @@
 
 namespace RAN\TnySignature\TinyMCE;
 
+use RAN\TnySignature\Support as Support;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -38,6 +40,7 @@ function register_button( $buttons ) {
 	return $buttons;
 }
 
+
 /**
  * Add the plugin JS for each button.
  *
@@ -49,7 +52,11 @@ function register_button( $buttons ) {
  * @package TNY_SIGNATURE
  */
 function add_plugin( $plugin_array ) {
-	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
+	// Get plugin version for cache busting.
+	$plugin_data = Support\get_plugin_atts();
+	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
+
+	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js?ver=' . $ver, __FILE__ );
 	return $plugin_array;
 }
 
@@ -61,12 +68,26 @@ function add_plugin( $plugin_array ) {
  * @return void
  */
 function localize_tinymce_script() {
+	// Get the current user's farewell message.
+	$user_id  = get_current_user_id();
+	$farewell = '';
+
+	if ( $user_id ) {
+		$farewell = get_user_meta( $user_id, 'ran-tnysig_farewell', true );
+	}
+
+	// If no user farewell is set, use the default.
+	if ( empty( $farewell ) ) {
+		$farewell = \RAN\TnySignature\get_default_farewell();
+	}
+
 	wp_localize_script(
 		'editor',
 		'tnySignatureL10n',
 		array(
 			'buttonTitle'     => __( 'Signature shortcode', 'ran-tnysig' ),
 			'defaultFarewell' => \RAN\TnySignature\get_default_farewell(),
+			'userFarewell'    => $farewell,
 			'pluginUrl'       => TNYSIGNATURE_URL,
 		)
 	);

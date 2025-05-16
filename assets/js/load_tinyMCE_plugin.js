@@ -16,10 +16,9 @@
 		init: function (ed, url) {
 			// Register commands.
 			ed.addCommand('SIGNATURE', function () {
-				var return_text = '';
-				// Use the default farewell text that's already translated in PHP
-				return_text =
-					'[signature]' + (tnySignatureL10n.defaultFarewell || 'All the best,') + '[/signature]';
+				// Use the user's farewell message if available, otherwise fall back to default
+				var farewell = tnySignatureL10n.userFarewell || tnySignatureL10n.defaultFarewell || 'All the best,';
+				var return_text = '[signature]' + farewell + '[/signature]';
 				ed.execCommand('mceInsertContent', 0, return_text);
 			});
 			// Register buttons.

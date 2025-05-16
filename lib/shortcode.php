@@ -10,6 +10,8 @@
 
 namespace RAN\TnySignature\Shortcode;
 
+use RAN\TnySignature\Support as Support;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -29,8 +31,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 function shortcode( $atts, $farewell ) {
 	// $atts is not used in this implementation but is required by the shortcode API.
 
+	// Get plugin version for cache busting.
+	$plugin_data = Support\get_plugin_atts();
+	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
+
 	// Enqueue the CSS.
-	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.min.css', array(), '0.3.2' );
+	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.min.css', array(), $ver );
 
 	// Get the post author if on the front end.
 	$author_id = get_the_author_meta( 'ID' );
