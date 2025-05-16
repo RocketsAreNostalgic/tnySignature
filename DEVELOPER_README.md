@@ -4,29 +4,39 @@ A WordPress plugin providing a signature button in the TinyMCE editor for adding
 
 ## Development
 
-This plugin includes tools to help maintain code quality and consistent style.
+This plugin includes tools to help maintain code quality and consistent style, as well as a modern build system for frontend assets.
 
 ### Setup
 
-#### 1. Install development dependencies
+#### 1. Install PHP development dependencies
 
 ```bash
 composer install
 ```
 
-#### 2. Make the utility scripts executable
+#### 2. Install JavaScript/CSS development dependencies
 
 ```bash
-chmod +x ./scripts/setup-dev.sh ./scripts/format-code.sh
+# Install pnpm if you don't have it already
+npm install -g pnpm
+
+# Install dependencies
+pnpm install
 ```
 
-#### 3. Run the setup script to configure your development environment
+#### 3. Make the utility scripts executable
+
+```bash
+chmod +x ./scripts/setup-dev.sh ./scripts/format-code.sh ./scripts/build-assets.sh
+```
+
+#### 4. Run the setup script to configure your PHP development environment
 
 ```bash
 ./scripts/setup-dev.sh
 ```
 
-This script performs a clean installation of dependencies by:
+This script performs a clean installation of PHP dependencies by:
 
 - Removing any existing composer.lock file
 - Removing the vendor directory
@@ -34,16 +44,18 @@ This script performs a clean installation of dependencies by:
 
 ### Code Style Commands
 
-| Command | Description |
-|---------|-------------|
-| `composer format` | The recommended way to format code. Runs all formatting tools in the correct order (executes format-code.sh) |
-| `composer lint` | Checks PHP syntax only (no style checking) |
-| `composer cs` | Formats code according to WordPress style using PHP CS Fixer (parallel) |
-| `composer cs:check` | Checks code style without making changes, useful for troubleshooting but not as comprehensive as `standards:fix` |
-| `composer cs:sequential` | Formats code without parallel processing (for troubleshooting) |
-| `composer standards` | Checks WordPress coding standards (summary report) |
-| `composer standards:full` | Checks WordPress coding standards (detailed report) |
-| `composer standards:fix` | Attempts to fix WordPress standards issues |
+| Command                   | Description                                                                                                      |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `composer format`         | The recommended way to format PHP code. Runs all formatting tools in the correct order (executes format-code.sh) |
+| `composer lint`           | Checks PHP syntax only (no style checking)                                                                       |
+| `composer cs`             | Formats code according to WordPress style using PHP CS Fixer (parallel)                                          |
+| `composer cs:check`       | Checks code style without making changes, useful for troubleshooting but not as comprehensive as `standards:fix` |
+| `composer cs:sequential`  | Formats code without parallel processing (for troubleshooting)                                                   |
+| `composer standards`      | Checks WordPress coding standards (summary report)                                                               |
+| `composer standards:full` | Checks WordPress coding standards (detailed report)                                                              |
+| `composer standards:fix`  | Attempts to fix WordPress standards issues                                                                       |
+| `composer build-assets`   | Builds frontend assets using Vite (executes build-assets.sh)                                                     |
+| `composer build`          | Complete build process: formats PHP code and builds frontend assets                                              |
 
 #### PHP 8.1+ Compatibility
 
@@ -68,6 +80,9 @@ This project includes configuration files for:
 - EditorConfig (.editorconfig)
 - PHP CS Fixer (.php-cs-fixer.php)
 - PHP CodeSniffer (phpcs.xml)
+- ESLint (.eslintrc.json)
+- StyleLint (.stylelintrc.json)
+- Prettier (.prettierrc)
 - VS Code settings (.vscode/settings.json)
 
 #### Recommended VS Code Extensions
@@ -76,10 +91,16 @@ This project includes configuration files for:
 - PHP Intelephense
 - PHP CS Fixer
 - PHP CodeSniffer
+- ESLint
+- StyleLint
+- Prettier - Code formatter
+- Vite
 
 ## Troubleshooting
 
-If you encounter issues with the code style tools:
+### PHP Code Style Issues
+
+If you encounter issues with the PHP code style tools:
 
 1. Make sure you have installed the dependencies with `composer install`
 2. Try running `composer lint` first to check for basic syntax errors
@@ -90,7 +111,7 @@ If you encounter issues with the code style tools:
 composer format
 
 # Or directly using the shell script
-./format-code.sh
+./scripts/format-code.sh
 ```
 
 This script runs the formatting tools in the correct order to avoid conflicts:
@@ -100,12 +121,123 @@ This script runs the formatting tools in the correct order to avoid conflicts:
 - Step 3: Runs PHPCBF to fix WordPress coding standards issues with `composer standards:fix`
 - Step 4: Performs a final check with PHPCS using `composer standards`
 
-### Resolving Conflicts Between Tools
+#### Resolving Conflicts Between PHP Tools
 
 If you notice that running `composer cs` and `composer standards:fix` produces conflicting results:
 
 1. Always run `composer standards:fix` last, as it better handles indentation in mixed HTML/PHP files
 2. If you're still having issues, edit the `.php-cs-fixer.php` configuration to disable rules that conflict with WordPress standards
+
+### Frontend Build Issues
+
+If you encounter issues with the frontend build system:
+
+1. Make sure you have installed the dependencies with `pnpm install`
+2. Check for linting errors with `pnpm run lint`
+3. Try running the build in development mode first with `pnpm run dev`
+4. If the build fails, check the error messages for specific issues
+
+#### Common Frontend Issues
+
+- **Module not found errors**: Make sure all dependencies are installed with `pnpm install`
+- **Syntax errors**: Check the file mentioned in the error message for JavaScript or SCSS syntax issues
+- **Linting errors**: Run `pnpm run lint` to identify and fix code style issues
+- **Vite configuration issues**: Check the `vite.config.js` file for proper configuration
+- **pnpm-specific issues**: If you encounter pnpm-specific errors, try running `pnpm store prune` to clean the store
+
+#### StyleLint Tips
+
+If you're experiencing issues with StyleLint in VS Code:
+
+- Try using the CLI instead of the VS Code extension: `pnpm run lint:css`
+- Make sure your VS Code StyleLint extension is up to date
+- Check that your StyleLint configuration is compatible with the latest version
+
+#### Debugging the Build Process
+
+To get more detailed information during the build process:
+
+```bash
+# For development build with verbose logging
+DEBUG=vite:* pnpm run dev
+
+# For production build with verbose logging
+DEBUG=vite:* pnpm run build
+```
+
+## Frontend Build System
+
+This plugin uses Vite with Sass, ESLint, StyleLint, and Prettier to build and optimize frontend assets. We use pnpm as our package manager for its speed, efficiency, and improved dependency management.
+
+### Why pnpm?
+
+- **Disk space efficiency**: pnpm uses a content-addressable store to avoid duplication of packages
+- **Faster installation**: pnpm is significantly faster than npm or Yarn
+- **Strict dependency management**: Prevents accessing packages that aren't explicitly declared as dependencies
+- **Monorepo support**: Better handling of workspaces and monorepo setups
+- **Compatibility**: Works with existing npm/Yarn projects without modifications
+
+### Frontend Commands
+
+| Command             | Description                                              |
+| ------------------- | -------------------------------------------------------- |
+| `pnpm run dev`      | Starts a development server with hot module replacement  |
+| `pnpm run build`    | Builds minified assets for production                    |
+| `pnpm run preview`  | Previews the production build locally                    |
+| `pnpm run lint:js`  | Lints JavaScript files using ESLint                      |
+| `pnpm run lint:css` | Lints CSS/SCSS files using StyleLint                     |
+| `pnpm run lint`     | Runs both JavaScript and CSS linting                     |
+| `pnpm run format`   | Formats all JavaScript and CSS/SCSS files using Prettier |
+
+### Build Script
+
+The plugin includes a build script (`./scripts/build-assets.sh`) that:
+
+1. Checks if pnpm is installed
+2. Installs dependencies if needed
+3. Runs ESLint and StyleLint to check for issues
+4. Builds minified assets using Vite
+
+You can run this script directly:
+
+```bash
+./scripts/build-assets.sh
+```
+
+Or through Composer:
+
+```bash
+composer build-assets
+```
+
+### Complete Build Process
+
+To run a complete build process that formats PHP code and builds frontend assets:
+
+```bash
+composer build
+```
+
+This command:
+
+1. Formats PHP code using the format-code.sh script
+2. Builds frontend assets using the build-assets.sh script
+
+### Asset Structure
+
+- Source and compiled files are co-located in the same directories:
+
+  - `assets/css/*.scss` - SCSS source files
+  - `assets/css/*.min.css` - Minified CSS files (generated by Vite)
+  - `assets/js/*.js` - JavaScript source files
+  - `assets/js/*.min.js` - Minified JavaScript files (generated by Vite)
+
+### Configuration Files
+
+- `vite.config.js` - Vite build configuration
+- `.eslintrc.json` - ESLint configuration
+- `.stylelintrc.json` - StyleLint configuration
+- `.prettierrc` - Prettier configuration
 
 ## WordPress Coding Standards
 

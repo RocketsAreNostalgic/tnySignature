@@ -1,0 +1,36 @@
+{
+  "name": "tny-signature",
+  "version": "0.3.2",
+  "description": "WordPress plugin providing a signature button in the TinyMCE editor",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:js": "eslint 'assets/js/**/*.js'",
+    "lint:css": "stylelint 'assets/css/**/*.{css,scss}'",
+    "lint": "pnpm run lint:js && pnpm run lint:css",
+    "format": "prettier --write 'assets/**/*.{js,scss,css}'"
+  },
+  "author": "Benjamin Rush",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "eslint": "^9.26.0",
+    "eslint-config-prettier": "^10.1.5",
+    "prettier": "^3.5.3",
+    "sass": "^1.89.0",
+    "stylelint": "^16.19.1",
+    "stylelint-config-standard-scss": "^15.0.0",
+    "vite": "^6.3.5"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
+  "packageManager": "pnpm@8.6.0"
+}
