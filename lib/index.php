@@ -1,5 +1,6 @@
 <?php
 /**
- * silence is golden
+ * Silence is golden
+ *
  * @package TNY_SIGNATURE
  */

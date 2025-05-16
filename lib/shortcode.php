@@ -9,6 +9,7 @@
  */
 
 namespace RAN\TnySignature\Shortcode;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -16,30 +17,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * A shortcode that generates a personal farewell sign off image for posts and pages.
  *
- * @uses:   const SIGNATURE_DEFAULT_FAREWELL
+ * @param array  $atts     Shortcode attributes array (unused in this implementation).
+ * @param string $farewell The text between the opening and closing shortcode elements.
  *
- * @param:  string $farewell // the text between the opening and closing shortcode elements
- *
- * @return  mixed|void // Markup as a string
+ * @return string Markup as a string.
  *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function shortcode( $a, $farewell ) {
-	global $pagenow;
+function shortcode( $atts, $farewell ) {
+	// $atts is not used in this implementation but is required by the shortcode API.
 
-	// Enqueue the css
-	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.css' );
+	// Enqueue the CSS.
+	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.css', array(), '0.3.1' );
 
-	// Get the post author if on the front end
-	$author_id = get_the_author_meta( "ID" );
+	// Get the post author if on the front end.
+	$author_id = get_the_author_meta( 'ID' );
 
 	// We don't want to pass in the user id as a shortcode attribute,
 	// as this would allow dropping in another user's on any post.
-	// http://wordpress.stackexchange.com/a/69462/13551
+	// See: http://wordpress.stackexchange.com/a/69462/13551.
 	if ( is_admin() ) {
-		// This global should be contextually correct
+		// This global should be contextually correct,
 		// including in the admin, when editing another user's profile.
 		global $user_id;
 		$author_id = $user_id;
@@ -65,7 +65,7 @@ function shortcode( $a, $farewell ) {
 
 	// Process the image attributes.
 	$img_id     = get_user_meta( $author_id, 'ran-tnysig_image_id', true );
-	$img_array  = [];
+	$img_array  = array();
 	$img_url    = '';
 	$img_width  = '';
 	$img_height = '';
@@ -82,15 +82,15 @@ function shortcode( $a, $farewell ) {
 add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
 
 /**
- * A filter to allow the modification of the  shortcode output.
+ * A filter to allow the modification of the shortcode output.
  *
- * @param $img_url
- * @param $img_height
- * @param $img_width
- * @param $farewell
- * @param $author
+ * @param string $img_url    The URL of the signature image.
+ * @param string $img_height The height of the signature image.
+ * @param string $img_width  The width of the signature image.
+ * @param string $farewell   The farewell text.
+ * @param string $author     The author name.
  *
- * @return string
+ * @return string HTML markup for the signature.
  *
  * @since 0.0.2
  * @author bnjmnrsh
@@ -99,14 +99,14 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
 function signature_shortcode_filter( $img_url, $img_height, $img_width, $farewell, $author ) {
 	if ( $img_url ) {
 		return '<p class="signature farewell">' . esc_html( $farewell ) . '</p><br />
-        <div class=" signature image-replace"
-        style="background-image: url(' . $img_url . '); height: ' . $img_height . 'px; width: ' . $img_width . 'px;"
-        title="' . $author . '">
-            <p class="signature author">' . $author . '</p>
+        <div class="signature image-replace"
+        style="background-image: url(' . esc_url( $img_url ) . '); height: ' . esc_attr( $img_height ) . 'px; width: ' . esc_attr( $img_width ) . 'px;"
+        title="' . esc_attr( $author ) . '">
+            <p class="signature author">' . esc_html( $author ) . '</p>
         </div>';
 	} else {
 		return '<p class="signature farewell"><em>' . esc_html( $farewell ) . '</em></p>
-        <p class="signature author">' . $author . '</p>';
+        <p class="signature author">' . esc_html( $author ) . '</p>';
 	}
 }
 

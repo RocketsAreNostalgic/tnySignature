@@ -11,6 +11,7 @@
  */
 
 namespace RAN\TnySignature\TinyMCE;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -22,26 +23,26 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 
 /**
- * Register all buttons
+ * Register all buttons.
  *
- * @param:  array of buttons
- * @return: array of buttons with dividers
+ * @param array $buttons Array of TinyMCE buttons.
+ * @return array Array of TinyMCE buttons with our button added.
  *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
 function register_button( $buttons ) {
-	array_push( $buttons, "SIGNATURE" );
+	array_push( $buttons, 'SIGNATURE' );
 
 	return $buttons;
 }
 
 /**
- * Add the plugin js for each button
+ * Add the plugin JS for each button.
  *
- * @param $plugin_array
- * @returns $plugin_array
+ * @param array $plugin_array Array of TinyMCE plugins.
+ * @return array Modified array of TinyMCE plugins.
  *
  * @since 0.0.2
  * @author bnjmnrsh
@@ -54,7 +55,7 @@ function add_plugin( $plugin_array ) {
 }
 
 /**
- * Add the plugin buttons to the tinymce rich text area
+ * Add the plugin buttons to the TinyMCE rich text area.
  *
  * @wp_filter mce_buttons
  * @wp_filter mce_external_plugins
@@ -63,23 +64,26 @@ function add_plugin( $plugin_array ) {
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
+ * @return void
  */
-function tinyMCE_buttons() {
+function tiny_mce_buttons() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
 
 	// Only show on enabled post types from admin page.
-	$settings  = \RAN\TnySignature\Admin\get_settings();
-	$post_test = in_array( get_post_type(), $settings['post_types'] );
+	$settings = \RAN\TnySignature\Admin\get_settings();
 
 	global $current_screen;
-	// display only if the rich editor is enabled & we are on an active post type.
-	if ( in_array( $current_screen->post_type, $settings['post_types'] ) && get_user_option( 'rich_editing' ) == 'true' ) {
+	// Display only if the rich editor is enabled & we are on an active post type.
+	if (
+		in_array( $current_screen->post_type, $settings['post_types'], true ) &&
+		get_user_option( 'rich_editing' ) === 'true'
+	) {
 		add_filter( 'mce_external_plugins', __NAMESPACE__ . '\\add_plugin' );
 		add_filter( 'mce_buttons', __NAMESPACE__ . '\\register_button' );
 	}
 }
 
-// have to use a hook late enough to get $current_screen, init is to early.
-add_action( 'admin_head', __NAMESPACE__ . '\\tinyMCE_buttons' );
+// Have to use a hook late enough to get $current_screen, init is too early.
+add_action( 'admin_head', __NAMESPACE__ . '\\tiny_mce_buttons' );

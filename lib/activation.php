@@ -8,10 +8,13 @@
  */
 
 namespace RAN\TnySignature\Activation;
+
 use RAN\TnySignature\Support as Support;
 use RAN\TnySignature\Admin as Admin;
 use WP_Exception;
-if ( ! defined( 'ABSPATH' ) ) die();
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 
 /**
@@ -20,22 +23,24 @@ if ( ! defined( 'ABSPATH' ) ) die();
  * Verifies that the WordPress and PHP versions meet minimum requirements.
  * Deactivates the plugin if requirements are not met.
  *
+ * @param string $phpv Minimum PHP version required.
+ * @param string $wpv  Minimum WordPress version required.
+ *
  * @since 0.0.1
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  *
  * @return void
- * @throws WP_Exception
+ * @throws WP_Exception When plugin requirements are not met.
  */
-function activate( $phpv = "8.1", $wpv = "5.0" ) {
-
-    $plugin_data = Support\get_plugin_atts();
+function activate( $phpv = '8.1', $wpv = '5.0' ) {
+	$plugin_data = Support\get_plugin_atts();
 	$name        = ( ( ! empty( $plugin_data['Plugin Name'] ) ? $plugin_data['Plugin Name'] : '' ) );
 
-	$flag           = null;
-	$target_version = null;
+	$flag            = null;
+	$target_version  = null;
 	$current_version = null;
-	$wp_version     = get_bloginfo( 'version' );
+	$wp_version      = get_bloginfo( 'version' );
 
 	if ( version_compare( PHP_VERSION, $phpv, '<' ) ) {
 		$flag            = 'PHP';
@@ -49,18 +54,31 @@ function activate( $phpv = "8.1", $wpv = "5.0" ) {
 	}
 
 	if ( $flag !== null ) {
-
-		$name = TNYSIGNATURE_PLUGIN_NAME;
+		$name   = esc_html( TNYSIGNATURE_PLUGIN_NAME );
 		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s', 'ran-tnysig' );
 
-		wp_die( sprintf( $format, $name, $flag, $target_version, $current_version ), 'Plugin Activation Error', array(
-			'response'  => 500,
-			'back_link' => true
-		) );
+		wp_die(
+			wp_kses(
+				sprintf(
+					$format,
+					$name,
+					esc_html( $flag ),
+					esc_html( $target_version ),
+					esc_html( $current_version )
+				),
+				array(
+					'strong' => array(),
+					'br'     => array(),
+				)
+			),
+			'Plugin Activation Error',
+			array(
+				'response'  => 500,
+				'back_link' => true,
+			)
+		);
 		deactivate_plugins( plugin_basename( TNYSIGNATURE_PLUGIN ) );
-	} else if ( get_option( 'ran-tnysig_options' ) === false ) {
+	} elseif ( get_option( 'ran-tnysig_options' ) === false ) {
 		add_option( 'ran-tnysig_options', Admin\get_defaults() );
 	}
-
-	return;
 }

@@ -9,6 +9,7 @@
  */
 
 namespace RAN\TnySignature\Admin;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -16,9 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Enqueue styles on the correct admin pages.
  *
- * @param $page // the wp admin page hook
+ * @param string $page The WordPress admin page hook.
  *
- * @return bool
+ * @return bool Returns false if user doesn't have permission.
+ *
+ * @since 0.0.2
  */
 function load_custom_css( $page ) {
 	global $user_id;
@@ -26,22 +29,21 @@ function load_custom_css( $page ) {
 		return false;
 	}
 
-	// Admin styles
+	// Admin styles.
 	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/css/signature_admin.css', false, '0.0.1' );
 
-	// If we haven't dismissed a notice, and we're on the correct page load css
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && $page == 'post-new.php' || $page == 'post.php' ) {
+	// If we haven't dismissed a notice, and we're on the correct page load CSS.
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( $page === 'post-new.php' || $page === 'post.php' ) ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 
-	// Load styles regardless of if ran-tnysig_settings_notice-dismissed has been set
-	if ( $page == 'profile.php' || $page == 'user-edit.php' ) {
+	// Load styles regardless of if ran-tnysig_settings_notice-dismissed has been set.
+	if ( $page === 'profile.php' || $page === 'user-edit.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
-		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode
-
+		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode.
 	}
 
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) && $page == 'plugins.php' ) {
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) && $page === 'plugins.php' ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 }
@@ -51,18 +53,28 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
 
 /**
  * Load the admin scripts for notices.
+ *
+ * @since 0.0.2
+ * @return void
  */
 function ajax_load_scripts() {
-
-	wp_enqueue_script( 'tynsig_ajax_notice_dismiss', TNYSIGNATURE_URL . 'assets/js/notice-dismiss.min.js', array( 'jquery' ) );
-	wp_localize_script( 'tynsig_ajax_notice_dismiss', 'tnysig_vars', array(
-			'tnysig_nonce' => wp_create_nonce( 'tnysig-nonce' )
+	wp_enqueue_script(
+		'tynsig_ajax_notice_dismiss',
+		TNYSIGNATURE_URL . 'assets/js/notice-dismiss.min.js',
+		array( 'jquery' ),
+		'0.3.1',
+		true
+	);
+	wp_localize_script(
+		'tynsig_ajax_notice_dismiss',
+		'tnysig_vars',
+		array(
+			'tnysig_nonce' => wp_create_nonce( 'tnysig-nonce' ),
 		)
 	);
-
 }
 
-//add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\ajax_load_scripts' );
+// Hook into specific admin pages to load our scripts.
 add_action( 'admin_print_scripts-plugin.php', __NAMESPACE__ . '\\ajax_load_scripts', 11 );
 add_action( 'admin_print_scripts-profile.php', __NAMESPACE__ . '\\ajax_load_scripts', 11 );
 add_action( 'admin_print_scripts-user-edit.php', __NAMESPACE__ . '\\ajax_load_scripts', 11 );
@@ -73,11 +85,11 @@ add_action( 'admin_print_scripts-post-new.php', __NAMESPACE__ . '\\ajax_load_scr
 /**
  * Enqueue the needed scripts for the profile page.
  *
- * @param $hook
+ * @since 0.0.2
+ * @return bool|void Returns false if user doesn't have permission.
  */
 function load_custom_profile_js() {
-
-	// only run if the current user can edit user profiles
+	// Only run if the current user can edit user profiles.
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;
 	}

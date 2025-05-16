@@ -9,6 +9,7 @@
  */
 
 namespace RAN\TnySignature\NoticeAjax;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -22,17 +23,22 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package TNY_SIGNATURE
  */
 function ajax_dismissed_notice_handler() {
-	if ( ! isset( $_POST['tnysig_nonce'] ) || ! wp_verify_nonce( $_POST['tnysig_nonce'], 'tnysig-nonce' ) ) {
+	// Verify nonce for security.
+	if ( ! isset( $_POST['tnysig_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['tnysig_nonce'] ) ), 'tnysig-nonce' ) ) {
 		die();
 	}
-	// Pick up the notice "type" - passed via js from the "data-notice" attribute
-	$notice_type = sanitize_html_class( $_POST['notice_type'] );
 
-	if ( $notice_type == 'tnysig_activation_notice' ) {
-		// if an admin notice save it as an option.
+	// Pick up the notice "type" - passed via js from the "data-notice" attribute.
+	if ( ! isset( $_POST['notice_type'] ) ) {
+		die();
+	}
+	$notice_type = sanitize_html_class( wp_unslash( $_POST['notice_type'] ) );
+
+	if ( $notice_type === 'tnysig_activation_notice' ) {
+		// If an admin notice, save it as an option.
 		update_option( 'orionrush_' . $notice_type . '-dismissed', true );
 	} else {
-		// if not an admin notice, put it in user meta to
+		// If not an admin notice, put it in user meta.
 		$user_id = get_current_user_id();
 		update_user_meta( $user_id, 'orionrush_' . $notice_type . '-dismissed', true );
 	}

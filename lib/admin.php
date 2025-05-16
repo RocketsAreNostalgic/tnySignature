@@ -1,8 +1,20 @@
 <?php
-namespace RAN\TnySignature\Admin;
-if ( ! defined( 'ABSPATH' ) ) { die(); }
+/**
+ * Admin Functions
+ *
+ * Functions for the WordPress admin interface.
+ *
+ * @package TNY_SIGNATURE
+ * @since   0.0.2
+ */
 
-// Add admin menu items
+namespace RAN\TnySignature\Admin;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
+
+// Add admin menu items.
 if ( is_admin() ) {
 	add_action( 'admin_menu', __NAMESPACE__ . '\\add_admin_menu' );
 	add_action( 'admin_init', __NAMESPACE__ . '\\register_settings_init' );
@@ -19,9 +31,14 @@ if ( is_admin() ) {
  * @package TNY_SIGNATURE
  */
 function add_admin_menu() {
-	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
-
-        $settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'ran-tnysig_options', __NAMESPACE__ . '\\options_page' );
+	if ( current_user_can( 'manage_options' ) ) { // We can't check for this sooner.
+		$settings_page = add_options_page(
+			esc_html__( 'Tny Signature', 'ran-tnysig' ),
+			esc_html__( 'Tny Signature', 'ran-tnysig' ),
+			'manage_options',
+			'ran-tnysig_options',
+			__NAMESPACE__ . '\\options_page'
+		);
 		add_action( 'load-' . $settings_page, __NAMESPACE__ . '\\load_admin_assets' );
 	}
 }
@@ -45,9 +62,11 @@ function load_admin_assets() {
  * @package TNY_SIGNATURE
  */
 function enqueue_admin_assets() {
-	// We currently have no additional style or scripts
-	//  wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/styles/admin.css', TNYSIGNATURE_PATH), array());
-	//  wp_enqueue_script('ran-tnysignature-admin', plugins_url('/assets/scripts/admin-min.js', TNYSIGNATURE_PATH), array('jquery-ui-sortable'));
+	// phpcs:disable Squiz.PHP.CommentedOutCode.Found, Squiz.Commenting.InlineComment.InvalidEndChar
+	// If needed in the future.
+	// wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/css/admin.css', TNYSIGNATURE_PLUGIN), array(),'0.3.1');
+	// wp_enqueue_script('ran-tnysignature-admin', plugins_url('/assets/js/admin.min.js', TNYSIGNATURE_PLUGIN), array('jquery-ui-sortable'), '0.3.1',true);
+	// phpcs:enable
 }
 
 /**
@@ -87,19 +106,30 @@ function register_settings_init() {
  * @package TNY_SIGNATURE
  */
 function options_page() { ?>
-    <div class="wrap">
-        <form action="options.php" method="POST">
+	<div class="wrap">
+		<form action="options.php" method="POST">
 			<?php
 			settings_fields( 'ran-tnysig_options' );
 			do_settings_sections( 'ran-tnysig_options' );
 			submit_button();
 			?>
-        </form>
-        <?php
-        $message2  = sprintf(__( "Set your personal signature settings on your %sProfile Page%s.", 'ran-tnysig' ), '<a href="' . get_edit_user_link() . '#tny-signature">', '</a>');
-        print "\n" . $message2;
-        ?>
-    </div>
+		</form>
+		<?php
+		$profile_link = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( get_edit_user_link() . '#tny-signature' ),
+			esc_html__( 'Profile Page', 'ran-tnysig' )
+		);
+
+		$message = sprintf(
+			/* translators: %s: Profile page link HTML */
+			esc_html__( 'Set your personal signature settings on your %s.', 'ran-tnysig' ),
+			$profile_link
+		);
+
+		echo wp_kses_post( $message );
+		?>
+	</div>
 	<?php
 }
 
@@ -114,14 +144,14 @@ function options_page() { ?>
  */
 function get_defaults() {
 	return array(
-		'post_types' => array( 'post', 'page' )
+		'post_types' => array( 'post', 'page' ),
 	);
 }
 
 /**
  * Returns an array of settings for our plugin option.
  *
- * @return array
+ * @return array Array of plugin settings.
  *
  * @since 0.0.2
  * @author bnjmnrsh
@@ -132,18 +162,18 @@ function get_settings() {
 }
 
 /**
- * Run a check to see if a particular setting has been previously set
+ * Run a check to see if a particular setting has been previously set.
  *
- * @param $key
+ * @param string $key The setting key to retrieve.
  *
- * @return bool
+ * @return mixed The setting value or false if not found.
  *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
 function get_setting( $key ) {
-	$settings = get_settings();
+	$settings = get_option( 'ran-tnysig_options', array() );
 	if ( isset( $settings[ $key ] ) ) {
 		return $settings[ $key ];
 	}
@@ -152,11 +182,11 @@ function get_setting( $key ) {
 }
 
 /**
- * Sanitize the settings array
+ * Sanitize the settings array.
  *
- * @param $input
+ * @param array $input The input array to sanitize.
  *
- * @return array
+ * @return array Sanitized output array.
  *
  * @since 0.0.2
  * @author bnjmnrsh
@@ -164,7 +194,7 @@ function get_setting( $key ) {
  */
 function settings_sanitize( $input ) {
 	$output = array(
-		'post_types' => array()
+		'post_types' => array(),
 	);
 	if ( isset( $input['post_types'] ) ) {
 		$post_types = get_post_types();
@@ -188,11 +218,10 @@ function settings_sanitize( $input ) {
  * @package TNY_SIGNATURE
  */
 function get_public_post_types() {
-
 	$post_types = get_post_types( array( 'public' => true ) );
 
-	// remove media attachments from the list as DD wont work on them.
-	$remove = array_search( 'attachment', $post_types );
+	// Remove media attachments from the list as they won't work with the plugin.
+	$remove = array_search( 'attachment', $post_types, true );
 	if ( $remove !== false ) {
 		unset( $post_types[ $remove ] );
 	}
@@ -208,22 +237,25 @@ function get_public_post_types() {
  * @package TNY_SIGNATURE
  */
 function control_post_types() {
-	$key      = 'post_types';
-	$settings = get_settings();
-	$saved    = get_setting( $key );
-	$message  = __( "Select which public post types Tny Signature should work with.", 'ran-tnysig' );
+	$key     = 'post_types';
+	$saved   = get_setting( $key );
+	$message = esc_html__( 'Select which public post types Tny Signature should work with.', 'ran-tnysig' );
 
-	print "\n" . '<em></em>' . $message . '<br/><br/>';
-	print "\n" . '<fieldset>';
+	echo "\n" . '<em></em>' . esc_html( $message ) . '<br/><br/>';
+	echo "\n" . '<fieldset>';
 
 	$post_types = get_public_post_types();
 
 	foreach ( $post_types as $post_type => $label ) {
 		$id      = 'ran-tnysig_options_' . $key . '_' . $post_type;
-		$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
+		$checked = ( in_array( $post_type, $saved, true ) ) ? ' checked="checked"' : '';
 		$object  = get_post_type_object( $label );
 		$label   = $object->labels->name;
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="ran-tnysig_options[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
+
+		echo "\n" . '<label for="' . esc_attr( $id ) . '">' .
+			'<input' . esc_attr( $checked ) . ' id="' . esc_attr( $id ) . '" type="checkbox" name="ran-tnysig_options[' . esc_attr( $key ) . '][]" value="' . esc_attr( $post_type ) . '"> ' .
+			esc_html( ucwords( $label ) ) .
+			'</label><br>';
 	}
-	print "\n" . '</fieldset>';
+	echo "\n" . '</fieldset>';
 }

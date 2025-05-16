@@ -8,7 +8,10 @@
  */
 
 namespace RAN\TnySignature\Support;
-if ( ! defined( 'ABSPATH' ) )  die();
+
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 /**
  * Returns an array of plugin details
