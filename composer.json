@@ -1,0 +1,41 @@
+{
+    "name": "ran/tny-signature",
+    "description": "Plugin to add a signature button to the tinyMCE rich text editor",
+    "version": "0.3.1",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Benjamin Rush"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/RocketsAreNostalgic/tnySignature/issues",
+        "source": "https://github.com/RocketsAreNostalgic/tnySignature"
+    },
+    "require": {
+        "php": ">=8.1"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.7",
+        "wp-coding-standards/wpcs": "^2.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0 || ^1.0.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpcompatibility/phpcompatibility-wp": "^2.1"
+    },
+    "scripts": {
+        "format": "bash ./scripts/format-code.sh",
+        "lint": "find . -name '*.php' -not -path '*/vendor/*' -not -path '*/node_modules/*' -exec php -l {} \\;",
+        "cs": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes",
+        "cs:check": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --dry-run --diff",
+        "cs:sequential": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --sequential",
+        "standards": "phpcs --standard=phpcs.xml --report=summary",
+        "standards:full": "phpcs --standard=phpcs.xml",
+        "standards:fix": "phpcbf --standard=phpcs.xml --report=summary"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
