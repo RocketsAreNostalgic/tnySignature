@@ -23,8 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /***********************************************************************
  * Definitions
  */
-define( 'TNYSIGNATURE_PLUGIN_NAME', 'Tny Signature' );
-define( 'TNYSIGNATURE_DEFAULT_FAREWELL', 'All the best,' );
+define( 'TNYSIGNATURE_PLUGIN_NAME', __( 'Tny Signature', 'ran-tnysig' ) );
+define( 'TNYSIGNATURE_DEFAULT_FAREWELL', 'All the best,' ); // Don't translate here, it's handled in get_default_farewell()
 define( 'TNYSIGNATURE_PLUGIN', __FILE__ );
 define( 'TNYSIGNATURE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TNYSIGNATURE_URL', plugin_dir_url( __FILE__ ) );

@@ -18,12 +18,13 @@
             ed.addCommand('SIGNATURE', function () {
 
                 var return_text = '';
-                return_text = '[signature]All the best,[/signature]';
+                // Use the default farewell text that's already translated in PHP
+                return_text = '[signature][/signature]';
                 ed.execCommand('mceInsertContent', 0, return_text);
             });
             // Register buttons.
             ed.addButton('SIGNATURE', {
-                title: 'Signature shortcode',
+                title: tnySignatureL10n.buttonTitle || 'Signature shortcode',
                 image: url + '../../img/icon.png',
                 cmd: 'SIGNATURE'
             });

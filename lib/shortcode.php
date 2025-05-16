@@ -30,7 +30,7 @@ function shortcode( $atts, $farewell ) {
 	// $atts is not used in this implementation but is required by the shortcode API.
 
 	// Enqueue the CSS.
-	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/css/signature_rendered.css', array(), '0.3.1' );
+	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'dist/css/signature_rendered.min.css', array(), '0.3.2' );
 
 	// Get the post author if on the front end.
 	$author_id = get_the_author_meta( 'ID' );

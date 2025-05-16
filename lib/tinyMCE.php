@@ -50,6 +50,11 @@ function register_button( $buttons ) {
  */
 function add_plugin( $plugin_array ) {
 	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
+	
+	// Localize the script with translated strings
+	wp_localize_script( 'editor', 'tnySignatureL10n', array(
+		'buttonTitle' => __( 'Signature shortcode', 'ran-tnysig' ),
+	));
 
 	return $plugin_array;
 }

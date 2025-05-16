@@ -85,13 +85,13 @@ function register_settings_init() {
 
 	add_settings_section(
 		'ran-tnysig_options_site_integration',
-		__( 'Tny Signature Site Settings', 'ran-tnysig_options' ),
+		__( 'Tny Signature Site Settings', 'ran-tnysig' ),
 		'__return_false',
 		'ran-tnysig_options'
 	);
 	add_settings_field(
 		'ran-tnysig_options_post_types',
-		__( 'Post Types', 'ran-tnysig_options' ),
+		__( 'Post Types', 'ran-tnysig' ),
 		__NAMESPACE__ . '\\control_post_types',
 		'ran-tnysig_options',
 		'ran-tnysig_options_site_integration'

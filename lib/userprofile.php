@@ -43,7 +43,7 @@ function user_profile_fields( $user ) {
 		}
 		?>
 		<table>
-			<h3 id="tny-signature"><?php echo esc_html( 'Tny Signature' ); ?></h3>
+			<h3 id="tny-signature"><?php echo esc_html__( 'Tny Signature', 'ran-tnysig' ); ?></h3>
 
 			<?php
 			// Add a nonce for extra security.
