@@ -3,7 +3,8 @@ import { resolve } from 'path';
 
 export default defineConfig({
 	build: {
-		// No outDir specified - will use the directory structure based on output configuration
+		// Set outDir to empty string to prevent creating a dist folder
+		outDir: '',
 		emptyOutDir: false, // Don't empty the output directory to avoid deleting source files
 		sourcemap: false,
 		minify: true,
