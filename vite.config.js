@@ -3,9 +3,9 @@ import { resolve } from 'path';
 
 export default defineConfig({
 	build: {
-		// Set outDir to empty string to prevent creating a dist folder
-		outDir: '',
-		emptyOutDir: false, // Don't empty the output directory to avoid deleting source files
+		// Set outDir to a directory inside assets to avoid the warning
+		outDir: resolve(__dirname, 'assets/build'),
+		emptyOutDir: true,
 		sourcemap: false,
 		minify: true,
 		rollupOptions: {
@@ -21,23 +21,23 @@ export default defineConfig({
 				signature_rendered: resolve(__dirname, 'assets/css/signature_rendered.scss'),
 			},
 			output: {
-				// Place minified JS files in the same directory as their source
+				// Place minified JS files in the build directory
 				entryFileNames: (chunkInfo) => {
 					// Extract directory from the input file path
 					const inputFile = chunkInfo.facadeModuleId;
 					if (inputFile && inputFile.includes('/js/')) {
-						return 'assets/js/[name].min.js';
+						return 'js/[name].min.js';
 					}
 					return '[name].min.js';
 				},
-				chunkFileNames: 'assets/js/[name].min.js',
+				chunkFileNames: 'js/[name].min.js',
 				assetFileNames: (assetInfo) => {
 					// For CSS files, place them in the css directory
 					if (/\.(css|scss)$/.test(assetInfo.name)) {
-						return 'assets/css/[name].min.css';
+						return 'css/[name].min.css';
 					}
 					// For other assets, maintain their directory structure
-					return 'assets/[ext]/[name].min.[ext]';
+					return '[ext]/[name].min.[ext]';
 				},
 			},
 		},

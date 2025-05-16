@@ -64,8 +64,8 @@ function load_admin_assets() {
 function enqueue_admin_assets() {
 	// phpcs:disable Squiz.PHP.CommentedOutCode.Found, Squiz.Commenting.InlineComment.InvalidEndChar
 	// If needed in the future.
-	// wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/css/admin.css', TNYSIGNATURE_PLUGIN), array(),'0.3.1');
-	// wp_enqueue_script('ran-tnysignature-admin', plugins_url('/assets/js/admin.min.js', TNYSIGNATURE_PLUGIN), array('jquery-ui-sortable'), '0.3.1',true);
+	// wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/build/css/admin.css', TNYSIGNATURE_PLUGIN), array(),'0.3.1');
+	// wp_enqueue_script('ran-tnysignature-admin', plugins_url('/assets/build/js/admin.min.js', TNYSIGNATURE_PLUGIN), array('jquery-ui-sortable'), '0.3.1',true);
 	// phpcs:enable
 }
 

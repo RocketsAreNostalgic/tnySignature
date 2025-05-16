@@ -56,7 +56,7 @@ function add_plugin( $plugin_array ) {
 	$plugin_data = Support\get_plugin_atts();
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
 
-	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js?ver=' . $ver, __FILE__ );
+	$plugin_array['SIGNATURE'] = plugins_url( '../assets/build/js/load_tinyMCE_plugin.min.js?ver=' . $ver, __FILE__ );
 	return $plugin_array;
 }
 

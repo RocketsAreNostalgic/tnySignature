@@ -2,6 +2,7 @@
   "name": "tny-signature",
   "version": "0.3.2",
   "description": "WordPress plugin providing a signature button in the TinyMCE editor",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "dev": "vite",

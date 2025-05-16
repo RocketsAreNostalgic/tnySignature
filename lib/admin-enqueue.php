@@ -36,7 +36,7 @@ function load_custom_css( $page ) {
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
 
 	// Admin styles.
-	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/css/signature_admin.min.css', false, $ver );
+	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/build/css/signature_admin.min.css', false, $ver );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
 	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( $page === 'post-new.php' || $page === 'post.php' ) ) {
@@ -70,7 +70,7 @@ function ajax_load_scripts() {
 
 	wp_enqueue_script(
 		'tynsig_ajax_notice_dismiss',
-		TNYSIGNATURE_URL . 'assets/js/notice-dismiss.min.js',
+		TNYSIGNATURE_URL . 'assets/build/js/notice-dismiss.min.js',
 		array( 'jquery' ),
 		$ver,
 		true
@@ -109,7 +109,7 @@ function load_custom_profile_js() {
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.3' );
 
 	wp_enqueue_media();
-	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'assets/js/media_uploader_improved.min.js', array( 'jquery', 'wp-media-utils' ), $ver, true );
+	wp_enqueue_script( 'signature_user_profile_js', TNYSIGNATURE_URL . 'assets/build/js/media_uploader_improved.min.js', array( 'jquery', 'wp-media-utils' ), $ver, true );
 	wp_localize_script(
 		'signature_user_profile_js',
 		'TNYSINGNATURE',
