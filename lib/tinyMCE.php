@@ -1,9 +1,19 @@
 <?php
-namespace OrionRush\Signature\TinyMCE;
+/**
+ * TinyMCE Functions
+ *
+ * Functions for rendering the TinyMCE editor button.
+ *
+ * @package TNY_SIGNATURE
+ * @since   0.0.2
+ *
+ * @ref http://wordpress.stackexchange.com/questions/36568/solution-to-render-shortcodes-in-admin-editor
+ */
+
+namespace RAN\TnySignature\TinyMCE;
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
-// http://wordpress.stackexchange.com/questions/36568/solution-to-render-shortcodes-in-admin-editor
 
 /**
  * ========================================
@@ -18,7 +28,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return: array of buttons with dividers
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function register_button( $buttons ) {
 	array_push( $buttons, "SIGNATURE" );
@@ -33,7 +44,8 @@ function register_button( $buttons ) {
  * @returns $plugin_array
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function add_plugin( $plugin_array ) {
 	$plugin_array['SIGNATURE'] = plugins_url( '../assets/js/load_tinyMCE_plugin.min.js', __FILE__ );
@@ -49,15 +61,16 @@ function add_plugin( $plugin_array ) {
  * @wp_hook init
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function tinyMCE_buttons() {
 	if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 		return;
 	}
 
-	// Only show on enabled post types from admin page
-	$settings  = \OrionRush\Signature\Admin\get_settings();
+	// Only show on enabled post types from admin page.
+	$settings  = \RAN\TnySignature\Admin\get_settings();
 	$post_test = in_array( get_post_type(), $settings['post_types'] );
 
 	global $current_screen;
@@ -68,5 +81,5 @@ function tinyMCE_buttons() {
 	}
 }
 
-// have to use a hook late enough to get $current_screen, init is to early
+// have to use a hook late enough to get $current_screen, init is to early.
 add_action( 'admin_head', __NAMESPACE__ . '\\tinyMCE_buttons' );

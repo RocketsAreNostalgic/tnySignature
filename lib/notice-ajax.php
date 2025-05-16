@@ -1,5 +1,14 @@
 <?php
-namespace OrionRush\Signature\NoticeAjax;
+/**
+ * Notice Ajax Functions
+ *
+ * Functions for handling ajax requests for dismissing notices.
+ *
+ * @package TNY_SIGNATURE
+ * @since   0.0.2
+ */
+
+namespace RAN\TnySignature\NoticeAjax;
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -9,7 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * http://wordpress.stackexchange.com/a/251191/13551
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function ajax_dismissed_notice_handler() {
 	if ( ! isset( $_POST['tnysig_nonce'] ) || ! wp_verify_nonce( $_POST['tnysig_nonce'], 'tnysig-nonce' ) ) {

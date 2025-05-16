@@ -1,3 +1,11 @@
+/**
+ * Admin styles for Tny Signature plugin
+ *
+ * @since 0.0.2
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
+ */
+
 .signature-row {
   display: flex;
   flex-direction: row;

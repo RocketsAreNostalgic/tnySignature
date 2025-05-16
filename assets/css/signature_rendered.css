@@ -1,3 +1,11 @@
+/**
+ * Public styles for Tny Signature plugin
+ *
+ * @since 0.0.2
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
+ */
+
 p.signature.farewell {
   padding-top: 10px;
   font-style: italic;

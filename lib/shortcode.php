@@ -1,5 +1,14 @@
 <?php
-namespace OrionRush\Signature\Shortcode;
+/**
+ * Shortcode Functions
+ *
+ * Functions for rendering the signature shortcode.
+ *
+ * @package TNY_SIGNATURE
+ * @since   0.0.2
+ */
+
+namespace RAN\TnySignature\Shortcode;
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
@@ -14,7 +23,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return  mixed|void // Markup as a string
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function shortcode( $a, $farewell ) {
 	global $pagenow;
@@ -35,7 +45,7 @@ function shortcode( $a, $farewell ) {
 		$author_id = $user_id;
 	}
 
-	$author = trim( get_user_meta( $author_id, 'orionrush_tnysig_name', true ) );
+	$author = trim( get_user_meta( $author_id, 'ran-tnysig_name', true ) );
 	if ( ! $author ) {
 		$author = trim( get_user_meta( $author_id, 'first_name', true ) . ' ' . get_user_meta( $author_id, 'last_name', true ) );
 	}
@@ -44,17 +54,17 @@ function shortcode( $a, $farewell ) {
 	}
 	$author = sanitize_text_field( $author );
 
-	// If there is no instnace farewell, use the default or fallback.
+	// If there is no instance farewell, use the default or fallback.
 	$farewell = trim( $farewell );
 	if ( ! $farewell ) {
-		$farewell = get_user_meta( $author_id, 'orionrush_tnysig_farewell', true );
+		$farewell = get_user_meta( $author_id, 'ran-tnysig_farewell', true );
 	}
 	if ( ! $farewell ) {
-		$farewell = SIGNATURE_DEFAULT_FAREWELL;
+		$farewell = \RAN\TnySignature\get_default_farewell();
 	}
 
-	// Process the image attributes
-	$img_id     = get_user_meta( $author_id, 'orionrush_tnysig_image_id', true );
+	// Process the image attributes.
+	$img_id     = get_user_meta( $author_id, 'ran-tnysig_image_id', true );
 	$img_array  = [];
 	$img_url    = '';
 	$img_width  = '';
@@ -83,13 +93,14 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
  * @return string
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function signature_shortcode_filter( $img_url, $img_height, $img_width, $farewell, $author ) {
 	if ( $img_url ) {
 		return '<p class="signature farewell">' . esc_html( $farewell ) . '</p><br />
-        <div class=" signature image-replace" 
-        style="background-image: url(' . $img_url . '); height: ' . $img_height . 'px; width: ' . $img_width . 'px;" 
+        <div class=" signature image-replace"
+        style="background-image: url(' . $img_url . '); height: ' . $img_height . 'px; width: ' . $img_width . 'px;"
         title="' . $author . '">
             <p class="signature author">' . $author . '</p>
         </div>';

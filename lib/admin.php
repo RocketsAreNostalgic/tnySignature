@@ -1,5 +1,5 @@
 <?php
-namespace OrionRush\Signature\Admin;
+namespace RAN\TnySignature\Admin;
 if ( ! defined( 'ABSPATH' ) ) { die(); }
 
 // Add admin menu items
@@ -15,12 +15,13 @@ if ( is_admin() ) {
  * Add the menu if user can manage options.
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function add_admin_menu() {
 	if ( current_user_can( "manage_options" ) ) { // we cant check for this sooner
 
-        $settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'orionrush_tnysig_options', __NAMESPACE__ . '\\options_page' );
+        $settings_page = add_options_page( 'Tny Signature', 'Tny Signature', 'manage_options', 'ran-tnysig_options', __NAMESPACE__ . '\\options_page' );
 		add_action( 'load-' . $settings_page, __NAMESPACE__ . '\\load_admin_assets' );
 	}
 }
@@ -29,7 +30,8 @@ function add_admin_menu() {
  * Hook to add scripts and styles.
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function load_admin_assets() {
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
@@ -39,39 +41,41 @@ function load_admin_assets() {
  * Enqueue any admin scripts and styles.
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function enqueue_admin_assets() {
 	// We currently have no additional style or scripts
-	//  wp_enqueue_style('orionrush-tnysignature-admin', plugins_url('/assets/styles/admin.css', SIGNATURE_PATH), array());
-	//  wp_enqueue_script('orionrush-tnysignature-admin', plugins_url('/assets/scripts/admin-min.js', SIGNATURE_PATH), array('jquery-ui-sortable'));
+	//  wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/styles/admin.css', TNYSIGNATURE_PATH), array());
+	//  wp_enqueue_script('ran-tnysignature-admin', plugins_url('/assets/scripts/admin-min.js', TNYSIGNATURE_PATH), array('jquery-ui-sortable'));
 }
 
 /**
  * Register settings, add a section and a settings field.
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function register_settings_init() {
 	register_setting(
-		'orionrush_tnysig_options',
-		'orionrush_tnysig_options',
+		'ran-tnysig_options',
+		'ran-tnysig_options',
 		__NAMESPACE__ . '\\settings_sanitize'
 	);
 
 	add_settings_section(
-		'orionrush_tnysig_options_site_integration',
-		__( 'Tny Signature Site Settings', 'orionrush_tnysig_options' ),
+		'ran-tnysig_options_site_integration',
+		__( 'Tny Signature Site Settings', 'ran-tnysig_options' ),
 		'__return_false',
-		'orionrush_tnysig_options'
+		'ran-tnysig_options'
 	);
 	add_settings_field(
-		'orionrush_tnysig_options_post_types',
-		__( 'Post Types', 'orionrush_tnysig_options' ),
+		'ran-tnysig_options_post_types',
+		__( 'Post Types', 'ran-tnysig_options' ),
 		__NAMESPACE__ . '\\control_post_types',
-		'orionrush_tnysig_options',
-		'orionrush_tnysig_options_site_integration'
+		'ran-tnysig_options',
+		'ran-tnysig_options_site_integration'
 	);
 }
 
@@ -79,19 +83,20 @@ function register_settings_init() {
  * Add a options form.
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function options_page() { ?>
     <div class="wrap">
         <form action="options.php" method="POST">
 			<?php
-			settings_fields( 'orionrush_tnysig_options' );
-			do_settings_sections( 'orionrush_tnysig_options' );
+			settings_fields( 'ran-tnysig_options' );
+			do_settings_sections( 'ran-tnysig_options' );
 			submit_button();
 			?>
         </form>
         <?php
-        $message2  = sprintf(__( "Set your personal signature settings on your %sProfile Page%s.", 'orionrush_tnysig' ), '<a href="' . get_edit_user_link() . '#tny-signature">', '</a>');
+        $message2  = sprintf(__( "Set your personal signature settings on your %sProfile Page%s.", 'ran-tnysig' ), '<a href="' . get_edit_user_link() . '#tny-signature">', '</a>');
         print "\n" . $message2;
         ?>
     </div>
@@ -104,7 +109,8 @@ function options_page() { ?>
  * @return array
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function get_defaults() {
 	return array(
@@ -118,10 +124,11 @@ function get_defaults() {
  * @return array
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function get_settings() {
-	return wp_parse_args( (array) get_option( 'orionrush_tnysig_options' ), get_defaults() );
+	return wp_parse_args( (array) get_option( 'ran-tnysig_options' ), get_defaults() );
 }
 
 /**
@@ -132,7 +139,8 @@ function get_settings() {
  * @return bool
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function get_setting( $key ) {
 	$settings = get_settings();
@@ -151,7 +159,8 @@ function get_setting( $key ) {
  * @return array
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function settings_sanitize( $input ) {
 	$output = array(
@@ -175,7 +184,8 @@ function settings_sanitize( $input ) {
  * @return array
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function get_public_post_types() {
 
@@ -194,13 +204,14 @@ function get_public_post_types() {
  * Print a checkboxes fieldset of active post types
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 function control_post_types() {
 	$key      = 'post_types';
 	$settings = get_settings();
 	$saved    = get_setting( $key );
-	$message  = __( "Select which public post types Tny Signature should work with.", 'orionrush_tnysig' );
+	$message  = __( "Select which public post types Tny Signature should work with.", 'ran-tnysig' );
 
 	print "\n" . '<em></em>' . $message . '<br/><br/>';
 	print "\n" . '<fieldset>';
@@ -208,11 +219,11 @@ function control_post_types() {
 	$post_types = get_public_post_types();
 
 	foreach ( $post_types as $post_type => $label ) {
-		$id      = 'orionrush_tnysig_options_' . $key . '_' . $post_type;
+		$id      = 'ran-tnysig_options_' . $key . '_' . $post_type;
 		$checked = ( in_array( $post_type, $saved ) ) ? ' checked="checked"' : '';
 		$object  = get_post_type_object( $label );
 		$label   = $object->labels->name;
-		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="orionrush_tnysig_options[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
+		print "\n" . '<label for="' . esc_attr( $id ) . '"><input' . $checked . ' id="' . esc_attr( $id ) . '" type="checkbox" name="ran-tnysig_options[' . $key . '][]" value="' . esc_attr( $post_type ) . '"> ' . ucwords( esc_html( $label ) ) . '</label><br>';
 	}
 	print "\n" . '</fieldset>';
 }

@@ -1,5 +1,14 @@
 <?php
-namespace OrionRush\Signature\Helpers;
+/**
+ * Helper Functions
+ *
+ * Functions for various helper tasks.
+ *
+ * @package TNY_SIGNATURE
+ * @since   0.0.2
+ */
+
+namespace RAN\TnySignature\Helpers;
 if ( ! defined( 'ABSPATH' ) ) {	die(); }
 
 /**
@@ -11,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {	die(); }
  * @since 0.2.1
  */
 function plugin_add_settings_link( $links = array() ) {
-	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=orionrush_tnysig_options') ) .'">Settings</a>';
+	$links[] = '<a href="'. esc_url( get_admin_url(null, 'options-general.php?page=ran-tnysig_options') ) .'">Settings</a>';
 	return $links;
 }
 
@@ -22,7 +31,8 @@ function plugin_add_settings_link( $links = array() ) {
  * @param bool $force // Force a log even if WP_DEBUG_LOG is not enabled
  *
  * @since 0.0.2
- * @author orionrush
+ * @author bnjmnrsh
+ * @package TNY_SIGNATURE
  */
 
 function write_log( $log, $force = false ) {
