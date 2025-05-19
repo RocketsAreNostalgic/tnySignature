@@ -38,7 +38,7 @@ function shortcode( array $atts, string $farewell ): string {
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
 
 	// Enqueue the CSS.
-	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/build/css/signature_rendered.min.css', array(), $ver );
+	wp_enqueue_style( 'signature-rendered-styles', SIGNATURE_URL . 'assets/dist/public/styles/signature_rendered.min.css', array(), $ver );
 
 	// Get the post author if on the front end.
 	$author_id = get_the_author_meta( 'ID' );

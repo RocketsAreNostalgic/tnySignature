@@ -5,7 +5,9 @@
 		"README.md",
 		"node_modules/**/*",
 		"vendor/**/*",
-		"**/*.xml",
-		".phpcs.xml"
-	]
+		"*.xml"
+	],
+	"rules": {
+		"selector-class-pattern": null
+	}
 }
