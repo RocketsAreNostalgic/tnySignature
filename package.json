@@ -20,8 +20,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint:js": "eslint --fix 'assets/src/admin/js/**/*.{js,mjs,ts,mts}' 'assets/src/public/js/**/*.{js,mjs,ts,mts}'",
-    "lint:css": "stylelint --fix 'assets/src/admin/styles/**/*.{css,scss}' 'assets/src/public/styles/**/*.{css,scss}'",
+    "lint:js": "eslint --fix 'assets/src/**/js/**/*.{js,mjs,ts,mts}'",
+    "lint:css": "stylelint --fix 'assets/src/**/styles/**/*.{css,scss}'",
     "lint": "pnpm run lint:js && pnpm run lint:css",
     "format": "prettier --write 'assets/**/*.{js,scss,css}'"
   },
@@ -34,8 +34,8 @@
     "glob": "^11.0.2",
     "prettier": "^3.5.3",
     "sass": "^1.89.0",
-    "stylelint": "^14.16.1",
-    "stylelint-scss": "^4.7.0",
+    "stylelint": "^16.19.1",
+    "stylelint-scss": "^6.12.0",
     "vite": "^6.3.5"
   },
   "browserslist": [

@@ -8,12 +8,7 @@
       "name": "Benjamin Rush <bnjmnrsh>"
     }
   ],
-  "repositories": [
-    {
-      "url": "https://github.com/RocketsAreNostalgic/tnySignature.git",
-      "type": "git"
-    }
-  ],
+  "repositories": [],
   "support": {
     "issues": "https://github.com/RocketsAreNostalgic/tnySignature/issues",
     "source": "https://github.com/RocketsAreNostalgic/tnySignature"

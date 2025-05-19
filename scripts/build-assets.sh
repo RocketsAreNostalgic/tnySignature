@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script to build frontend assets for TNY Signature plugin
-echo "Building frontend assets for TNY Signature plugin..."
+# Script to build frontend assets
+echo "Building frontend assets..."
 
 # Check if pnpm is installed
 if ! command -v pnpm &> /dev/null; then
