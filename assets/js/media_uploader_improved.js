@@ -3,9 +3,12 @@
  *
  * Uses WordPress media API more effectively with better practices
  *
+ * @param {Object} $ jQuery object
  * @since 0.3.3
- * @package TNY_SIGNATURE
+ * @package
  */
+
+/* global jQuery, TNYSINGNATURE */
 
 (function ($) {
 	'use strict';
@@ -36,7 +39,7 @@
 		 * Initialize the media uploader
 		 * @param {Object} options Configuration options
 		 */
-		init: function (options) {
+		init(options) {
 			// Merge options with defaults
 			this.settings = $.extend(this.settings, options || {});
 
@@ -57,9 +60,12 @@
 		/**
 		 * Bind all event handlers
 		 */
-		bindEvents: function () {
+		bindEvents() {
 			// Upload button click
-			this.elements.uploadButton.on('click', this.openMediaUploader.bind(this));
+			this.elements.uploadButton.on(
+				'click',
+				this.openMediaUploader.bind(this)
+			);
 
 			// Remove button click
 			this.elements.removeButton.on('click', this.removeImage.bind(this));
@@ -68,7 +74,7 @@
 		/**
 		 * Update button states based on whether an image is selected
 		 */
-		updateButtonState: function () {
+		updateButtonState() {
 			const hasImage = !!this.elements.imageIdInput.val();
 			this.elements.removeButton.prop('disabled', !hasImage);
 		},
@@ -77,7 +83,7 @@
 		 * Open the WordPress media uploader
 		 * @param {Event} e Click event
 		 */
-		openMediaUploader: function (e) {
+		openMediaUploader(e) {
 			e.preventDefault();
 
 			// If the frame already exists, reopen it
@@ -117,9 +123,13 @@
 		/**
 		 * Handle image selection from the media library
 		 */
-		handleImageSelection: function () {
+		handleImageSelection() {
 			// Get the selected attachment
-			const attachment = this.frame.state().get('selection').first().toJSON();
+			const attachment = this.frame
+				.state()
+				.get('selection')
+				.first()
+				.toJSON();
 
 			// Update the hidden input with the attachment ID
 			this.elements.imageIdInput.val(attachment.id);
@@ -138,7 +148,7 @@
 		 * Update the image preview with the selected image
 		 * @param {Object} attachment The attachment object from the media library
 		 */
-		updateImagePreview: function (attachment) {
+		updateImagePreview(attachment) {
 			let imageUrl;
 
 			// Use medium size if available, otherwise use the full size
@@ -159,7 +169,7 @@
 		 * Remove the selected image
 		 * @param {Event} e Click event
 		 */
-		removeImage: function (e) {
+		removeImage(e) {
 			e.preventDefault();
 
 			// Only proceed if we have an image
@@ -191,7 +201,8 @@
 		const $uploadButton = $('#uploadimage');
 		const dataSettings = {
 			title: $uploadButton.data('title') || TNYSINGNATURE.i18n.title,
-			buttonText: $uploadButton.data('button') || TNYSINGNATURE.i18n.button,
+			buttonText:
+				$uploadButton.data('button') || TNYSINGNATURE.i18n.button,
 			multiple: $uploadButton.data('multiple') === true,
 			defaultImage: TNYSINGNATURE.sigurl + 'assets/img/question.png',
 		};

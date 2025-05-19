@@ -51,7 +51,7 @@ return $config
             'position_after_control_structures' => 'same',
             'position_after_anonymous_constructs' => 'same',
         ],
-        
+
         // IMPORTANT: Disable rules that conflict with WordPress standards for HTML/PHP mixed files
         'method_chaining_indentation' => false,
         'statement_indentation' => false,

@@ -14,8 +14,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint:js": "eslint 'assets/js/**/*.js'",
-    "lint:css": "stylelint 'assets/css/**/*.{css,scss}'",
+    "lint:js": "eslint --fix 'assets/js/**/*.js'",
+    "lint:css": "stylelint --fix 'assets/css/**/*.{css,scss}'",
     "lint": "pnpm run lint:js && pnpm run lint:css",
     "format": "prettier --write 'assets/**/*.{js,scss,css}'"
   },

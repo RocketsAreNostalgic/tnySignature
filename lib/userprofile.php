@@ -184,6 +184,8 @@ function save_additional_user_meta( int $user_id ): bool {
 			sanitize_text_field( wp_unslash( $_POST['user_signature_image_id'] ) )
 		);
 	}
+
+	return true;
 }
 
 add_action( 'personal_options_update', __NAMESPACE__ . '\\save_additional_user_meta' );
