@@ -8,7 +8,11 @@
  * @since   0.0.2
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\UserProfile;
+
+use WP_User;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
@@ -23,9 +27,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @return void
  */
-function user_profile_fields( $user ) {
+function user_profile_fields( WP_User $user ): void {
 	// Only want those that can edit posts should be able to add a signature.
 	if ( current_user_can( 'edit_posts' ) ) {
 		$user_id = $user->ID;
@@ -147,7 +150,7 @@ add_action( 'edit_user_profile', __NAMESPACE__ . '\\user_profile_fields' );
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function save_additional_user_meta( $user_id ) {
+function save_additional_user_meta( int $user_id ): bool {
 	// Only run if the current user can edit user profiles.
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;

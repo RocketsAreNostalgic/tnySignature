@@ -2,23 +2,25 @@
 /**
  * Plugin Name: Tny Signature
  * Description: The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
- * Version: 0.3.3
+ * Version: 0.3.4
  * Author: Benjamin Rush
  * Author URI: https://github.com/bnjmnrsh
- * License: GPL
- * License URI: https://wordpress.org/about/license/
+ * Plugin URI: https://github.com/RocketsAreNostalgic/tnySignature
+ * License: MIT
+ * License URI: https://opensource.org/licenses/MIT
  * Text Domain: ran-tnysig
  * Domain Path: /lang
  *
  * @package TNY_SIGNATURE
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
 }
-
 
 /***********************************************************************
  * Definitions
@@ -58,9 +60,8 @@ add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), __NAMESPACE__ 
  * Load plugin text domain for translations.
  *
  * @since 0.0.1
- * @return void
  */
-function load_textdomain() {
+function load_textdomain(): void {
 	load_plugin_textdomain( 'ran-tnysig', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
 add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
@@ -72,6 +73,6 @@ add_action( 'plugins_loaded', __NAMESPACE__ . '\\load_textdomain' );
  * @since 0.3.1
  * @return string Translated farewell text
  */
-function get_default_farewell() {
+function get_default_farewell(): string {
 	return __( 'All the best,', 'ran-tnysig' );
 }

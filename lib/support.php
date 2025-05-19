@@ -7,6 +7,8 @@
  * @since   0.3.0
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Support;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -19,9 +21,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.3.0
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @return array
+ * @return array<string, string> Array of plugin details
  */
-function get_plugin_atts() {
+function get_plugin_atts(): array {
 	$plugin_data = get_file_data(
 		TNYSIGNATURE_PLUGIN,
 		array(
@@ -40,10 +42,10 @@ function get_plugin_atts() {
  * @since 0.3.0
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @param array $links Array of plugin action links.
- * @return array Modified array of plugin action links.
+ * @param array<int|string, string> $links Array of plugin action links.
+ * @return array<int|string, string> Modified array of plugin action links.
  */
-function plugin_add_settings_link( $links = array() ) {
+function plugin_add_settings_link( array $links = array() ): array {
 	// Only show settings link to administrators.
 	if ( current_user_can( 'manage_options' ) ) {
 		$links[] = '<a href="' . esc_url( get_admin_url( null, 'options-general.php?page=tnysignature' ) ) . '">' . __( 'Settings', 'ran-tnysig' ) . '</a>';

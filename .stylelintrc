@@ -1,0 +1,11 @@
+{
+	"extends": ["@wordpress/stylelint-config/scss"],
+	"ignoreFiles": [
+		"**/*.md",
+		"README.md",
+		"node_modules/**/*",
+		"vendor/**/*",
+		"**/*.xml",
+		".phpcs.xml"
+	]
+}

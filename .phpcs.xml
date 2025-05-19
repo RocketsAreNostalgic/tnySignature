@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<ruleset name="RAN Coding Standards">
+	<description>RAN Modified WordPress Coding Standards</description>
+	<!--
+		Setup instructions:
+
+		1) Install PHPCS & all required code standards using `composer install`
+		2) Run `composer run lint`. You can use the `-a` flag to run it interactively.
+
+		See these links for useful information:
+			- https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+			- https://github.com/squizlabs/PHP_CodeSniffer/wiki/Customisable-Sniff-Properties
+			- https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
+			- https://github.com/slevomat/coding-standard/blob/master/doc/type-hints.md
+			- https://github.com/slevomat/coding-standard/blob/master/doc/classes.md
+	-->
+
+	<config name="minimum_supported_wp_version" value="6.7.0"/>
+
+	<!-- What to scan -->
+	<file>.</file>
+	<exclude-pattern>/vendor/</exclude-pattern>
+	<exclude-pattern>/node_modules/</exclude-pattern>
+
+	<!-- How to scan -->
+	<arg value="sp"/>
+	<arg name="basepath" value="./"/>
+	<arg name="colors"/>
+	<arg value="-colors"/>
+	<arg name="extensions" value="php"/>
+	<arg name="parallel" value="4"/>
+	<arg value="ns"/>
+
+
+	<!-- Check for PHP cross-version compatibility. -->
+	<!--
+		To enable this, the PHPCompatibilityWP standard needs
+		to be installed.
+		See the readme for installation instructions:
+		https://github.com/PHPCompatibility/PHPCompatibilityWP
+		For more information, also see:
+		https://github.com/PHPCompatibility/PHPCompatibility
+	-->
+	<!--
+	<config name="testVersion" value="5.2-"/>
+	<rule ref="PHPCompatibilityWP"/>
+	-->
+
+	<!--
+		WPCS custom properties.
+		!UPDATE THESE TO SUIT YOUR PROJECT
+		https://github.com/WordPress/WordPress-Coding-Standards/wiki/Customizable-sniff-properties
+	-->
+	<rule ref="WordPress-Core"/>
+	<rule ref="WordPress-Docs"/>
+	<rule ref="WordPress-Extra"/>
+
+	<!-- Include the WordPress ruleset with some exclusions -->
+    <rule ref="WordPress">
+        <!-- Exclude sniffs that have issues with PHP 8.1+ -->
+        <exclude name="WordPress.NamingConventions.PrefixAllGlobals" />
+        <exclude name="WordPress.WP.I18n" />
+
+        <!-- Exclude deprecated sniffs -->
+        <exclude name="Generic.Functions.CallTimePassByReference" />
+        <exclude name="Squiz.WhiteSpace.LanguageConstructSpacing" />
+    </rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="tny_signature"/>
+				<element value="RAN\TnySignature"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- WordPress-Extra is a superset of WordPress-Core rules with recommended best practices. -->
+	<rule ref="WordPress-Extra">
+		<!-- Exceptions for PRS-4 autoloading -->
+		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+		<!-- Exception for Short Ternary -->
+		<exclude name="Universal.Operators.DisallowShortTernary"/>
+	</rule>
+
+	<!-- Check that everything is properly documented. -->
+	<rule ref="WordPress-Docs"/>
+
+	<!-- Rules adopted from other standards. -->
+	<!-- Generic rules from CS -->
+	<!-- Class opening braces should be on the same line as the statement. -->
+	<rule ref="Generic.Classes.OpeningBraceSameLine"/>
+	<!-- Braces should always be used, even when they are not required. -->
+	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
+	<!-- Warn about unused function params. -->
+	<rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+	<!-- Warn about @todo comments -->
+	<rule ref="Generic.Commenting.Todo"/>
+	<!-- Warn about @fixme comments -->
+	<rule ref="Generic.Commenting.Fixme"/>
+
+	<!-- Braces shall be used for all blocks. -->
+	<rule ref="Squiz.ControlStructures.ControlSignature"/>
+
+	<!-- SlevomatCodingStandard for type hinting -->
+	<rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes" />
+	<rule ref="SlevomatCodingStandard.TypeHints.DisallowArrayTypeHintSyntax" />
+	<!-- <rule ref="SlevomatCodingStandard.TypeHints.DisallowMixedTypeHint" /> -->
+	<rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints" />
+	<rule ref="SlevomatCodingStandard.TypeHints.NullTypeHintOnLastPosition" />
+	<rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue" />
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint" />
+	<rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing" />
+	<rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint" />
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint" />
+	<rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing" />
+	<rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint" />
+	<!-- SlevomatCodingStandard Class & Trait snifs  -->
+	<rule ref="SlevomatCodingStandard.Classes.RequireMultiLineMethodSignature" />
+	<rule ref="SlevomatCodingStandard.Classes.TraitUseDeclaration" />
+	<rule ref="SlevomatCodingStandard.Classes.TraitUseSpacing" />
+	<rule ref="SlevomatCodingStandard.Classes.UselessLateStaticBinding" />
+</ruleset>

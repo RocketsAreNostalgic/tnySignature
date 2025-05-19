@@ -7,10 +7,12 @@
  * @since   0.0.1
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Activation;
 
-use RAN\TnySignature\Support as Support;
-use RAN\TnySignature\Admin as Admin;
+use RAN\TnySignature\Support;
+use RAN\TnySignature\Admin;
 use WP_Exception;
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
@@ -30,10 +32,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  *
- * @return void
  * @throws WP_Exception When plugin requirements are not met.
  */
-function activate( $phpv = '8.1', $wpv = '5.0' ) {
+function activate( string $phpv = '8.1', string $wpv = '5.0' ): void {
 	$plugin_data = Support\get_plugin_atts();
 	$name        = ( ( ! empty( $plugin_data['Plugin Name'] ) ? $plugin_data['Plugin Name'] : '' ) );
 
@@ -53,7 +54,7 @@ function activate( $phpv = '8.1', $wpv = '5.0' ) {
 		$target_version  = $wpv;
 	}
 
-	if ( $flag !== null ) {
+	if ( null !== $flag ) {
 		$name   = esc_html( TNYSIGNATURE_PLUGIN_NAME );
 		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s', 'ran-tnysig' );
 

@@ -8,9 +8,11 @@
  * @since   0.0.2
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Shortcode;
 
-use RAN\TnySignature\Support as Support;
+use RAN\TnySignature\Support;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
@@ -19,8 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * A shortcode that generates a personal farewell sign off image for posts and pages.
  *
- * @param array  $atts     Shortcode attributes array (unused in this implementation).
- * @param string $farewell The text between the opening and closing shortcode elements.
+ * @param array<string, string> $atts Shortcode attributes array (unused in this implementation).
+ * @param string                $farewell The text between the opening and closing shortcode elements.
  *
  * @return string Markup as a string.
  *
@@ -28,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function shortcode( $atts, $farewell ) {
+function shortcode( array $atts, string $farewell ): string {
 	// $atts is not used in this implementation but is required by the shortcode API.
 
 	// Get plugin version for cache busting.
@@ -102,7 +104,7 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function signature_shortcode_filter( $img_url, $img_height, $img_width, $farewell, $author ) {
+function signature_shortcode_filter( string $img_url, string $img_height, string $img_width, string $farewell, string $author ): string {
 	if ( $img_url ) {
 		return '<div class="signature-container" role="complementary" aria-label="' . esc_attr__( 'Author Signature', 'ran-tnysig' ) . '">
 			<p class="signature farewell" aria-label="' . esc_attr__( 'Farewell message', 'ran-tnysig' ) . '">' . esc_html( $farewell ) . '</p><br />

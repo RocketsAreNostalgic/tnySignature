@@ -8,6 +8,8 @@
  * @since   0.0.2
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,7 +32,7 @@ if ( is_admin() ) {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function add_admin_menu() {
+function add_admin_menu(): void {
 	if ( current_user_can( 'manage_options' ) ) { // We can't check for this sooner.
 		$settings_page = add_options_page(
 			esc_html__( 'Tny Signature', 'ran-tnysig' ),
@@ -50,7 +52,7 @@ function add_admin_menu() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function load_admin_assets() {
+function load_admin_assets(): void {
 	add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\enqueue_admin_assets' );
 }
 
@@ -61,7 +63,7 @@ function load_admin_assets() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function enqueue_admin_assets() {
+function enqueue_admin_assets(): void {
 	// phpcs:disable Squiz.PHP.CommentedOutCode.Found, Squiz.Commenting.InlineComment.InvalidEndChar
 	// If needed in the future.
 	// wp_enqueue_style('ran-tnysignature-admin', plugins_url('/assets/build/css/admin.css', TNYSIGNATURE_PLUGIN), array(),'0.3.1');
@@ -76,7 +78,7 @@ function enqueue_admin_assets() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function register_settings_init() {
+function register_settings_init(): void {
 	register_setting(
 		'ran-tnysig_options',
 		'ran-tnysig_options',
@@ -105,7 +107,8 @@ function register_settings_init() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function options_page() { ?>
+function options_page(): void {
+	?>
 	<div class="wrap">
 		<form action="options.php" method="POST">
 			<?php
@@ -136,13 +139,12 @@ function options_page() { ?>
 /**
  * Set the defaults options array for this plugin.
  *
- * @return array
- *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
+ * @return array<string, array<int, string>> Array of default settings
  */
-function get_defaults() {
+function get_defaults(): array {
 	return array(
 		'post_types' => array( 'post', 'page' ),
 	);
@@ -151,13 +153,13 @@ function get_defaults() {
 /**
  * Returns an array of settings for our plugin option.
  *
- * @return array Array of plugin settings.
+ * @return array<string, array<int, string>> Array of plugin settings.
  *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function get_settings() {
+function get_settings(): array {
 	return wp_parse_args( (array) get_option( 'ran-tnysig_options' ), get_defaults() );
 }
 
@@ -172,7 +174,7 @@ function get_settings() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function get_setting( $key ) {
+function get_setting( string $key ): mixed {
 	$settings = get_option( 'ran-tnysig_options', array() );
 	if ( isset( $settings[ $key ] ) ) {
 		return $settings[ $key ];
@@ -184,15 +186,15 @@ function get_setting( $key ) {
 /**
  * Sanitize the settings array.
  *
- * @param array $input The input array to sanitize.
+ * @param array<string, array<int, string>> $input The input array to sanitize.
  *
- * @return array Sanitized output array.
+ * @return array<string, array<int, string>> Sanitized output array.
  *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function settings_sanitize( $input ) {
+function settings_sanitize( array $input ): array {
 	$output = array(
 		'post_types' => array(),
 	);
@@ -211,18 +213,17 @@ function settings_sanitize( $input ) {
 /**
  * Get public posts types that tny-signature can work with.
  *
- * @return array
- *
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
+ * @return array<string, string> Array of public post types
  */
-function get_public_post_types() {
+function get_public_post_types(): array {
 	$post_types = get_post_types( array( 'public' => true ) );
 
 	// Remove media attachments from the list as they won't work with the plugin.
 	$remove = array_search( 'attachment', $post_types, true );
-	if ( $remove !== false ) {
+	if ( false !== $remove ) {
 		unset( $post_types[ $remove ] );
 	}
 
@@ -236,7 +237,7 @@ function get_public_post_types() {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function control_post_types() {
+function control_post_types(): void {
 	$key     = 'post_types';
 	$saved   = get_setting( $key );
 	$message = esc_html__( 'Select which public post types Tny Signature should work with.', 'ran-tnysig' );

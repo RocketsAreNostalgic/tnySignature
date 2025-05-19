@@ -8,6 +8,8 @@
  * @since   0.0.2
  */
 
+ declare(strict_types = 1);
+
 namespace RAN\TnySignature\NoticeAjax;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
  */
-function ajax_dismissed_notice_handler() {
+function ajax_dismissed_notice_handler(): void {
 	// Verify nonce for security.
 	if ( ! isset( $_POST['tnysig_nonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['tnysig_nonce'] ) ), 'tnysig-nonce' ) ) {
 		die();
@@ -34,7 +36,7 @@ function ajax_dismissed_notice_handler() {
 	}
 	$notice_type = sanitize_html_class( wp_unslash( $_POST['notice_type'] ) );
 
-	if ( $notice_type === 'tnysig_activation_notice' ) {
+	if ( 'tnysig_activation_notice' === $notice_type ) {
 		// If an admin notice, save it as an option.
 		update_option( 'orionrush_' . $notice_type . '-dismissed', true );
 	} else {

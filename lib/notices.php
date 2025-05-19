@@ -8,6 +8,8 @@
  * @since   0.0.2
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Notices;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define the signature URL constant using the plugin URL.
 if ( ! defined( 'SIGNATURE_URL' ) ) {
-	define( 'SIGNATURE_URL', plugin_dir_url( dirname( __FILE__ ) ) );
+	define( 'SIGNATURE_URL', plugin_dir_url( __DIR__ ) );
 }
 
 // To access the current user, in contexts like profiles the global $user_id is available.
@@ -28,12 +30,11 @@ if ( ! defined( 'SIGNATURE_URL' ) ) {
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @return void
  */
-function activation_notice() {
+function activation_notice(): void {
 	global $pagenow;
 	$user_id = get_current_user_id();
-	if ( $pagenow === 'plugins.php' && current_user_can( 'activate_plugins' ) && ! get_option( 'ran-tnysig_activation_notice-dismissed' ) ) {
+	if ( 'plugins.php' === $pagenow && current_user_can( 'activate_plugins' ) && ! get_option( 'ran-tnysig_activation_notice-dismissed' ) ) {
 		if ( ! get_user_meta( $user_id, 'ran-tnysig_image_id' ) || ! get_user_meta( $user_id, 'ran-tnysig_farewell' ) ) {
 			$icon = '<div class="signature-icon"><img class="signature-icon" src="' . esc_url( SIGNATURE_URL . 'assets/img/icon.png' ) . '" /></div>';
 			$a    = '<a href="' . esc_url( admin_url( 'profile.php' ) ) . '#tny-signature">';
@@ -77,12 +78,11 @@ add_action( 'network_admin_notices', __NAMESPACE__ . '\\activation_notice', 10, 
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @return void
  */
-function user_profile_notice() {
+function user_profile_notice(): void {
 	global $pagenow;
 	global $user_id;
-	if ( ( $pagenow === 'profile.php' || $pagenow === 'user-edit.php' ) && current_user_can( 'edit_posts' ) && ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) ) {
+	if ( ( 'profile.php' === $pagenow || 'user-edit.php' === $pagenow ) && current_user_can( 'edit_posts' ) && ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) ) {
 		if ( ! get_user_meta( $user_id, 'ran-tnysig_image_id' ) || ! get_user_meta( $user_id, 'ran-tnysig_farewell' ) ) {
 			$icon = '<div class="signature-icon"><img class="signature-icon" src="' . esc_url( SIGNATURE_URL . 'assets/img/icon.png' ) . '" /></div>';
 			$a    = '<a href="#tny-signature">';
@@ -125,12 +125,11 @@ add_action( 'user_admin_notices', __NAMESPACE__ . '\\user_profile_notice', 10, 1
  * @since 0.0.2
  * @author bnjmnrsh
  * @package TNY_SIGNATURE
- * @return void
  */
-function user_editor_notice() {
+function user_editor_notice(): void {
 	global $pagenow;
 	$user_id = get_current_user_id();
-	if ( ( $pagenow === 'post-new.php' || $pagenow === 'post.php' ) && current_user_can( 'edit_posts' ) && ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) ) {
+	if ( ( 'post-new.php' === $pagenow || 'post.php' === $pagenow ) && current_user_can( 'edit_posts' ) && ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) ) {
 		if ( ! get_user_meta( $user_id, 'ran-tnysig_image_id' ) || ! get_user_meta( $user_id, 'ran-tnysig_farewell' ) ) {
 			$icon = '<div class="signature-icon"><img class="signature-icon" src="' . esc_url( SIGNATURE_URL . 'assets/img/icon.png' ) . '" /></div>';
 			$a    = '<a href="' . esc_url( admin_url( 'profile.php' ) ) . '#tny-signature">';

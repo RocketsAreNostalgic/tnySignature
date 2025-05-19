@@ -8,9 +8,11 @@
  * @since   0.0.2
  */
 
+declare(strict_types = 1);
+
 namespace RAN\TnySignature\Admin;
 
-use RAN\TnySignature\Support as Support;
+use RAN\TnySignature\Support;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die();
@@ -25,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 0.0.2
  */
-function load_custom_css( $page ) {
+function load_custom_css( string $page ): bool {
 	global $user_id;
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;
@@ -39,19 +41,21 @@ function load_custom_css( $page ) {
 	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/build/css/signature_admin.min.css', false, $ver );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( $page === 'post-new.php' || $page === 'post.php' ) ) {
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( 'post-new.php' === $page || 'post.php' === $page ) ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 
 	// Load styles regardless of if ran-tnysig_settings_notice-dismissed has been set.
-	if ( $page === 'profile.php' || $page === 'user-edit.php' ) {
+	if ( 'profile.php' === $page || 'user-edit.php' === $page ) {
 		wp_enqueue_style( 'signature_admin_css' );
 		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode.
 	}
 
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) && $page === 'plugins.php' ) {
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) && 'plugins.php' === $page ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
+
+	return true;
 }
 
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
@@ -61,9 +65,8 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
  * Load the admin scripts for notices.
  *
  * @since 0.0.2
- * @return void
  */
-function ajax_load_scripts() {
+function ajax_load_scripts(): void {
 	// Get plugin version for cache busting.
 	$plugin_data = Support\get_plugin_atts();
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
@@ -98,7 +101,7 @@ add_action( 'admin_print_scripts-post-new.php', __NAMESPACE__ . '\\ajax_load_scr
  * @since 0.0.2
  * @return bool|void Returns false if user doesn't have permission.
  */
-function load_custom_profile_js() {
+function load_custom_profile_js(): bool|null {
 	// Only run if the current user can edit user profiles.
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;
@@ -122,6 +125,8 @@ function load_custom_profile_js() {
 			),
 		)
 	);
+
+	return true;
 }
 
 add_action( 'admin_print_scripts-profile.php', __NAMESPACE__ . '\\load_custom_profile_js', 11 );

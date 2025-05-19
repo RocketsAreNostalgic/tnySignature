@@ -7,6 +7,8 @@
  * @package TNY_SIGNATURE
  */
 
+ declare(strict_types = 1);
+
 namespace RAN\TnySignature;
 
 // If uninstall not called from WordPress, then exit.
@@ -38,9 +40,8 @@ if ( is_multisite() ) {
  * Delete plugin options and any user meta.
  *
  * @param int|null $blog_id The blog ID to delete options for. Default is null.
- * @return void
  */
-function tnysig_delete_all_options( $blog_id = null ) {
+function tnysig_delete_all_options( ?int $blog_id = null ): void {
 	if ( ! $blog_id ) {
 		$blog_id = get_current_blog_id();
 	}

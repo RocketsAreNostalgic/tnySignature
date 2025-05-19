@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<ruleset name="WordPress Plugin Coding Standards">
-    <description>A custom set of code standard rules for TNY Google Key plugin.</description>
+<ruleset name="WordPress Plugin Coding Standards (DEPRECATED)">
+    <description>DEPRECATED: Please use .phpcs.xml instead. This file is kept for backward compatibility.</description>
 
     <!-- What to scan -->
     <file>.</file>

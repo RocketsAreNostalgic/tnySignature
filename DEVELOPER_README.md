@@ -1,20 +1,16 @@
-# TNY Signature
-
-A WordPress plugin providing a signature button in the TinyMCE editor for adding a sign-off to posts and pages.
-
-## Development
+# Frontend & PHP Development
 
 This plugin includes tools to help maintain code quality and consistent style, as well as a modern build system for frontend assets.
 
-### Setup
+## Setup
 
-#### 1. Install PHP development dependencies
+### 1. Install PHP development dependencies
 
 ```bash
 composer install
 ```
 
-#### 2. Install JavaScript/CSS development dependencies
+### 2. Install JavaScript/CSS development dependencies
 
 ```bash
 # Install pnpm if you don't have it already
@@ -24,23 +20,39 @@ npm install -g pnpm
 pnpm install
 ```
 
-#### 3. Make the utility scripts executable
+### 3. Development Workflow
+
+#### Frontend Development with NPM Scripts
+
+This project uses Vite for modern frontend development. The following scripts are available with `pnpm run [script]`:
+
+| Command      | Description                                                      |
+| ------------ | ---------------------------------------------------------------- |
+| `dev`        | Start Vite development server with hot module replacement         |
+| `build`      | Build frontend assets for production                             |
+| `preview`    | Preview the production build locally                             |
+| `lint:js`    | Lint JavaScript files using ESLint                               |
+| `lint:css`   | Lint CSS/SCSS files using Stylelint                              |
+| `lint`       | Run both JavaScript and CSS linting                              |
+| `format`     | Format JavaScript and CSS/SCSS files using Prettier              |
+
+Example usage:
+
+```bash
+# Start development server
+pnpm run dev
+
+# Format code and run linters
+pnpm run format && pnpm run lint
+```
+
+#### PHP Development with Composer Scripts
+
+For PHP development, use Composer scripts. If you're using the utility scripts, make them executable first:
 
 ```bash
 chmod +x ./scripts/setup-dev.sh ./scripts/format-code.sh ./scripts/build-assets.sh
 ```
-
-#### 4. Run the setup script to configure your PHP development environment
-
-```bash
-./scripts/setup-dev.sh
-```
-
-This script performs a clean installation of PHP dependencies by:
-
-- Removing any existing composer.lock file
-- Removing the vendor directory
-- Running composer update to install all dependencies
 
 ### Code Style Commands
 
@@ -80,9 +92,9 @@ This project includes configuration files for:
 - EditorConfig (.editorconfig)
 - PHP CS Fixer (.php-cs-fixer.php)
 - PHP CodeSniffer (phpcs.xml)
-- ESLint (.eslintrc.json)
-- StyleLint (.stylelintrc.json)
-- Prettier (.prettierrc)
+- ESLint (.eslintrc.json) - configured for WordPress and modern JavaScript
+- StyleLint (.stylelintrc.json) - configured for SCSS with WordPress standards
+- Prettier (.prettierrc) - for consistent code formatting
 - VS Code settings (.vscode/settings.json)
 
 #### Recommended VS Code Extensions
@@ -165,11 +177,9 @@ DEBUG=vite:* pnpm run dev
 DEBUG=vite:* pnpm run build
 ```
 
-## Frontend Build System
+### Build System Technical Details
 
-This plugin uses Vite with Sass, ESLint, StyleLint, and Prettier to build and optimize frontend assets. We use pnpm as our package manager for its speed, efficiency, and improved dependency management.
-
-### Vite Configuration
+#### Vite Configuration
 
 The build system is configured to avoid common Vite warnings:
 
@@ -177,12 +187,9 @@ The build system is configured to avoid common Vite warnings:
 
 2. **Build Directory**: Assets are built to `assets/build` directory to prevent the warning about `outDir` being in the same directory as source files.
 
-   ```text
-   (!) build.outDir must not be the same directory of root or a parent directory of root
-   as this could cause Vite to overwriting source files with build outputs.
-   ```
+#### Package Management with pnpm
 
-### Why pnpm?
+This project uses pnpm as the package manager for several benefits:
 
 - **Disk space efficiency**: pnpm uses a content-addressable store to avoid duplication of packages
 - **Faster installation**: pnpm is significantly faster than npm or Yarn
