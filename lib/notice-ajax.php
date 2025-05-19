@@ -8,7 +8,7 @@
  * @since   0.0.2
  */
 
- declare(strict_types = 1);
+declare(strict_types = 1);
 
 namespace RAN\TnySignature\NoticeAjax;
 

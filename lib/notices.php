@@ -57,7 +57,7 @@ function activation_notice(): void {
 							'class' => array(),
 							'src'   => array(),
 						),
-						'a'   => array( 'href' => array() ),
+						'a' => array( 'href' => array() ),
 					)
 				);
 				?>
@@ -105,7 +105,7 @@ function user_profile_notice(): void {
 							'class' => array(),
 							'src'   => array(),
 						),
-						'a'   => array( 'href' => array() ),
+						'a' => array( 'href' => array() ),
 					)
 				);
 				?>
@@ -152,7 +152,7 @@ function user_editor_notice(): void {
 							'class' => array(),
 							'src'   => array(),
 						),
-						'a'   => array( 'href' => array() ),
+						'a' => array( 'href' => array() ),
 					)
 				);
 				?>

@@ -4,6 +4,8 @@ This plugin includes tools to help maintain code quality and consistent style, a
 
 ## Setup
 
+ "@standards:fix"
+
 ### 1. Install PHP development dependencies
 
 ```bash
@@ -28,7 +30,7 @@ This project uses Vite for modern frontend development. The following scripts ar
 
 | Command      | Description                                                      |
 | ------------ | ---------------------------------------------------------------- |
-| `dev`        | Start Vite development server with hot module replacement         |
+| `dev`        | Start Vite development server with hot module replacement        |
 | `build`      | Build frontend assets for production                             |
 | `preview`    | Preview the production build locally                             |
 | `lint:js`    | Lint JavaScript files using ESLint                               |
@@ -58,14 +60,14 @@ chmod +x ./scripts/setup-dev.sh ./scripts/format-code.sh ./scripts/build-assets.
 
 | Command                   | Description                                                                                                      |
 | ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| `composer format`         | The recommended way to format PHP code. Runs all formatting tools in the correct order (executes format-code.sh) |
-| `composer lint`           | Checks PHP syntax only (no style checking)                                                                       |
-| `composer cs`             | Formats code according to WordPress style using PHP CS Fixer (parallel)                                          |
-| `composer cs:check`       | Checks code style without making changes, useful for troubleshooting but not as comprehensive as `standards:fix` |
+| `composer lint`           | Comprehensive linting using both PHP_CodeSniffer and PHP CS Fixer to check all coding standards                  |
+| `composer format`         | Unified formatting command that runs both PHP CS Fixer and PHPCS fixer to correct all coding standard issues     |
+| `composer cs`             | Formats code according to WordPress style using PHP CS Fixer with parallel processing                            |
+| `composer cs:check`       | Checks code style without making changes (dry run with diff output)                                              |
 | `composer cs:sequential`  | Formats code without parallel processing (for troubleshooting)                                                   |
-| `composer standards`      | Checks WordPress coding standards (summary report)                                                               |
-| `composer standards:full` | Checks WordPress coding standards (detailed report)                                                              |
-| `composer standards:fix`  | Attempts to fix WordPress standards issues                                                                       |
+| `composer standards`      | Checks WordPress coding standards using .phpcs.xml configuration (summary report)                                |
+| `composer standards:full` | Checks WordPress coding standards using .phpcs.xml configuration (detailed report)                               |
+| `composer standards:fix`  | Attempts to fix WordPress standards issues automatically                                                         |
 | `composer build-assets`   | Builds frontend assets using Vite (executes build-assets.sh)                                                     |
 | `composer build`          | Complete build process: formats PHP code and builds frontend assets                                              |
 
