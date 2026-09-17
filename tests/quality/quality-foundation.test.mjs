@@ -53,14 +53,14 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	assert.doesNotMatch(pkg.scripts['lint:js'], /--fix/);
 	assert.doesNotMatch(pkg.scripts['lint:css'], /--fix/);
 	assert.match(pkg.scripts['format:check'], /prettier --check/);
-	assert.match(pkg.scripts['check:generated'], /git diff --exit-code -- assets\/dist/);
+	assert.match(pkg.scripts['check:generated'], /git status --porcelain --untracked-files=all -- assets\/dist/);
 	assert.match(pkg.scripts.check, /node --test tests\/quality\/\*\.test\.mjs/);
 	assert.doesNotMatch(gitignore, /^composer\.lock$/m);
 	assert.match(workspace, /esbuild: true/);
 	assert.match(workspace, /core-js: false/);
 });
 
-test('temporary migration workflow is absent from the final tree', () => {
+test('temporary lock migration workflow is absent from the final tree', () => {
 	assert.equal(
 		existsSync(
 			new URL(
