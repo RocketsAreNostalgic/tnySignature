@@ -19,12 +19,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 // Are we in a multisite install?
 if ( is_multisite() ) {
 	// Use get_sites() which is the recommended way to get sites in a multisite.
-	$sites = get_sites( array( 'fields' => 'ids' ) );
+	$tny_signature_sites = get_sites( array( 'fields' => 'ids' ) );
 
-	if ( ! empty( $sites ) ) {
-		foreach ( $sites as $site_id ) {
-			switch_to_blog( $site_id );
-			tnysig_delete_all_options( $site_id );
+	if ( ! empty( $tny_signature_sites ) ) {
+		foreach ( $tny_signature_sites as $tny_signature_site_id ) {
+			switch_to_blog( $tny_signature_site_id );
+			tnysig_delete_all_options( $tny_signature_site_id );
 		}
 		restore_current_blog();
 	} else {
