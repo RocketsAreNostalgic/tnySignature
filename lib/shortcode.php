@@ -105,6 +105,9 @@ add_shortcode( 'signature', __NAMESPACE__ . '\\shortcode' );
  * @package TNY_SIGNATURE
  */
 function signature_shortcode_filter( string $img_url, string $img_height, string $img_width, string $farewell, string $author ): string {
+	/* translators: %s: signature author name. */
+	$signature_label = sprintf( __( 'Signature of %s', 'ran-tnysig' ), $author );
+
 	if ( $img_url ) {
 		return '<div class="signature-container" role="complementary" aria-label="' . esc_attr__( 'Author Signature', 'ran-tnysig' ) . '">
 			<p class="signature farewell" aria-label="' . esc_attr__( 'Farewell message', 'ran-tnysig' ) . '">' . esc_html( $farewell ) . '</p><br />
@@ -112,7 +115,7 @@ function signature_shortcode_filter( string $img_url, string $img_height, string
 			style="background-image: url(' . esc_url( $img_url ) . '); height: ' . esc_attr( $img_height ) . 'px; width: ' . esc_attr( $img_width ) . 'px;"
 			title="' . esc_attr( $author ) . '"
 			role="img"
-			aria-label="' . esc_attr( sprintf( __( 'Signature of %s', 'ran-tnysig' ), $author ) ) . '">
+			aria-label="' . esc_attr( $signature_label ) . '">
 				<p class="signature author">' . esc_html( $author ) . '</p>
 			</div>
 		</div>';
