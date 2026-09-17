@@ -34,6 +34,7 @@ test('runtime floors and locked toolchain stay aligned', () => {
 	const composer = JSON.parse(read('composer.json'));
 	const pkg = JSON.parse(read('package.json'));
 	const plugin = read('tny-singnature.php');
+	const setup = read('scripts/setup-dev.sh');
 
 	assert.equal(composer.require.php, '>=8.1');
 	assert.equal(composer.config.platform.php, '8.1.0');
@@ -42,6 +43,10 @@ test('runtime floors and locked toolchain stay aligned', () => {
 	assert.equal(pkg.engines.node, '>=24.11.0 <25');
 	assert.match(plugin, /^ \* Requires at least: 5\.0$/m);
 	assert.match(plugin, /^ \* Requires PHP: 8\.1$/m);
+	assert.match(setup, /require\('\.\/package\.json'\)\.volta\.node/);
+	assert.match(setup, /test "\$\(node --version\)" = "v\$\{expected_node\}"/);
+	assert.match(setup, /packageManager\.replace\(\/\^pnpm@\//);
+	assert.match(setup, /test "\$\(pnpm --version\)" = "\$expected_pnpm"/);
 	assert.ok(existsSync(new URL('../../composer.lock', import.meta.url)));
 	assert.ok(existsSync(new URL('../../pnpm-lock.yaml', import.meta.url)));
 });
@@ -51,6 +56,8 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	const pkg = JSON.parse(read('package.json'));
 	const gitignore = read('.gitignore');
 	const workspace = read('pnpm-workspace.yaml');
+	const generated = read('scripts/check-generated-assets.sh');
+	const vite = read('vite.config.js');
 
 	assert.deepEqual(composer.scripts.check, [
 		'@lint:syntax',
@@ -59,10 +66,11 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	assert.doesNotMatch(pkg.scripts['lint:js'], /--fix/);
 	assert.doesNotMatch(pkg.scripts['lint:css'], /--fix/);
 	assert.match(pkg.scripts['format:check'], /prettier --check/);
-	assert.match(
-		pkg.scripts['check:generated'],
-		/git status --porcelain --untracked-files=all -- assets\/dist/
-	);
+	assert.equal(pkg.scripts['check:generated'], 'bash scripts/check-generated-assets.sh');
+	assert.match(generated, /mktemp -d/);
+	assert.match(generated, /RAN_BUILD_OUT_DIR="\$temporary" pnpm build/);
+	assert.match(generated, /diff -ru assets\/dist "\$temporary"/);
+	assert.match(vite, /process\.env\.RAN_BUILD_OUT_DIR/);
 	assert.match(
 		pkg.scripts.check,
 		/node --test tests\/quality\/\*\.test\.mjs/
@@ -70,6 +78,18 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	assert.doesNotMatch(gitignore, /^composer\.lock$/m);
 	assert.match(workspace, /esbuild: true/);
 	assert.match(workspace, /core-js: false/);
+});
+
+test('TinyMCE runtime consumes the committed generated bundle', () => {
+	const tinyMce = read('lib/tinyMCE.php');
+	const bundle = '../../assets/dist/admin/js/load_tinyMCE_plugin.min.js';
+
+	assert.match(
+		tinyMce,
+		/assets\/dist\/admin\/js\/load_tinyMCE_plugin\.min\.js/
+	);
+	assert.doesNotMatch(tinyMce, /assets\/build/);
+	assert.ok(existsSync(new URL(bundle, import.meta.url)));
 });
 
 test('temporary migration workflows are absent from the final tree', () => {
