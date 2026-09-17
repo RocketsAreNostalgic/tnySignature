@@ -24,7 +24,7 @@
     "lint:css": "stylelint \"assets/src/**/*.{css,scss}\"",
     "format": "prettier --write \"assets/src/**/*.{js,css,scss}\" vite.config.js eslint.config.mjs \"tests/quality/**/*.mjs\" package.json pnpm-workspace.yaml",
     "format:check": "prettier --check \"assets/src/**/*.{js,css,scss}\" vite.config.js eslint.config.mjs \"tests/quality/**/*.mjs\" package.json pnpm-workspace.yaml",
-    "check:generated": "pnpm build && git diff --exit-code -- assets/dist",
+    "check:generated": "pnpm build && test -z \"$(git status --porcelain --untracked-files=all -- assets/dist)\"",
     "check": "pnpm lint:js && pnpm lint:css && pnpm format:check && pnpm check:generated && node --test tests/quality/*.test.mjs"
   },
   "devDependencies": {
