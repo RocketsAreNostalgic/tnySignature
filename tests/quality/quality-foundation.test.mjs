@@ -71,9 +71,11 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 		'bash scripts/check-generated-assets.sh'
 	);
 	assert.match(generated, /mktemp -d/);
-	assert.match(generated, /RAN_BUILD_OUT_DIR="\$temporary" pnpm build/);
+	assert.match(generated, /pnpm exec vite build --outDir "\$temporary"/);
 	assert.match(generated, /diff -ru assets\/dist "\$temporary"/);
-	assert.match(vite, /process\.env\.RAN_BUILD_OUT_DIR/);
+	assert.doesNotMatch(generated, /RAN_BUILD_OUT_DIR/);
+	assert.doesNotMatch(vite, /RAN_BUILD_OUT_DIR/);
+	assert.match(vite, /outDir: path\.resolve\(projectRoot, 'assets\/dist'\)/);
 	assert.match(
 		pkg.scripts.check,
 		/node --test tests\/quality\/\*\.test\.mjs/
