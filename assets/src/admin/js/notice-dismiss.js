@@ -22,6 +22,7 @@ jQuery(document).ready(function () {
 			const data = {
 				action: 'sig_dismissed_notice_handler',
 				notice_type: noticeType,
+				// eslint-disable-next-line camelcase
 				tnysig_nonce: tnysig_vars.tnysig_nonce,
 			};
 
