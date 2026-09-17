@@ -5,9 +5,6 @@ import { globSync } from 'glob';
 import { defineConfig } from 'vite';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-const outputDirectory = process.env.RAN_BUILD_OUT_DIR
-	? path.resolve(process.env.RAN_BUILD_OUT_DIR)
-	: path.resolve(projectRoot, 'assets/dist');
 
 function getEntries() {
 	const entries = {};
@@ -39,7 +36,7 @@ function getEntries() {
 
 export default defineConfig({
 	build: {
-		outDir: outputDirectory,
+		outDir: path.resolve(projectRoot, 'assets/dist'),
 		emptyOutDir: true,
 		sourcemap: false,
 		minify: true,
