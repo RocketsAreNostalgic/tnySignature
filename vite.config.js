@@ -63,7 +63,10 @@ export default defineConfig({
 				},
 				chunkFileNames: 'js/[name]-[hash].js',
 				assetFileNames: (assetInfo) => {
-					if (assetInfo.name && /\.(css|scss)$/.test(assetInfo.name)) {
+					if (
+						assetInfo.name &&
+						/\.(css|scss)$/.test(assetInfo.name)
+					) {
 						const name = path
 							.basename(assetInfo.name)
 							.replace(/\.(css|scss)$/, '');

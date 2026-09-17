@@ -2,11 +2,14 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 
-const read = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+const read = (path) =>
+	readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
 
 test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	const workflow = read('.github/workflows/quality.yml');
-	const baseline = workflow.match(/\n  baseline:\n([\s\S]*?)\n  quality:/)?.[1];
+	const baseline = workflow.match(
+		/\n  baseline:\n([\s\S]*?)\n  quality:/
+	)?.[1];
 	assert.ok(baseline, 'baseline job must exist');
 	assert.match(
 		baseline,
@@ -49,12 +52,21 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	const gitignore = read('.gitignore');
 	const workspace = read('pnpm-workspace.yaml');
 
-	assert.deepEqual(composer.scripts.check, ['@lint:syntax', '@standards:full']);
+	assert.deepEqual(composer.scripts.check, [
+		'@lint:syntax',
+		'@standards:full',
+	]);
 	assert.doesNotMatch(pkg.scripts['lint:js'], /--fix/);
 	assert.doesNotMatch(pkg.scripts['lint:css'], /--fix/);
 	assert.match(pkg.scripts['format:check'], /prettier --check/);
-	assert.match(pkg.scripts['check:generated'], /git status --porcelain --untracked-files=all -- assets\/dist/);
-	assert.match(pkg.scripts.check, /node --test tests\/quality\/\*\.test\.mjs/);
+	assert.match(
+		pkg.scripts['check:generated'],
+		/git status --porcelain --untracked-files=all -- assets\/dist/
+	);
+	assert.match(
+		pkg.scripts.check,
+		/node --test tests\/quality\/\*\.test\.mjs/
+	);
 	assert.doesNotMatch(gitignore, /^composer\.lock$/m);
 	assert.match(workspace, /esbuild: true/);
 	assert.match(workspace, /core-js: false/);
