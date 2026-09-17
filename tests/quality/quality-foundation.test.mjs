@@ -77,6 +77,9 @@ test('temporary migration workflows are absent from the final tree', () => {
 		'.github/workflows/materialize-quality-locks.yml',
 		'.github/workflows/materialize-quality-format.yml',
 	]) {
-		assert.equal(existsSync(new URL(`../../${path}`, import.meta.url)), false);
+		assert.equal(
+			existsSync(new URL(`../../${path}`, import.meta.url)),
+			false
+		);
 	}
 });
