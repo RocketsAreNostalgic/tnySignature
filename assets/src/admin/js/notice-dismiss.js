@@ -9,7 +9,6 @@
  */
 
 /* global jQuery, ajaxurl tnysig_vars */
-/* eslint camelcase: 0 */ // Disable camelcase rule for this file due to WordPress naming conventions
 jQuery(document).ready(function () {
 	jQuery(document).on(
 		'click',
@@ -23,7 +22,6 @@ jQuery(document).ready(function () {
 			const data = {
 				action: 'sig_dismissed_notice_handler',
 				notice_type: noticeType,
-				// eslint-disable-next-line camelcase
 				tnysig_nonce: tnysig_vars.tnysig_nonce,
 			};
 
