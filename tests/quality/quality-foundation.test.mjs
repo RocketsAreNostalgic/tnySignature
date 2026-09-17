@@ -66,7 +66,10 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	assert.doesNotMatch(pkg.scripts['lint:js'], /--fix/);
 	assert.doesNotMatch(pkg.scripts['lint:css'], /--fix/);
 	assert.match(pkg.scripts['format:check'], /prettier --check/);
-	assert.equal(pkg.scripts['check:generated'], 'bash scripts/check-generated-assets.sh');
+	assert.equal(
+		pkg.scripts['check:generated'],
+		'bash scripts/check-generated-assets.sh'
+	);
 	assert.match(generated, /mktemp -d/);
 	assert.match(generated, /RAN_BUILD_OUT_DIR="\$temporary" pnpm build/);
 	assert.match(generated, /diff -ru assets\/dist "\$temporary"/);
