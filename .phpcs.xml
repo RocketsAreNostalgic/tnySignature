@@ -18,13 +18,15 @@
 
 	<rule ref="RANWordPressPlugin"/>
 
-	<!-- Keep the repository's established global-prefix contract local. -->
+	<!-- Keep established plugin and legacy public API identities local. -->
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="tny_signature"/>
 				<element value="TNYSIGNATURE"/>
 				<element value="RAN\TnySignature"/>
+				<element value="signature"/>
+				<element value="SIGNATURE"/>
 			</property>
 		</properties>
 	</rule>
