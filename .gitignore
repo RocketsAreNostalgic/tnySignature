@@ -1,16 +1,13 @@
 # Composer
 /vendor/
-composer.lock
 
 # Node.js
 /node_modules/
 package-lock.json
 
-# PHP CS Fixer
-.php-cs-fixer.cache
-
-# PHPUnit
+# Tool caches
 .phpunit.result.cache
+.php-cs-fixer.cache
 
 # OS generated files
 .DS_Store
@@ -25,6 +22,3 @@ Thumbs.db
 .idea/
 *.sublime-project
 *.sublime-workspace
-
-# Keep the build directory
-!assets/build/

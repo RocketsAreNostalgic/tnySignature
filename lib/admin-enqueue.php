@@ -41,7 +41,7 @@ function load_custom_css( string $page ): bool {
 	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/dist/admin/styles/signature_admin.min.css', false, $ver );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed' ) && ( 'post-new.php' === $page || 'post.php' === $page ) ) {
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed', true ) && ( 'post-new.php' === $page || 'post.php' === $page ) ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 
@@ -51,7 +51,7 @@ function load_custom_css( string $page ): bool {
 		wp_enqueue_style( 'signature-rendered-styles' ); // So we can preview the shortcode.
 	}
 
-	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed' ) && 'plugins.php' === $page ) {
+	if ( ! get_user_meta( $user_id, 'ran-tnysig_settings_notice-dismissed', true ) && 'plugins.php' === $page ) {
 		wp_enqueue_style( 'signature_admin_css' );
 	}
 

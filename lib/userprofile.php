@@ -62,8 +62,10 @@ function user_profile_fields( WP_User $user ): void {
 			wp_nonce_field( 'ran_tnysig_user_profile_update', 'ran_tnysig_nonce' );
 
 			$icon = '<div class="signature-icon"><img class="signature-icon" src="' . esc_url( SIGNATURE_URL . 'assets/img/icon.png' ) . '" /></div>';
+			/* translators: %s: signature icon HTML. */
+			$signature_message = sprintf( __( '%s The signature button in the post and page text editor will add a custom sign-off and signature to your message.', 'ran-tnysig' ), $icon );
 			?>
-			<p><?php echo wp_kses_post( sprintf( __( '%s The signature button in the post and page text editor will add a custom sign-off and signature to your message.', 'ran-tnysig' ), $icon ) ); ?></p>
+			<p><?php echo wp_kses_post( $signature_message ); ?></p>
 			<tbody class="form-table">
 			<tr>
 				<th><label for="signature_farewell"><?php esc_html_e( 'Sign-off farewell', 'ran-tnysig' ); ?></label>

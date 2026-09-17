@@ -1,8 +1,10 @@
 <?php
 /**
  * Plugin Name: Tny Signature
- * Description: The plugin adds button to the rich text editor which allows authors to add a sign-off to their posts and pages.
+ * Description: The plugin adds a button to the rich text editor which allows authors to add a sign-off to their posts and pages.
  * Version: 0.3.6
+ * Requires at least: 5.0
+ * Requires PHP: 8.1
  * Author: Benjamin Rush
  * Author URI: https://github.com/bnjmnrsh
  * Plugin URI: https://github.com/RocketsAreNostalgic/tnySignature

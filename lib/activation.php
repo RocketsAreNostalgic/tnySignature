@@ -55,8 +55,9 @@ function activate( string $phpv = '8.1', string $wpv = '5.0' ): void {
 	}
 
 	if ( null !== $flag ) {
-		$name   = esc_html( TNYSIGNATURE_PLUGIN_NAME );
-		$format = __( 'Sorry, <strong>%s</strong> requires %s version %s or greater. <br/> You are currently running version: %s', 'ran-tnysig' );
+		$name = esc_html( TNYSIGNATURE_PLUGIN_NAME );
+		/* translators: 1: plugin name, 2: runtime name (PHP or WordPress), 3: required version, 4: current version. */
+		$format = __( 'Sorry, <strong>%1$s</strong> requires %2$s version %3$s or greater. <br/> You are currently running version: %4$s', 'ran-tnysig' );
 
 		wp_die(
 			wp_kses(
