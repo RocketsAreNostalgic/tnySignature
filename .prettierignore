@@ -1,7 +1,5 @@
-**/*-min.js
-**/*.min.js
-**/*-min.css
-**/*.min.css
-/**/vendor/
-/dist/
-/node_modules/
+assets/dist/
+node_modules/
+vendor/
+*.min.js
+*.min.css
