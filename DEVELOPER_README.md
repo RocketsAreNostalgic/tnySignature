@@ -17,7 +17,7 @@ Use the exact Node and pnpm identities declared in `package.json`. Do not delete
 ./scripts/setup-dev.sh
 ```
 
-The setup script installs Composer and pnpm dependencies from the tracked `composer.lock` and `pnpm-lock.yaml` files. It does not update dependency versions.
+The setup script verifies the exact Node and pnpm identities, then installs Composer and pnpm dependencies from the tracked `composer.lock` and `pnpm-lock.yaml` files. It does not update dependency versions.
 
 ## Required quality checks
 
@@ -30,7 +30,7 @@ pnpm check
 
 `composer check` performs PHP syntax validation, the shared RAN WordPress plugin coding-standard baseline, PHP 8.1+ compatibility analysis, and the repository's retained documentation/type-safety rules.
 
-`pnpm check` runs non-mutating ESLint, Stylelint and Prettier checks, rebuilds the committed frontend assets, verifies that `assets/dist` is reproducible from `assets/src`, and runs the repository quality-contract tests.
+`pnpm check` runs non-mutating ESLint, Stylelint and Prettier checks, builds the frontend assets into an isolated temporary directory, compares the complete generated tree with committed `assets/dist`, and runs the repository quality-contract tests. A failing generated-assets check does not rewrite the working tree.
 
 ## Formatting
 
@@ -50,7 +50,7 @@ pnpm dev
 pnpm build
 ```
 
-Vite builds production assets from `assets/src` into `assets/dist`. The generated assets are committed because the installed WordPress plugin must not require a Node build step at runtime. `pnpm check:generated` rebuilds them and fails when the committed output is stale.
+Vite builds production assets from `assets/src` into `assets/dist`. The generated assets are committed because the installed WordPress plugin must not require a Node build step at runtime. `pnpm check:generated` instead builds into a temporary directory and recursively compares that complete tree with committed `assets/dist`, so missing, extra or stale bundles all fail without mutating the repository.
 
 The frontend quality configuration inherits the shared `@rocketsarenostalgic/quality-config` ESLint, Prettier and Stylelint baselines. Repository-specific TinyMCE/WordPress globals and the existing selector-class exception remain local.
 
