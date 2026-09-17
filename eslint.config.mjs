@@ -7,15 +7,6 @@ export default [
 	...ranWordPress,
 	{
 		files: ['assets/src/**/*.js'],
-		languageOptions: {
-			globals: {
-				jQuery: 'readonly',
-				TNYSINGNATURE: 'readonly',
-				tinymce: 'readonly',
-				tnySignatureL10n: 'readonly',
-				wp: 'readonly',
-			},
-		},
 		settings: {
 			react: {
 				version: '999.999.999',
