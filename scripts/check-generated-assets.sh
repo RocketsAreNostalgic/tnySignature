@@ -7,6 +7,6 @@ cleanup() {
 }
 trap cleanup EXIT
 
-RAN_BUILD_OUT_DIR="$temporary" pnpm build
+pnpm exec vite build --outDir "$temporary"
 
 diff -ru assets/dist "$temporary"
