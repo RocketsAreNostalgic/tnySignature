@@ -1,94 +1,48 @@
-name: Prepare WordPress integration tests
+name: Stage verified integration lock
 
 on:
   push:
     branches: [ci/5-integration-tools]
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  dependencies:
+  stage:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
+    permissions:
+      actions: read
+      contents: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          ref: 9442afb023e275a9a4e3f3830e284a5161ec75f2
-          persist-credentials: false
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: '8.1'
-          coverage: none
-          tools: composer:v2
-      - name: Generate and validate the integration-test lock
+          github-token: ${{ github.token }}
+          repository: RocketsAreNostalgic/tnySignature
+          run-id: 35866496837
+          artifact-ids: '10752314763'
+          merge-multiple: true
+          path: ${{ runner.temp }}/verified-pair
+      - name: Import only the independently verified bytes as unreferenced Git blobs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAIR: ${{ runner.temp }}/verified-pair
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD)" = 9442afb023e275a9a4e3f3830e284a5161ec75f2
-          composer --no-plugins --no-scripts require --dev --no-interaction --no-install --update-with-dependencies --minimal-changes 'phpunit/phpunit:^9.6'
-          composer --no-plugins --no-scripts validate --strict
           python3 - <<'PY'
-          import json, subprocess
+          import hashlib, json, os, subprocess
           from pathlib import Path
-          old = json.loads(subprocess.check_output(['git', 'show', 'HEAD:composer.lock']))
-          new = json.loads(Path('composer.lock').read_text())
-          packages = lambda doc: {p['name']: p for key in ('packages', 'packages-dev') for p in doc.get(key, [])}
-          before, after = packages(old), packages(new)
-          for name, package in before.items():
-              if after.get(name) != package:
-                  raise SystemExit('Existing locked package changed: ' + name)
-          print('ADDED', json.dumps({name: after[name]['version'] for name in sorted(after.keys() - before.keys())}))
+          expected = {
+              'composer.json': ('c73519fbdb6a1d454b72bedc53dd5eb9ab40bddec4b696b47ff9a5437eb45cfc', '3230e735ae21e553a0ab2159807c5e146994d296'),
+              'composer.lock': ('da709465d00aef9dc36ff032b547337dcad3a1a292e2a2cf33915d0b31b0bebb', '52983676306425e891cdf13819e8ec0eec71b81f'),
+          }
+          for name, (digest, blob) in expected.items():
+              content = (Path(os.environ['PAIR']) / name).read_bytes()
+              if hashlib.sha256(content).hexdigest() != digest:
+                  raise SystemExit('Artifact bytes do not match reviewed pair: ' + name)
+              payload = json.dumps({'encoding': 'utf-8', 'content': content.decode()}).encode()
+              result = json.loads(subprocess.check_output(['gh', 'api', '--method', 'POST', 'repos/RocketsAreNostalgic/tnySignature/git/blobs', '--input', '-'], input=payload))
+              if result['sha'] != blob:
+                  raise SystemExit('Unexpected Git blob identity: ' + name)
+              print(name, result['sha'])
           PY
-          composer install --no-interaction --prefer-dist --no-progress
-          git diff --check
-          mkdir "$RUNNER_TEMP/integration-tools"
-          cp composer.json composer.lock "$RUNNER_TEMP/integration-tools/"
-          git archive HEAD | gzip > "$RUNNER_TEMP/integration-tools/source.tar.gz"
-          tar -czf "$RUNNER_TEMP/integration-tools/vendor.tar.gz" vendor
-          printf 'input=9442afb023e275a9a4e3f3830e284a5161ec75f2\nrun=%s\nattempt=%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/integration-tools/origin.txt"
-          (cd "$RUNNER_TEMP/integration-tools" && sha256sum composer.json composer.lock source.tar.gz vendor.tar.gz > SHA256SUMS)
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: tny-integration-tools-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/integration-tools/
-          if-no-files-found: error
-          retention-days: 3
-
-  wordpress:
-    name: Core preflight PHP 8.1 / WordPress ${{ matrix.wordpress }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    strategy:
-      fail-fast: false
-      matrix:
-        wordpress: ['5.0', '5.9', '7.1']
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: integration-only
-          MYSQL_DATABASE: tny_integration
-        ports: ['3306:3306']
-        options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -pintegration-only"
-          --health-interval=10s --health-timeout=5s --health-retries=5
-    steps:
-      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
-        with:
-          php-version: '8.1'
-          coverage: none
-          extensions: mysqli
-          tools: wp-cli:2.12.0
-      - name: Install and bootstrap the unmodified WordPress core
-        env:
-          WORDPRESS_VERSION: ${{ matrix.wordpress }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          root="$RUNNER_TEMP/wordpress"
-          wp core download --version="$WORDPRESS_VERSION" --path="$root"
-          wp core verify-checksums --version="$WORDPRESS_VERSION" --path="$root"
-          wp config create --path="$root" --dbname=tny_integration --dbuser=root --dbpass=integration-only --dbhost=127.0.0.1:3306 --dbprefix=tny_test_ --skip-check
-          wp core install --path="$root" --url=http://tny-integration.test --title=Integration --admin_user=integration --admin_password=integration-only --admin_email=integration@example.test --skip-email
-          wp eval 'echo "BOOTSTRAPPED ", get_bloginfo("version"), " PHP ", PHP_VERSION, "\n";' --path="$root"
