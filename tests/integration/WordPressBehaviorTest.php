@@ -160,19 +160,21 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 
 		wp_set_current_user( $user_id );
+		set_current_screen( 'profile' );
 
-		do_action( 'admin_enqueue_scripts', 'profile.php' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- intentionally dispatch the WordPress core hook.
-		self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
-
-		do_action( 'admin_print_scripts-profile.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- intentionally dispatch the WordPress core hook.
-		self::assertTrue( wp_script_is( 'signature_user_profile_js', 'enqueued' ) );
-
-		$_POST['ran_tnysig_nonce'] = wp_create_nonce( 'ran_tnysig_user_profile_update' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is created and consumed by the integration fixture.
-		$_POST['signature_name']   = 'Hook Saved Name'; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- consumed through the real hooked saver above.
 		try {
+			do_action( 'admin_enqueue_scripts', 'profile.php' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- intentionally dispatch the WordPress core hook.
+			self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
+
+			do_action( 'admin_print_scripts-profile.php' ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- intentionally dispatch the WordPress core hook.
+			self::assertTrue( wp_script_is( 'signature_user_profile_js', 'enqueued' ) );
+
+			$_POST['ran_tnysig_nonce'] = wp_create_nonce( 'ran_tnysig_user_profile_update' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is created and consumed by the integration fixture.
+			$_POST['signature_name']   = 'Hook Saved Name'; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- consumed through the real hooked saver above.
 			do_action( 'personal_options_update', $user_id ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- intentionally dispatch the WordPress core hook.
 		} finally {
 			unset( $_POST['ran_tnysig_nonce'], $_POST['signature_name'] );
+			unset( $GLOBALS['current_screen'] );
 		}
 
 		self::assertSame( 'Hook Saved Name', get_user_meta( $user_id, 'ran-tnysig_name', true ) );
