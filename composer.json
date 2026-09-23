@@ -38,8 +38,10 @@
     "format": "@standards:fix",
     "check": [
       "@lint:syntax",
-      "@standards:full"
-    ]
+      "@standards:full",
+      "@analysis"
+    ],
+    "analysis": "phpstan analyse --configuration=phpstan.neon --no-progress"
   },
   "config": {
     "allow-plugins": {
