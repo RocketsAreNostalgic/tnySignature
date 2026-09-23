@@ -119,7 +119,7 @@ final class WordPressBehaviorTest extends TestCase {
 		wp_set_current_user( $current_user_id );
 		update_user_meta( $current_user_id, 'ran-tnysig_editor_notice-dismissed', true );
 
-		$GLOBALS['user_id'] = $other_user_id; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- regression fixture for the legacy page global.
+		$GLOBALS['user_id'] = $other_user_id; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited,WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- regression fixture for the legacy page global.
 
 		self::assertTrue( Admin\load_custom_css( 'post.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
