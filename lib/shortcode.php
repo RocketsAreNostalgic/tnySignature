@@ -80,8 +80,8 @@ function shortcode( array $atts, string $farewell ): string {
 	if ( $img_id ) {
 		$img_array  = wp_get_attachment_image_src( $img_id, 'medium' );
 		$img_url    = esc_url_raw( $img_array[0] );
-		$img_width  = esc_attr( $img_array[1] );
-		$img_height = esc_attr( $img_array[2] );
+		$img_width  = esc_attr( (string) $img_array[1] );
+		$img_height = esc_attr( (string) $img_array[2] );
 	}
 
 	return apply_filters( 'signature_shortcode', $img_url, $img_height, $img_width, $farewell, $author );
