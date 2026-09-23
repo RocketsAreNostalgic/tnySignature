@@ -39,7 +39,7 @@ test('analysis is blocking, WordPress-aware and uses explicit production paths',
 		config,
 		/vendor\/szepeviktor\/phpstan-wordpress\/extension\.neon/
 	);
-	assert.match(config, /level: 4\b/);
+	assert.match(config, /level: 5\b/);
 	assert.match(config, /phpVersion: 80100\b/);
 	const selected = config
 		.split('\tpaths:\n')[1]
@@ -49,6 +49,7 @@ test('analysis is blocking, WordPress-aware and uses explicit production paths',
 		.map((line) => line.trim().replace(/^- /, ''));
 	assert.deepEqual(selected, sourcePaths);
 	assert.match(config, /reportUnmatchedIgnoredErrors: true/);
+	assert.doesNotMatch(config, /\n\tignoreErrors:/);
 	assert.doesNotMatch(
 		config,
 		/baseline|excludePaths|checkFunctionNameCase: false/
