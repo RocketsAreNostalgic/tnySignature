@@ -62,7 +62,12 @@ test('quality aggregates are non-mutating and protect generated assets', () => {
 	assert.deepEqual(composer.scripts.check, [
 		'@lint:syntax',
 		'@standards:full',
+		'@analyze',
 	]);
+	assert.equal(
+		composer.scripts.analyze,
+		'phpstan analyse --configuration=phpstan.neon --no-progress'
+	);
 	assert.doesNotMatch(pkg.scripts['lint:js'], /--fix/);
 	assert.doesNotMatch(pkg.scripts['lint:css'], /--fix/);
 	assert.match(pkg.scripts['format:check'], /prettier --check/);

@@ -27,8 +27,10 @@
     "phpcompatibility/php-compatibility": "10.0.0-alpha2",
     "phpcompatibility/phpcompatibility-paragonie": "2.0.0-alpha2",
     "phpcompatibility/phpcompatibility-wp": "3.0.0-alpha2",
+    "phpstan/phpstan": "^2.1",
     "ran/coding-standards": "dev-main",
-    "slevomat/coding-standard": "^8.14"
+    "slevomat/coding-standard": "^8.14",
+    "szepeviktor/phpstan-wordpress": "^2.0"
   },
   "scripts": {
     "lint:syntax": "bash scripts/lint-php.sh",
@@ -38,8 +40,10 @@
     "format": "@standards:fix",
     "check": [
       "@lint:syntax",
-      "@standards:full"
-    ]
+      "@standards:full",
+      "@analyze"
+    ],
+    "analyze": "phpstan analyse --configuration=phpstan.neon --no-progress"
   },
   "config": {
     "allow-plugins": {
