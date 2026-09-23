@@ -1,0 +1,71 @@
+name: Probe locked static analysis
+
+on:
+  push:
+    branches: [ci/4-analysis-probe]
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      INPUT_SHA: ae43967cda4bb8abb699114136ea7abfa3ef2252
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ env.INPUT_SHA }}
+          persist-credentials: false
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: composer:v2
+      - name: Install exact locked tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$INPUT_SHA"
+          composer validate --strict
+          composer install --no-interaction --prefer-dist --no-progress --no-scripts
+          git diff --exit-code -- composer.json composer.lock
+      - name: Measure level 5 with the WordPress extension enabled
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/analysis-probe"
+          cat > phpstan.neon <<'NEON'
+          includes:
+              - vendor/szepeviktor/phpstan-wordpress/extension.neon
+          parameters:
+              level: 5
+              phpVersion: 80100
+              paths:
+                  - index.php
+                  - tny-singnature.php
+                  - uninstall.php
+                  - lib
+          NEON
+          status=0
+          vendor/bin/phpstan analyse --configuration=phpstan.neon --no-progress --error-format=json > "$RUNNER_TEMP/analysis-probe/level-5.json" || status=$?
+          test "$status" -le 1
+          python3 -m json.tool "$RUNNER_TEMP/analysis-probe/level-5.json"
+          printf 'input=%s\nphp=%s\nanalysis_exit=%s\n' "$INPUT_SHA" "$(php -r 'echo PHP_VERSION;')" "$status" > "$RUNNER_TEMP/analysis-probe/environment.txt"
+          composer --version >> "$RUNNER_TEMP/analysis-probe/environment.txt"
+      - name: Export the exact source and installed tools for bounded local checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git ls-files -z > "$RUNNER_TEMP/source-files"
+          tar --null -T "$RUNNER_TEMP/source-files" -czf "$RUNNER_TEMP/analysis-probe/source.tar.gz"
+          tar -czf "$RUNNER_TEMP/analysis-probe/vendor.tar.gz" vendor
+          cp "$(command -v composer)" "$RUNNER_TEMP/analysis-probe/composer.phar"
+          (cd "$RUNNER_TEMP/analysis-probe" && sha256sum source.tar.gz vendor.tar.gz composer.phar level-5.json > SHA256SUMS)
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tny-analysis-probe-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/analysis-probe/
+          if-no-files-found: error
+          retention-days: 3
