@@ -46,6 +46,7 @@ final class WordPressBehaviorTest extends TestCase {
 		$this->users = array();
 		delete_option( 'ran-tnysig_options' );
 		wp_set_current_user( 0 );
+		unset( $GLOBALS['user_id'] );
 		wp_dequeue_style( 'signature_admin_css' );
 		wp_deregister_style( 'signature_admin_css' );
 		wp_reset_postdata();
@@ -118,8 +119,7 @@ final class WordPressBehaviorTest extends TestCase {
 		wp_set_current_user( $current_user_id );
 		update_user_meta( $current_user_id, 'ran-tnysig_editor_notice-dismissed', true );
 
-		global $user_id;
-		$user_id = $other_user_id; // Deliberately conflict with the authenticated user.
+		$GLOBALS['user_id'] = $other_user_id; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- regression fixture for the legacy page global.
 
 		self::assertTrue( Admin\load_custom_css( 'post.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
