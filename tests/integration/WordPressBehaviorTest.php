@@ -129,8 +129,8 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertSame( array(), wp_styles()->registered['signature_admin_css']->deps );
 	}
 
-	/** Verify WordPress hooks use void adapters while direct status APIs remain callable. */
-	public function test_wordpress_actions_use_void_adapters_without_breaking_direct_status_calls(): void {
+	/** Verify WordPress hooks dispatch void adapters while direct status APIs remain callable. */
+	public function test_wordpress_actions_dispatch_void_adapters_without_breaking_direct_status_calls(): void {
 		$user_id = $this->create_user();
 
 		wp_set_current_user( 0 );
@@ -158,6 +158,24 @@ final class WordPressBehaviorTest extends TestCase {
 			10,
 			has_action( 'edit_user_profile_update', 'RAN\\TnySignature\\UserProfile\\save_additional_user_meta_action' )
 		);
+
+		wp_set_current_user( $user_id );
+
+		do_action( 'admin_enqueue_scripts', 'profile.php' );
+		self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
+
+		do_action( 'admin_print_scripts-profile.php' );
+		self::assertTrue( wp_script_is( 'signature_user_profile_js', 'enqueued' ) );
+
+		$_POST['ran_tnysig_nonce'] = wp_create_nonce( 'ran_tnysig_user_profile_update' ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- the nonce is created and consumed by the integration fixture.
+		$_POST['signature_name']    = 'Hook Saved Name'; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- consumed through the real hooked saver above.
+		try {
+			do_action( 'personal_options_update', $user_id );
+		} finally {
+			unset( $_POST['ran_tnysig_nonce'], $_POST['signature_name'] );
+		}
+
+		self::assertSame( 'Hook Saved Name', get_user_meta( $user_id, 'ran-tnysig_name', true ) );
 	}
 
 	/** Verify notice assets use the authenticated user, not a legacy page global. */
