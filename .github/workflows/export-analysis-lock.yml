@@ -1,0 +1,91 @@
+name: Export analysis Composer lock
+
+on:
+  push:
+    branches:
+      - ci/4-phpstan-lock-artifact
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    if: github.repository == 'RocketsAreNostalgic/tnySignature'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      INPUT_SHA: e8a196a71bfe5f7246a4a8d37961ab53a7392541
+    steps:
+      - name: Check out the exact implementation input
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ env.INPUT_SHA }}
+          persist-credentials: false
+
+      - name: Verify checkout and record input hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$INPUT_SHA"
+          mkdir "$RUNNER_TEMP/analysis-lock-export"
+          sha256sum composer.json composer.lock > "$RUNNER_TEMP/analysis-lock-export/input-sha256.txt"
+
+      - name: Set up PHP at the supported floor
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: composer:v2
+
+      - name: Resolve the analysis dependencies with Composer
+        shell: bash
+        run: |
+          set -euo pipefail
+          composer --no-plugins --no-scripts require --dev --no-interaction \
+            --no-install --update-with-dependencies --minimal-changes \
+            'phpstan/phpstan:^2.1' 'szepeviktor/phpstan-wordpress:^2.0'
+          composer --no-plugins --no-scripts validate --strict
+          git diff --check
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import shutil
+          import subprocess
+
+          changed = subprocess.check_output(['git', 'diff', '--name-only', '-z']).decode().split('\0')
+          unexpected = set(filter(None, changed)) - {'composer.json', 'composer.lock'}
+          if unexpected:
+              raise SystemExit(f'Unexpected tracked changes: {sorted(unexpected)}')
+          before = json.loads(subprocess.check_output(['git', 'show', 'HEAD:composer.lock']))
+          after = json.loads(Path('composer.lock').read_text())
+          def packages(lock):
+              return {p['name']: p for group in ('packages', 'packages-dev') for p in lock.get(group, [])}
+          original, generated = packages(before), packages(after)
+          for name, package in original.items():
+              if generated.get(name) != package:
+                  raise SystemExit(f'Existing locked package changed: {name}')
+          destination = Path(os.environ['RUNNER_TEMP']) / 'analysis-lock-export'
+          for name in ('composer.json', 'composer.lock'):
+              shutil.copyfile(name, destination / name)
+          metadata = {
+              'repository': os.environ['GITHUB_REPOSITORY'],
+              'input_sha': os.environ['INPUT_SHA'],
+              'workflow_sha': os.environ['GITHUB_SHA'],
+              'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'php': subprocess.check_output(['php', '-r', 'echo PHP_VERSION;']).decode(),
+              'composer': subprocess.check_output(['composer', '--version', '--no-ansi']).decode().strip(),
+              'added_packages': {name: generated[name]['version'] for name in sorted(generated.keys() - original.keys())}
+          }
+          (destination / 'generation.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          PY
+          (cd "$RUNNER_TEMP/analysis-lock-export" && sha256sum composer.json composer.lock > generated-sha256.txt)
+
+      - name: Upload generated files for review and import
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: tny-analysis-lock-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/analysis-lock-export/
+          if-no-files-found: error
+          retention-days: 3
