@@ -25,6 +25,7 @@ $_SERVER['REQUEST_URI']    = '/';
 require_once $tny_signature_wp_load;
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
 require_once ABSPATH . 'wp-admin/includes/user.php';
+require_once ABSPATH . 'wp-admin/includes/template.php';
 
 $tny_signature_plugin = 'tny-signature/tny-singnature.php';
 if ( ! is_plugin_active( $tny_signature_plugin ) ) {
