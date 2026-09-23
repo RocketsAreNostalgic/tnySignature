@@ -38,7 +38,7 @@ function user_profile_fields( WP_User $user ): void {
 			$author = (string) get_user_meta( $user_id, 'nickname', true );
 		}
 
-		$image = get_the_author_meta( 'ran-tnysig_image_id', $user_id );
+		$image = (int) get_the_author_meta( 'ran-tnysig_image_id', $user_id );
 		if ( $image ) {
 			$image = wp_get_attachment_image(
 				$image,
@@ -190,5 +190,16 @@ function save_additional_user_meta( int $user_id ): bool {
 	return true;
 }
 
-add_action( 'personal_options_update', __NAMESPACE__ . '\\save_additional_user_meta' );
-add_action( 'edit_user_profile_update', __NAMESPACE__ . '\\save_additional_user_meta' );
+/**
+ * WordPress action adapter for the status-returning profile saver.
+ *
+ * @param int $user_id The ID of the user being edited.
+ *
+ * @since 0.3.7
+ */
+function save_additional_user_meta_action( int $user_id ): void {
+	save_additional_user_meta( $user_id );
+}
+
+add_action( 'personal_options_update', __NAMESPACE__ . '\\save_additional_user_meta_action' );
+add_action( 'edit_user_profile_update', __NAMESPACE__ . '\\save_additional_user_meta_action' );
