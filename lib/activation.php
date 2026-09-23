@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Check for minimum operating requirements.
  *
  * Verifies that the WordPress and PHP versions meet minimum requirements.
- * Deactivates the plugin if requirements are not met.
+ * Aborts activation if requirements are not met.
  *
  * @param string $phpv Minimum PHP version required.
  * @param string $wpv  Minimum WordPress version required.
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @throws WP_Exception When plugin requirements are not met.
  */
-function activate( string $phpv = '8.1', string $wpv = '5.0' ): void {
+function activate( string $phpv = '8.1', string $wpv = '5.3' ): void {
 	$plugin_data = Support\get_plugin_atts();
 	$name        = ( ( ! empty( $plugin_data['Plugin Name'] ) ? $plugin_data['Plugin Name'] : '' ) );
 
@@ -79,8 +79,23 @@ function activate( string $phpv = '8.1', string $wpv = '5.0' ): void {
 				'back_link' => true,
 			)
 		);
-		deactivate_plugins( plugin_basename( TNYSIGNATURE_PLUGIN ) );
 	} elseif ( get_option( 'ran-tnysig_options' ) === false ) {
 		add_option( 'ran-tnysig_options', Admin\get_defaults() );
 	}
+}
+
+/**
+ * WordPress activation-hook adapter.
+ *
+ * WordPress passes the network-wide state as the first callback argument.
+ * Runtime requirements are independent of that state, so consume it here and
+ * keep the separately callable requirements checker free of hook arguments.
+ *
+ * @param bool $network_wide Whether the plugin is being network activated.
+ *
+ * @since 0.3.7
+ */
+function activation_hook( bool $network_wide ): void {
+	unset( $network_wide );
+	activate();
 }

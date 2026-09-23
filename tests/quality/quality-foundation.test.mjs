@@ -41,7 +41,7 @@ test('runtime floors and locked toolchain stay aligned', () => {
 	assert.equal(pkg.packageManager, 'pnpm@11.13.1');
 	assert.equal(pkg.volta.node, '24.11.0');
 	assert.equal(pkg.engines.node, '>=24.11.0 <25');
-	assert.match(plugin, /^ \* Requires at least: 5\.0$/m);
+	assert.match(plugin, /^ \* Requires at least: 5\.3$/m);
 	assert.match(plugin, /^ \* Requires PHP: 8\.1$/m);
 	assert.match(setup, /require\('\.\/package\.json'\)\.volta\.node/);
 	assert.match(setup, /test "\$\(node --version\)" = "v\$\{expected_node\}"/);

@@ -2,7 +2,7 @@
 <ruleset name="Tny Signature">
 	<description>RAN WordPress plugin baseline with Tny Signature compatibility and identity rules.</description>
 
-	<config name="minimum_wp_version" value="5.0"/>
+	<config name="minimum_wp_version" value="5.3"/>
 	<config name="testVersion" value="8.1-"/>
 
 	<file>.</file>

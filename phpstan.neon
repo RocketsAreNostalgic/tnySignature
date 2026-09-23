@@ -2,7 +2,7 @@ includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-	level: 3
+	level: 4
 	phpVersion: 80100
 	paths:
 		- index.php
@@ -28,9 +28,9 @@ parameters:
 			count: 1
 		-
 			identifier: return.void
-			message: '#^Action callback returns bool\|null but should not return anything\.$#'
+			message: '#^Action callback returns bool but should not return anything\.$#'
 			path: lib/admin-enqueue.php
-			count: 2
+			count: 3
 		-
 			identifier: return.void
 			message: '#^Action callback returns bool but should not return anything\.$#'
