@@ -33,9 +33,9 @@ function user_profile_fields( WP_User $user ): void {
 	if ( current_user_can( 'edit_posts' ) ) {
 		$user_id = $user->ID;
 
-		$author = get_user_meta( $user_id, 'first_name', true ) . ' ' . get_user_meta( $user_id, 'last_name', true );
-		if ( ! $author ) {
-			$author = get_user_meta( $user_id, 'nickname', true );
+		$author = trim( (string) get_user_meta( $user_id, 'first_name', true ) . ' ' . (string) get_user_meta( $user_id, 'last_name', true ) );
+		if ( '' === $author ) {
+			$author = (string) get_user_meta( $user_id, 'nickname', true );
 		}
 
 		$image = get_the_author_meta( 'ran-tnysig_image_id', $user_id );

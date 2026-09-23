@@ -8,7 +8,7 @@ const read = (path) =>
 test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	const workflow = read('.github/workflows/quality.yml');
 	const baseline = workflow.match(
-		/\n  baseline:\n([\s\S]*?)\n  quality:/
+		/\n  baseline:\n([\s\S]*?)\n  integration:/
 	)?.[1];
 	assert.ok(baseline, 'baseline job must exist');
 	assert.match(
@@ -17,17 +17,26 @@ test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	);
 	assert.match(baseline, /php-version: '8\.1'/);
 	assert.match(baseline, /pnpm-version: '11\.13\.1'/);
+	assert.match(workflow, /- '5\.3'/);
+	assert.match(workflow, /- '7\.1\.2'/);
+	assert.doesNotMatch(workflow, /- latest/);
+	assert.match(
+		workflow,
+		/mysql:8\.0@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b/
+	);
 
 	const terminal = workflow.match(/\n  quality:\n([\s\S]*)$/)?.[1];
 	assert.ok(terminal, 'terminal quality job must exist');
 	assert.match(terminal, /name: quality/);
 	assert.match(terminal, /if: \$\{\{ always\(\) \}\}/);
-	assert.match(terminal, /needs: baseline/);
+	assert.match(terminal, /- baseline/);
+	assert.match(terminal, /- integration/);
 	assert.match(
 		terminal,
 		/BASELINE_RESULT: \$\{\{ needs\.baseline\.result \}\}/
 	);
 	assert.match(terminal, /test "\$BASELINE_RESULT" = success/);
+	assert.match(terminal, /test "\$INTEGRATION_RESULT" = success/);
 });
 
 test('runtime floors and locked toolchain stay aligned', () => {
@@ -41,7 +50,7 @@ test('runtime floors and locked toolchain stay aligned', () => {
 	assert.equal(pkg.packageManager, 'pnpm@11.13.1');
 	assert.equal(pkg.volta.node, '24.11.0');
 	assert.equal(pkg.engines.node, '>=24.11.0 <25');
-	assert.match(plugin, /^ \* Requires at least: 5\.0$/m);
+	assert.match(plugin, /^ \* Requires at least: 5\.3$/m);
 	assert.match(plugin, /^ \* Requires PHP: 8\.1$/m);
 	assert.match(setup, /require\('\.\/package\.json'\)\.volta\.node/);
 	assert.match(setup, /test "\$\(node --version\)" = "v\$\{expected_node\}"/);

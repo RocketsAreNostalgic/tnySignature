@@ -28,6 +28,7 @@
     "phpcompatibility/phpcompatibility-paragonie": "2.0.0-alpha2",
     "phpcompatibility/phpcompatibility-wp": "3.0.0-alpha2",
     "phpstan/phpstan": "^2.1",
+    "phpunit/phpunit": "^9.6",
     "ran/coding-standards": "dev-main",
     "slevomat/coding-standard": "^8.14",
     "szepeviktor/phpstan-wordpress": "^2.0"
@@ -43,7 +44,8 @@
       "@standards:full",
       "@analyze"
     ],
-    "analyze": "phpstan analyse --configuration=phpstan.neon --no-progress"
+    "analyze": "phpstan analyse --configuration=phpstan.neon --no-progress",
+    "test:integration": "phpunit --configuration tests/integration/phpunit.xml.dist"
   },
   "config": {
     "allow-plugins": {

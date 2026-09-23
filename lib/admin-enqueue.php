@@ -28,10 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.0.2
  */
 function load_custom_css( string $page ): bool {
-	global $user_id;
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;
 	}
+
+	$user_id = get_current_user_id();
 
 	// Get plugin version for cache busting.
 	$plugin_data = Support\get_plugin_atts();
@@ -99,9 +100,9 @@ add_action( 'admin_print_scripts-post-new.php', __NAMESPACE__ . '\\ajax_load_scr
  * Enqueue the needed scripts for the profile page.
  *
  * @since 0.0.2
- * @return bool|null Whether the current user can edit posts.
+ * @return bool Whether the current user can edit posts.
  */
-function load_custom_profile_js(): bool|null {
+function load_custom_profile_js(): bool {
 	// Only run if the current user can edit user profiles.
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;

@@ -56,11 +56,11 @@ The frontend quality configuration inherits the shared `@rocketsarenostalgic/qua
 
 ## PHP standards
 
-`.phpcs.xml` inherits `RANWordPressPlugin` from `ran/coding-standards`, then retains Tny Signature-specific prefix, documentation and Slevomat rules. The declared compatibility floors are WordPress 5.0 and PHP 8.1.
+`.phpcs.xml` inherits `RANWordPressPlugin` from `ran/coding-standards`, then retains Tny Signature-specific prefix, documentation and Slevomat rules. The declared compatibility floors are WordPress 5.3 and PHP 8.1. WordPress 5.0-5.2 cannot bootstrap on the plugin's required PHP 8.1 runtime; CI measures the supported boundary at WordPress 5.3.
 
 ## CI
 
-Pull requests use the organisation-owned `quality-wordpress-plugin.yml` workflow at an immutable reviewed revision. The reusable workflow checks out and verifies the exact pull-request head, installs only from tracked locks, and runs the two repository aggregates. A stable terminal `quality` job is the repository merge-quality result.
+Pull requests use the organisation-owned `quality-wordpress-plugin.yml` workflow at an immutable reviewed revision. The reusable workflow checks out and verifies the exact pull-request head, installs only from tracked locks, and runs the two repository aggregates. A dedicated WordPress behavior lane installs the plugin on WordPress 5.3 and the current stable WordPress release (7.1.2 for this qualification), then runs `composer test:integration`. Terminal `quality` requires both that lane and the reusable source-quality baseline.
 
 ## Safety
 
