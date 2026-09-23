@@ -20,6 +20,10 @@ test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	assert.match(workflow, /- '5\.3'/);
 	assert.match(workflow, /- '7\.1\.2'/);
 	assert.doesNotMatch(workflow, /- latest/);
+	assert.match(
+		workflow,
+		/mysql:8\.0@sha256:7dcddc01f13bab2f15cde676d44d01f61fc9f99fe7785e86196dfc07d358ae2b/
+	);
 
 	const terminal = workflow.match(/\n  quality:\n([\s\S]*)$/)?.[1];
 	assert.ok(terminal, 'terminal quality job must exist');

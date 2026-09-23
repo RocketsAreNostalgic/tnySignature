@@ -111,6 +111,21 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
 	}
 
+	/** Verify notice assets use the authenticated user, not a legacy page global. */
+	public function test_editor_notice_asset_lookup_uses_the_current_user(): void {
+		$current_user_id = $this->create_user();
+		$other_user_id   = $this->create_user();
+		wp_set_current_user( $current_user_id );
+		update_user_meta( $current_user_id, 'ran-tnysig_editor_notice-dismissed', true );
+
+		global $user_id;
+		$user_id = $other_user_id; // Deliberately conflict with the authenticated user.
+
+		self::assertTrue( Admin\load_custom_css( 'post.php' ) );
+		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
+		self::assertFalse( wp_style_is( 'signature_admin_css', 'enqueued' ) );
+	}
+
 	/** Verify shortcode rendering uses the current post author and farewell. */
 	public function test_shortcode_renders_current_post_author_and_farewell(): void {
 		$user_id = $this->create_user(
