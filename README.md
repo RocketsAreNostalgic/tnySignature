@@ -31,7 +31,7 @@ PHP target **8.1.0**. It analyzes all current first-party PHP: `index.php`,
 supply string types without loading the plugin or a WordPress runtime. Vendor,
 frontend/generated assets and analysis fixtures are not production coverage.
 
-There is no blanket baseline. Three exact message/path/count entries cover five
+There is no blanket baseline. Two exact message/path/count entries cover five
 existing boolean-returning action registrations in `lib/admin-enqueue.php` and
 `lib/userprofile.php`. The extension expects void action callbacks; WordPress
 ignores their returned status. Existing callable contracts remain unchanged in
@@ -41,7 +41,7 @@ owns their reconciliation and removal, plus the remaining measured level-5 findi
 
 `pnpm check` runs the quality-contract and syntax-runner regression tests,
 including real PHPStan positive/negative controls. These test development
-checks; they do **not** constitute a PHP product behavior suite. `composer test:integration` now exercises activation, profile fallback, settings sanitization, admin asset registration and shortcode rendering inside installed WordPress. CI runs that product-behavior lane on the measured minimum WordPress 5.3 floor and on the current WordPress release.
+checks; they do **not** constitute a PHP product behavior suite. `composer test:integration` now exercises activation, profile fallback, settings sanitization, admin asset registration and shortcode rendering inside installed WordPress. CI runs that product-behavior lane on the measured minimum WordPress 5.3 floor and on the current stable WordPress release, pinned to 7.1.2 for this qualification.
 
 The WordPress 7.1 stubs describe analysis symbols, not a new minimum WordPress
 version or evidence of WordPress 5.3 execution. The plugin's declared

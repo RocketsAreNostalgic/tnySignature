@@ -60,7 +60,7 @@ The frontend quality configuration inherits the shared `@rocketsarenostalgic/qua
 
 ## CI
 
-Pull requests use the organisation-owned `quality-wordpress-plugin.yml` workflow at an immutable reviewed revision. The reusable workflow checks out and verifies the exact pull-request head, installs only from tracked locks, and runs the two repository aggregates. A dedicated WordPress behavior lane installs the plugin on WordPress 5.3 and current WordPress, then runs `composer test:integration`. Terminal `quality` requires both that lane and the reusable source-quality baseline.
+Pull requests use the organisation-owned `quality-wordpress-plugin.yml` workflow at an immutable reviewed revision. The reusable workflow checks out and verifies the exact pull-request head, installs only from tracked locks, and runs the two repository aggregates. A dedicated WordPress behavior lane installs the plugin on WordPress 5.3 and the current stable WordPress release (7.1.2 for this qualification), then runs `composer test:integration`. Terminal `quality` requires both that lane and the reusable source-quality baseline.
 
 ## Safety
 

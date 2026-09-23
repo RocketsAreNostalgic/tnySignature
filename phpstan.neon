@@ -25,11 +25,6 @@ parameters:
 			identifier: return.void
 			message: '#^Action callback returns bool but should not return anything\.$#'
 			path: lib/admin-enqueue.php
-			count: 1
-		-
-			identifier: return.void
-			message: '#^Action callback returns bool but should not return anything\.$#'
-			path: lib/admin-enqueue.php
 			count: 3
 		-
 			identifier: return.void
