@@ -82,7 +82,9 @@ function register_settings_init(): void {
 	register_setting(
 		'ran-tnysig_options',
 		'ran-tnysig_options',
-		__NAMESPACE__ . '\\settings_sanitize'
+		array(
+			'sanitize_callback' => __NAMESPACE__ . '\\settings_sanitize',
+		)
 	);
 
 	add_settings_section(
