@@ -7,12 +7,7 @@ import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const sourcePaths = [
-	'index.php',
-	'tny-singnature.php',
-	'uninstall.php',
-	'lib',
-];
+const sourcePaths = ['index.php', 'tny-singnature.php', 'uninstall.php', 'lib'];
 
 function analyze(fixture) {
 	const run = spawnSync(
@@ -34,11 +29,16 @@ function analyze(fixture) {
 }
 
 test('analysis is blocking, WordPress-aware and uses explicit production paths', () => {
-	const composer = JSON.parse(readFileSync(join(root, 'composer.json'), 'utf8'));
+	const composer = JSON.parse(
+		readFileSync(join(root, 'composer.json'), 'utf8')
+	);
 	const config = readFileSync(join(root, 'phpstan.neon'), 'utf8');
 	assert.equal(composer.scripts.analysis, undefined);
 	assert.ok(composer.scripts.check.includes('@analyze'));
-	assert.match(config, /vendor\/szepeviktor\/phpstan-wordpress\/extension\.neon/);
+	assert.match(
+		config,
+		/vendor\/szepeviktor\/phpstan-wordpress\/extension\.neon/
+	);
 	assert.match(config, /level: 3\b/);
 	assert.match(config, /phpVersion: 80100\b/);
 	const selected = config
@@ -49,7 +49,10 @@ test('analysis is blocking, WordPress-aware and uses explicit production paths',
 		.map((line) => line.trim().replace(/^- /, ''));
 	assert.deepEqual(selected, sourcePaths);
 	assert.match(config, /reportUnmatchedIgnoredErrors: true/);
-	assert.doesNotMatch(config, /baseline|excludePaths|checkFunctionNameCase: false/);
+	assert.doesNotMatch(
+		config,
+		/baseline|excludePaths|checkFunctionNameCase: false/
+	);
 });
 
 test('real PHPStan accepts WordPress symbols and rejects new type/hook errors', (t) => {

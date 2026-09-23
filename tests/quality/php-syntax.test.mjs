@@ -12,7 +12,9 @@ import { join } from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-const script = fileURLToPath(new URL('../../scripts/lint-php.sh', import.meta.url));
+const script = fileURLToPath(
+	new URL('../../scripts/lint-php.sh', import.meta.url)
+);
 
 function sandbox(t) {
 	const directory = mkdtempSync(join(tmpdir(), 'tny-syntax-control-'));
@@ -46,10 +48,16 @@ function fakeTool(directory, name, body) {
 
 test('syntax sweep handles whitespace and excludes dependency PHP', (t) => {
 	const directory = sandbox(t);
-	writeFileSync(join(directory, 'space and\nnewline.php'), '<?php echo "valid";');
+	writeFileSync(
+		join(directory, 'space and\nnewline.php'),
+		'<?php echo "valid";'
+	);
 	for (const ignored of ['vendor', 'node_modules']) {
 		mkdirSync(join(directory, ignored));
-		writeFileSync(join(directory, ignored, 'invalid.php'), '<?php function (');
+		writeFileSync(
+			join(directory, ignored, 'invalid.php'),
+			'<?php function ('
+		);
 	}
 	const run = lint(directory);
 	assert.equal(run.status, 0, run.stderr);
