@@ -41,9 +41,9 @@
     "check": [
       "@lint:syntax",
       "@standards:full",
-      "@analysis"
+      "@analyze"
     ],
-    "analysis": "phpstan analyse --configuration=phpstan.neon --no-progress"
+    "analyze": "phpstan analyse --configuration=phpstan.neon --no-progress"
   },
   "config": {
     "allow-plugins": {

@@ -99,7 +99,7 @@ add_action( 'admin_print_scripts-post-new.php', __NAMESPACE__ . '\\ajax_load_scr
  * Enqueue the needed scripts for the profile page.
  *
  * @since 0.0.2
- * @return bool|void Returns false if user doesn't have permission.
+ * @return bool|null Whether the current user can edit posts.
  */
 function load_custom_profile_js(): bool|null {
 	// Only run if the current user can edit user profiles.
