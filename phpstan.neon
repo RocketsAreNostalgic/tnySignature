@@ -2,7 +2,7 @@ includes:
 	- vendor/szepeviktor/phpstan-wordpress/extension.neon
 
 parameters:
-	level: 4
+	level: 5
 	phpVersion: 80100
 	paths:
 		- index.php
@@ -16,18 +16,3 @@ parameters:
 		SIGNATURE_URL: string
 	reportUnmatchedIgnoredErrors: true
 
-	# Existing callbacks return status booleans that WordPress actions ignore.
-	# Keep the runtime contracts unchanged in this tooling-only slice. Issue #5
-	# owns behavior tests, signature reconciliation and removal of these entries.
-	# Exact message/path/count: this does not disable hook checks elsewhere.
-	ignoreErrors:
-		-
-			identifier: return.void
-			message: '#^Action callback returns bool but should not return anything\.$#'
-			path: lib/admin-enqueue.php
-			count: 3
-		-
-			identifier: return.void
-			message: '#^Action callback returns bool but should not return anything\.$#'
-			path: lib/userprofile.php
-			count: 2
