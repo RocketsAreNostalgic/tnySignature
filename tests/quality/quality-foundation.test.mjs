@@ -17,6 +17,9 @@ test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	);
 	assert.match(baseline, /php-version: '8\.1'/);
 	assert.match(baseline, /pnpm-version: '11\.13\.1'/);
+	assert.match(workflow, /- '5\.3'/);
+	assert.match(workflow, /- '7\.1\.2'/);
+	assert.doesNotMatch(workflow, /- latest/);
 
 	const terminal = workflow.match(/\n  quality:\n([\s\S]*)$/)?.[1];
 	assert.ok(terminal, 'terminal quality job must exist');
