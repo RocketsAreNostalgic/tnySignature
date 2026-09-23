@@ -45,6 +45,9 @@ final class WordPressBehaviorTest extends TestCase {
 		$this->posts = array();
 		$this->users = array();
 		delete_option( 'ran-tnysig_options' );
+		if ( function_exists( 'unregister_setting' ) ) {
+			unregister_setting( 'ran-tnysig_options', 'ran-tnysig_options' );
+		}
 		wp_set_current_user( 0 );
 		unset( $GLOBALS['user_id'] );
 		wp_dequeue_style( 'signature_admin_css' );
@@ -102,6 +105,18 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 	}
 
+	/** Verify settings registration preserves the sanitizer through modern args. */
+	public function test_settings_registration_uses_the_expected_sanitizer(): void {
+		Admin\register_settings_init();
+		$registered = get_registered_settings();
+
+		self::assertArrayHasKey( 'ran-tnysig_options', $registered );
+		self::assertSame(
+			'RAN\\TnySignature\\Admin\\settings_sanitize',
+			$registered['ran-tnysig_options']['sanitize_callback']
+		);
+	}
+
 	/** Verify profile assets register and enqueue for an editor-capable user. */
 	public function test_profile_asset_loader_registers_and_enqueues_the_admin_styles(): void {
 		$created_user_id = $this->create_user();
@@ -110,6 +125,38 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertTrue( Admin\load_custom_css( 'profile.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
+		self::assertSame( array(), wp_styles()->registered['signature_admin_css']->deps );
+	}
+
+	/** Verify WordPress hooks use void adapters while direct status APIs remain callable. */
+	public function test_wordpress_actions_use_void_adapters_without_breaking_direct_status_calls(): void {
+		$user_id = $this->create_user();
+
+		wp_set_current_user( 0 );
+		self::assertFalse( Admin\load_custom_css( 'post.php' ) );
+		self::assertFalse( Admin\load_custom_profile_js() );
+		self::assertFalse( UserProfile\save_additional_user_meta( $user_id ) );
+
+		self::assertSame(
+			10,
+			has_action( 'admin_enqueue_scripts', 'RAN\\TnySignature\\Admin\\load_custom_css_action' )
+		);
+		self::assertSame(
+			11,
+			has_action( 'admin_print_scripts-profile.php', 'RAN\\TnySignature\\Admin\\load_custom_profile_js_action' )
+		);
+		self::assertSame(
+			11,
+			has_action( 'admin_print_scripts-user-edit.php', 'RAN\\TnySignature\\Admin\\load_custom_profile_js_action' )
+		);
+		self::assertSame(
+			10,
+			has_action( 'personal_options_update', 'RAN\\TnySignature\\UserProfile\\save_additional_user_meta_action' )
+		);
+		self::assertSame(
+			10,
+			has_action( 'edit_user_profile_update', 'RAN\\TnySignature\\UserProfile\\save_additional_user_meta_action' )
+		);
 	}
 
 	/** Verify notice assets use the authenticated user, not a legacy page global. */
@@ -124,6 +171,78 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertTrue( Admin\load_custom_css( 'post.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
 		self::assertFalse( wp_style_is( 'signature_admin_css', 'enqueued' ) );
+	}
+
+	/** Verify string-backed attachment meta still renders a profile image. */
+	public function test_profile_image_meta_accepts_wordpress_string_storage(): void {
+		$user_id       = $this->create_user();
+		$attachment_id = $this->create_attachment();
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'ran-tnysig_image_id', (string) $attachment_id );
+
+		$observed_id = null;
+		$filter      = static function ( $downsize, $id ) use ( &$observed_id, $attachment_id ) {
+			if ( $attachment_id === (int) $id ) {
+				$observed_id = $id;
+				return array( 'https://example.test/signature.png', 120, 40, true );
+			}
+			return $downsize;
+		};
+		add_filter( 'image_downsize', $filter, 10, 2 );
+
+		$user = get_userdata( $user_id );
+		self::assertInstanceOf( WP_User::class, $user );
+
+		try {
+			ob_start();
+			UserProfile\user_profile_fields( $user );
+			$html = (string) ob_get_clean();
+		} finally {
+			remove_filter( 'image_downsize', $filter, 10 );
+		}
+
+		self::assertSame( $attachment_id, $observed_id );
+		self::assertStringContainsString( 'signature-image-preview', $html );
+		self::assertStringContainsString( 'signature.png', $html );
+	}
+
+	/** Verify numeric image dimensions preserve rendered shortcode output. */
+	public function test_shortcode_renders_numeric_image_dimensions_as_attributes(): void {
+		$user_id       = $this->create_user( array( 'nickname' => 'Image Author' ) );
+		$attachment_id = $this->create_attachment();
+		update_user_meta( $user_id, 'ran-tnysig_image_id', (string) $attachment_id );
+
+		$post_id = wp_insert_post(
+			array(
+				'post_author'  => $user_id,
+				'post_status'  => 'publish',
+				'post_title'   => 'Image signature integration fixture',
+				'post_content' => '[signature]Regards[/signature]',
+			)
+		);
+		self::assertIsInt( $post_id );
+		self::assertGreaterThan( 0, $post_id );
+		$this->posts[] = $post_id;
+
+		$filter = static function ( $downsize, $id ) use ( $attachment_id ) {
+			if ( $attachment_id === (int) $id ) {
+				return array( 'https://example.test/signature.png', 120, 40, true );
+			}
+			return $downsize;
+		};
+		add_filter( 'image_downsize', $filter, 10, 2 );
+
+		global $post;
+		$post = get_post( $post_id ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		setup_postdata( $post );
+
+		try {
+			$html = Shortcode\shortcode( array(), 'Regards' );
+		} finally {
+			remove_filter( 'image_downsize', $filter, 10 );
+		}
+
+		self::assertStringContainsString( 'height: 40px; width: 120px;', $html );
 	}
 
 	/** Verify shortcode rendering uses the current post author and farewell. */
@@ -156,6 +275,23 @@ final class WordPressBehaviorTest extends TestCase {
 
 		self::assertStringContainsString( 'Regards', $html );
 		self::assertStringContainsString( 'Ada Lovelace', $html );
+	}
+
+	/**
+	 * Create a minimal attachment post for image-behavior tests.
+	 */
+	private function create_attachment(): int {
+		$id = wp_insert_attachment(
+			array(
+				'post_mime_type' => 'image/png',
+				'post_status'    => 'inherit',
+				'post_title'     => 'Signature image fixture',
+			)
+		);
+		self::assertIsInt( $id );
+		self::assertGreaterThan( 0, $id );
+		$this->posts[] = $id;
+		return $id;
 	}
 
 	/**
