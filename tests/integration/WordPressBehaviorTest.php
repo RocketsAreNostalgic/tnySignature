@@ -45,9 +45,6 @@ final class WordPressBehaviorTest extends TestCase {
 		$this->posts = array();
 		$this->users = array();
 		delete_option( 'ran-tnysig_options' );
-		if ( function_exists( 'unregister_setting' ) ) {
-			unregister_setting( 'ran-tnysig_options', 'ran-tnysig_options' );
-		}
 		wp_set_current_user( 0 );
 		unset( $GLOBALS['user_id'] );
 		wp_dequeue_style( 'signature_admin_css' );
@@ -108,13 +105,17 @@ final class WordPressBehaviorTest extends TestCase {
 	/** Verify settings registration preserves the sanitizer through modern args. */
 	public function test_settings_registration_uses_the_expected_sanitizer(): void {
 		Admin\register_settings_init();
-		$registered = get_registered_settings();
 
-		self::assertArrayHasKey( 'ran-tnysig_options', $registered );
-		self::assertSame(
-			'RAN\\TnySignature\\Admin\\settings_sanitize',
-			$registered['ran-tnysig_options']['sanitize_callback']
-		);
+		try {
+			$registered = get_registered_settings();
+			self::assertArrayHasKey( 'ran-tnysig_options', $registered );
+			self::assertSame(
+				'RAN\\TnySignature\\Admin\\settings_sanitize',
+				$registered['ran-tnysig_options']['sanitize_callback']
+			);
+		} finally {
+			unregister_setting( 'ran-tnysig_options', 'ran-tnysig_options' );
+		}
 	}
 
 	/** Verify profile assets register and enqueue for an editor-capable user. */
