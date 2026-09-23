@@ -7,13 +7,13 @@
 
 declare(strict_types = 1);
 
-$wordpress_root = getenv( 'TNY_WORDPRESS_ROOT' );
-if ( false === $wordpress_root || '' === $wordpress_root ) {
+$tny_signature_wordpress_root = getenv( 'TNY_WORDPRESS_ROOT' );
+if ( false === $tny_signature_wordpress_root || '' === $tny_signature_wordpress_root ) {
 	throw new RuntimeException( 'TNY_WORDPRESS_ROOT must identify the installed WordPress root.' );
 }
 
-$wp_load = rtrim( $wordpress_root, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . 'wp-load.php';
-if ( ! is_file( $wp_load ) ) {
+$tny_signature_wp_load = rtrim( $tny_signature_wordpress_root, DIRECTORY_SEPARATOR ) . DIRECTORY_SEPARATOR . 'wp-load.php';
+if ( ! is_file( $tny_signature_wp_load ) ) {
 	throw new RuntimeException( 'WordPress wp-load.php was not found.' );
 }
 
@@ -22,11 +22,11 @@ $_SERVER['SERVER_NAME']    = 'tny-integration.test';
 $_SERVER['REQUEST_METHOD'] = 'GET';
 $_SERVER['REQUEST_URI']    = '/';
 
-require_once $wp_load;
+require_once $tny_signature_wp_load;
 require_once ABSPATH . 'wp-admin/includes/plugin.php';
 require_once ABSPATH . 'wp-admin/includes/user.php';
 
-$plugin = 'tny-signature/tny-singnature.php';
-if ( ! is_plugin_active( $plugin ) ) {
+$tny_signature_plugin = 'tny-signature/tny-singnature.php';
+if ( ! is_plugin_active( $tny_signature_plugin ) ) {
 	throw new RuntimeException( 'Tny Signature must be active before the integration suite starts.' );
 }

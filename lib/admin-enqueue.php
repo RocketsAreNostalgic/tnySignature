@@ -28,10 +28,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 0.0.2
  */
 function load_custom_css( string $page ): bool {
-	global $user_id;
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return false;
 	}
+
+	$user_id = get_current_user_id();
 
 	// Get plugin version for cache busting.
 	$plugin_data = Support\get_plugin_atts();

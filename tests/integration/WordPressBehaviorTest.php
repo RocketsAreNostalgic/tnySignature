@@ -16,14 +16,15 @@ use RAN\TnySignature\Shortcode;
 use RAN\TnySignature\UserProfile;
 use WP_User;
 
+/**
+ * Verify behavior through a real installed WordPress runtime.
+ */
 final class WordPressBehaviorTest extends TestCase {
-	/** @var list<int> */
-	private array $users = array();
+	/** User IDs created by each test.\n\t *\n\t * @var list<int>\n\t */\n\tprivate array $users = array();
 
-	/** @var list<int> */
-	private array $posts = array();
+	/** Post IDs created by each test.\n\t *\n\t * @var list<int>\n\t */\n\tprivate array $posts = array();
 
-	protected function tearDown(): void {
+	/**\n\t * Remove WordPress state created by the preceding test.\n\t */\n\tprotected function tearDown(): void {
 		foreach ( $this->posts as $post_id ) {
 			wp_delete_post( $post_id, true );
 		}
@@ -40,7 +41,7 @@ final class WordPressBehaviorTest extends TestCase {
 		parent::tearDown();
 	}
 
-	public function test_activation_hook_uses_a_wordpress_adapter_and_initializes_defaults(): void {
+	/** Verify the WordPress activation adapter preserves default initialization. */\n\tpublic function test_activation_hook_uses_a_wordpress_adapter_and_initializes_defaults(): void {
 		$hook = 'activate_' . plugin_basename( TNYSIGNATURE_PLUGIN );
 
 		self::assertSame(
@@ -57,7 +58,7 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 	}
 
-	public function test_profile_uses_nickname_when_first_and_last_name_are_empty(): void {
+	/** Verify empty names fall back to the user's nickname. */\n\tpublic function test_profile_uses_nickname_when_first_and_last_name_are_empty(): void {
 		$user_id = $this->create_user(
 			array(
 				'nickname'   => 'Fallback Nickname',
@@ -77,7 +78,7 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertStringContainsString( 'placeholder="Fallback Nickname"', $html );
 	}
 
-	public function test_settings_sanitization_keeps_known_post_types_and_drops_unknown_values(): void {
+	/** Verify settings sanitization retains only registered post types. */\n\tpublic function test_settings_sanitization_keeps_known_post_types_and_drops_unknown_values(): void {
 		self::assertSame(
 			array( 'post_types' => array( 'post', 'page' ) ),
 			Admin\settings_sanitize(
@@ -86,18 +87,16 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 	}
 
-	public function test_profile_asset_loader_registers_and_enqueues_the_admin_styles(): void {
+	/** Verify profile assets register and enqueue for an editor-capable user. */\n\tpublic function test_profile_asset_loader_registers_and_enqueues_the_admin_styles(): void {
 		$created_user_id = $this->create_user();
 		wp_set_current_user( $created_user_id );
-		global $user_id;
-		$user_id = $created_user_id;
 
 		self::assertTrue( Admin\load_custom_css( 'profile.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'enqueued' ) );
 	}
 
-	public function test_shortcode_renders_current_post_author_and_farewell(): void {
+	/** Verify shortcode rendering uses the current post author and farewell. */\n\tpublic function test_shortcode_renders_current_post_author_and_farewell(): void {
 		$user_id = $this->create_user(
 			array(
 				'first_name' => 'Ada',
@@ -106,7 +105,7 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 		update_user_meta( $user_id, 'ran-tnysig_name', 'Ada Lovelace' );
 
-		$post_id       = wp_insert_post(
+		$post_id = wp_insert_post(
 			array(
 				'post_author'  => $user_id,
 				'post_status'  => 'publish',
@@ -128,8 +127,7 @@ final class WordPressBehaviorTest extends TestCase {
 		self::assertStringContainsString( 'Ada Lovelace', $html );
 	}
 
-	/**
-	 * @param array<string, string> $overrides User fields to override.
+	/**\n\t * Create an author user for an integration test.\n\t *\n\t * @param array<string, string> $overrides User fields to override.
 	 */
 	private function create_user( array $overrides = array() ): int {
 		$seed = count( $this->users ) + 1;
