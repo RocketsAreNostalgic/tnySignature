@@ -39,7 +39,7 @@ test('analysis is blocking, WordPress-aware and uses explicit production paths',
 		config,
 		/vendor\/szepeviktor\/phpstan-wordpress\/extension\.neon/
 	);
-	assert.match(config, /level: 3\b/);
+	assert.match(config, /level: 4\b/);
 	assert.match(config, /phpVersion: 80100\b/);
 	const selected = config
 		.split('\tpaths:\n')[1]

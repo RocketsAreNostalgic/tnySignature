@@ -17,13 +17,95 @@ jobs:
       php-version: '8.1'
       pnpm-version: '11.13.1'
 
+  integration:
+    name: WordPress ${{ matrix.wordpress }} / PHP 8.1 behavior
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        wordpress:
+          - '5.3'
+          - latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: integration-only
+          MYSQL_DATABASE: tny_integration
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -pintegration-only"
+          --health-interval=10s --health-timeout=5s --health-retries=5
+    steps:
+      - name: Check out exact tested revision
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Verify exact tested revision
+        env:
+          EXPECTED_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+
+      - name: Set up PHP and WordPress CLI
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.1'
+          coverage: none
+          extensions: mysqli
+          tools: composer:v2, wp-cli:2.12.0
+
+      - name: Install locked PHP development dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install exact WordPress environment and plugin
+        env:
+          WORDPRESS_VERSION: ${{ matrix.wordpress }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          wp_root="$RUNNER_TEMP/wordpress"
+          wp core download --version="$WORDPRESS_VERSION" --path="$wp_root"
+          actual_version="$(wp core version --path="$wp_root")"
+          wp core verify-checksums --version="$actual_version" --path="$wp_root"
+          wp config create --path="$wp_root" --dbname=tny_integration --dbuser=root --dbpass=integration-only --dbhost=127.0.0.1:3306 --dbprefix=tny_test_ --skip-check
+          wp core install --path="$wp_root" --url=http://tny-integration.test --title=Integration --admin_user=integration --admin_password=integration-only --admin_email=integration@example.test --skip-email
+
+          plugin_root="$wp_root/wp-content/plugins/tny-signature"
+          mkdir -p "$plugin_root"
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='node_modules' \
+            --exclude='vendor' \
+            "$GITHUB_WORKSPACE/" "$plugin_root/"
+          wp plugin activate tny-signature --path="$wp_root"
+          test "$(wp plugin get tny-signature --field=status --path="$wp_root")" = active
+          printf 'WORDPRESS_ROOT=%s\nWORDPRESS_VERSION=%s\n' "$wp_root" "$actual_version" >> "$GITHUB_ENV"
+
+      - name: Run WordPress-backed behavior tests
+        env:
+          TNY_WORDPRESS_ROOT: ${{ env.WORDPRESS_ROOT }}
+        run: composer test:integration
+
   quality:
     name: quality
     if: ${{ always() }}
-    needs: baseline
+    needs:
+      - baseline
+      - integration
     runs-on: ubuntu-latest
     steps:
-      - name: Require shared WordPress quality baseline
+      - name: Require all ordinary quality lanes
         env:
           BASELINE_RESULT: ${{ needs.baseline.result }}
-        run: test "$BASELINE_RESULT" = success
+          INTEGRATION_RESULT: ${{ needs.integration.result }}
+        run: |
+          test "$BASELINE_RESULT" = success
+          test "$INTEGRATION_RESULT" = success

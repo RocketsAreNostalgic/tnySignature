@@ -7,11 +7,14 @@
 
 declare(strict_types = 1);
 
+namespace RAN\TnySignature\Tests\Integration;
+
 use PHPUnit\Framework\TestCase;
 use RAN\TnySignature\Activation;
 use RAN\TnySignature\Admin;
 use RAN\TnySignature\Shortcode;
 use RAN\TnySignature\UserProfile;
+use WP_User;
 
 final class WordPressBehaviorTest extends TestCase {
 	/** @var list<int> */
@@ -64,8 +67,11 @@ final class WordPressBehaviorTest extends TestCase {
 		);
 		wp_set_current_user( $user_id );
 
+		$user = get_userdata( $user_id );
+		self::assertInstanceOf( WP_User::class, $user );
+
 		ob_start();
-		UserProfile\user_profile_fields( get_userdata( $user_id ) );
+		UserProfile\user_profile_fields( $user );
 		$html = (string) ob_get_clean();
 
 		self::assertStringContainsString( 'placeholder="Fallback Nickname"', $html );
@@ -81,8 +87,10 @@ final class WordPressBehaviorTest extends TestCase {
 	}
 
 	public function test_profile_asset_loader_registers_and_enqueues_the_admin_styles(): void {
-		$user_id = $this->create_user();
-		wp_set_current_user( $user_id );
+		$created_user_id = $this->create_user();
+		wp_set_current_user( $created_user_id );
+		global $user_id;
+		$user_id = $created_user_id;
 
 		self::assertTrue( Admin\load_custom_css( 'profile.php' ) );
 		self::assertTrue( wp_style_is( 'signature_admin_css', 'registered' ) );
@@ -106,6 +114,8 @@ final class WordPressBehaviorTest extends TestCase {
 				'post_content' => '[signature]Regards[/signature]',
 			)
 		);
+		self::assertIsInt( $post_id );
+		self::assertGreaterThan( 0, $post_id );
 		$this->posts[] = $post_id;
 
 		global $post;

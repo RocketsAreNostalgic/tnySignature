@@ -8,7 +8,7 @@ const read = (path) =>
 test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	const workflow = read('.github/workflows/quality.yml');
 	const baseline = workflow.match(
-		/\n  baseline:\n([\s\S]*?)\n  quality:/
+		/\n  baseline:\n([\s\S]*?)\n  integration:/
 	)?.[1];
 	assert.ok(baseline, 'baseline job must exist');
 	assert.match(
@@ -22,12 +22,14 @@ test('shared WordPress quality workflow is immutable and fail-closed', () => {
 	assert.ok(terminal, 'terminal quality job must exist');
 	assert.match(terminal, /name: quality/);
 	assert.match(terminal, /if: \$\{\{ always\(\) \}\}/);
-	assert.match(terminal, /needs: baseline/);
+	assert.match(terminal, /- baseline/);
+	assert.match(terminal, /- integration/);
 	assert.match(
 		terminal,
 		/BASELINE_RESULT: \$\{\{ needs\.baseline\.result \}\}/
 	);
 	assert.match(terminal, /test "\$BASELINE_RESULT" = success/);
+	assert.match(terminal, /test "\$INTEGRATION_RESULT" = success/);
 });
 
 test('runtime floors and locked toolchain stay aligned', () => {
