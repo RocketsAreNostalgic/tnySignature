@@ -1,0 +1,42 @@
+name: Measure PHPStan level 5
+
+on:
+  push:
+    branches:
+      - ci/5-level5-probe
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact merged baseline
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          ref: 97af0d8e27210394a5875aec1dbd69f01a6e8442
+
+      - name: Verify exact baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "97af0d8e27210394a5875aec1dbd69f01a6e8442"
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install exact locked dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Measure current level 5 diagnostics
+        shell: bash
+        run: |
+          set -euo pipefail
+          vendor/bin/phpstan analyse             --configuration=phpstan.neon             --level=5             --no-progress             --error-format=table
