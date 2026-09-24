@@ -28,7 +28,7 @@ composer check
 pnpm check
 ```
 
-`composer check` performs PHP syntax validation, the shared RAN WordPress plugin coding-standard baseline, PHP 8.1+ compatibility analysis, and the repository's retained documentation/type-safety rules.
+`composer check` performs PHP syntax validation, the shared RAN WordPress plugin coding-standard baseline, blocking WordPress-aware PHPStan level 5 analysis, PHP 8.1+ compatibility analysis, and the repository's retained documentation/type-safety rules.
 
 `pnpm check` runs non-mutating ESLint, Stylelint and Prettier checks, builds the frontend assets into an isolated temporary directory, compares the complete generated tree with committed `assets/dist`, and runs the repository quality-contract tests. A failing generated-assets check does not rewrite the working tree.
 

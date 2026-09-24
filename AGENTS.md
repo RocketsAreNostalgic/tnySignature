@@ -6,7 +6,7 @@ Tny Signature is a maintained WordPress plugin. Keep quality/tooling work separa
 
 - Install PHP dependencies from `composer.lock` and Node dependencies from `pnpm-lock.yaml`.
 - Run `composer check` and `pnpm check` for every maintained change.
-- `composer analyze` is the blocking full-source PHPStan level-4 gate. Keep the WordPress extension, PHP 8.1 target and exact callback exceptions documented in `README.md`; issue #5 owns higher-level findings and removal of those exceptions.
+- `composer analyze` is the blocking full-source PHPStan level-5 gate. Keep the WordPress extension and PHP 8.1 target documented in `README.md`; do not reintroduce broad baselines or action-return exceptions.
 - `composer test:integration` is the WordPress-backed product-behavior lane and must remain in terminal `quality`; quality-tool regression tests do not substitute for it.
 - Keep generated `assets/dist` synchronized with `assets/src`; `pnpm check:generated` is the authoritative reproducibility check.
 - Preserve the declared WordPress 5.3 and PHP 8.1 compatibility floors unless a product decision changes them explicitly.

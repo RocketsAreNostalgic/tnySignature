@@ -25,19 +25,17 @@ and `pnpm check`. `composer analyze` is the focused, blocking PHPStan command;
 the ordinary PHP aggregate also retains parser, PHPCS and PHPCompatibility
 checks. PHPCBF remains the only PHP formatter.
 
-PHPStan 2.2.14 uses the locked WordPress extension and stubs at **level 4** with
+PHPStan 2.2.14 uses the locked WordPress extension and stubs at **level 5** with
 PHP target **8.1.0**. It analyzes all current first-party PHP: `index.php`,
 `tny-singnature.php`, `uninstall.php` and `lib/`. Analysis-only URL constants
 supply string types without loading the plugin or a WordPress runtime. Vendor,
 frontend/generated assets and analysis fixtures are not production coverage.
 
-There is no blanket baseline. Two exact message/path/count entries cover five
-existing boolean-returning action registrations in `lib/admin-enqueue.php` and
-`lib/userprofile.php`. The extension expects void action callbacks; WordPress
-ignores their returned status. Existing callable contracts remain unchanged in
-this tooling slice. Unmatched entries fail, and a negative control proves that
-a new offending callback elsewhere is still reported. [Issue #5](https://github.com/RocketsAreNostalgic/tnySignature/issues/5)
-owns their reconciliation and removal, plus the remaining measured level-5 findings. The level-4 runtime findings covered by this slice are behavior-tested rather than hidden.
+There is no blanket baseline and there are no callback-return analysis exceptions.
+WordPress action hooks use small `void` adapters where the existing directly callable
+functions intentionally retain boolean status returns. This preserves those callable
+contracts while matching WordPress action semantics. Level-5 type corrections are
+covered by the WordPress behavior lane rather than suppressed.
 
 `pnpm check` runs the quality-contract and syntax-runner regression tests,
 including real PHPStan positive/negative controls. These test development

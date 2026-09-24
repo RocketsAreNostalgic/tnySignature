@@ -39,7 +39,7 @@ function load_custom_css( string $page ): bool {
 	$ver         = ( ! empty( $plugin_data['Version'] ) ? $plugin_data['Version'] : '0.3.2' );
 
 	// Admin styles.
-	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/dist/admin/styles/signature_admin.min.css', false, $ver );
+	wp_register_style( 'signature_admin_css', TNYSIGNATURE_URL . 'assets/dist/admin/styles/signature_admin.min.css', array(), $ver );
 
 	// If we haven't dismissed a notice, and we're on the correct page load CSS.
 	if ( ! get_user_meta( $user_id, 'ran-tnysig_editor_notice-dismissed', true ) && ( 'post-new.php' === $page || 'post.php' === $page ) ) {
@@ -59,7 +59,18 @@ function load_custom_css( string $page ): bool {
 	return true;
 }
 
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css', 10 );
+/**
+ * WordPress action adapter for the status-returning style loader.
+ *
+ * @param string $page The WordPress admin page hook.
+ *
+ * @since 0.3.7
+ */
+function load_custom_css_action( string $page ): void {
+	load_custom_css( $page );
+}
+
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\load_custom_css_action', 10 );
 
 
 /**
@@ -130,5 +141,14 @@ function load_custom_profile_js(): bool {
 	return true;
 }
 
-add_action( 'admin_print_scripts-profile.php', __NAMESPACE__ . '\\load_custom_profile_js', 11 );
-add_action( 'admin_print_scripts-user-edit.php', __NAMESPACE__ . '\\load_custom_profile_js', 11 );
+/**
+ * WordPress action adapter for the status-returning profile script loader.
+ *
+ * @since 0.3.7
+ */
+function load_custom_profile_js_action(): void {
+	load_custom_profile_js();
+}
+
+add_action( 'admin_print_scripts-profile.php', __NAMESPACE__ . '\\load_custom_profile_js_action', 11 );
+add_action( 'admin_print_scripts-user-edit.php', __NAMESPACE__ . '\\load_custom_profile_js_action', 11 );
