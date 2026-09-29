@@ -16,7 +16,9 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('../../', import.meta.url));
 
 function configuredSourcePaths(config) {
-	const block = config.match(/^[ \t]*paths:[ \t]*\n((?:[ \t]+-[ \t]+[^\n]+\n?)+)/m)?.[1];
+	const block = config.match(
+		/^[ \t]*paths:[ \t]*\n((?:[ \t]+-[ \t]+[^\n]+\n?)+)/m
+	)?.[1];
 	assert.ok(block, 'PHPStan must declare direct source paths');
 	return block
 		.trim()
@@ -33,7 +35,9 @@ function maintainedPhpFiles(directory) {
 		})) {
 			const path = relative ? `${relative}/${entry.name}` : entry.name;
 			if (entry.isDirectory()) {
-				if (!relative && excluded.has(entry.name)) continue;
+				if (!relative && excluded.has(entry.name)) {
+					continue;
+				}
 				visit(path);
 			} else if (
 				(entry.isFile() || entry.isSymbolicLink()) &&
@@ -111,7 +115,9 @@ test('a new shipped PHP path outside PHPStan roots is rejected', (t) => {
 	writeFileSync(join(directory, 'lib', 'included.php'), '<?php');
 	assert.deepEqual(uncoveredPhpFiles(directory, sourcePaths), []);
 	writeFileSync(join(directory, 'new-root.php'), '<?php');
-	assert.deepEqual(uncoveredPhpFiles(directory, sourcePaths), ['new-root.php']);
+	assert.deepEqual(uncoveredPhpFiles(directory, sourcePaths), [
+		'new-root.php',
+	]);
 });
 
 test('real PHPStan accepts WordPress symbols and rejects new type/hook errors', (t) => {
