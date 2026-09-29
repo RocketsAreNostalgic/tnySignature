@@ -30,6 +30,10 @@ PHP target **8.1.0**. It analyzes all current first-party PHP: `index.php`,
 `tny-singnature.php`, `uninstall.php` and `lib/`. Analysis-only URL constants
 supply string types without loading the plugin or a WordPress runtime. Vendor,
 frontend/generated assets and analysis fixtures are not production coverage.
+The `pnpm check` quality suite compares maintained PHP found in the plugin tree
+with PHPStan's direct source paths. A new PHP file outside those paths fails
+the gate before its analysis coverage can silently drift. Dependency trees
+and WordPress integration tests retain their separate scopes.
 
 There is no blanket baseline and there are no callback-return analysis exceptions.
 WordPress action hooks use small `void` adapters where the existing directly callable
