@@ -36,6 +36,8 @@ function getEntries() {
 
 export default defineConfig({
 	build: {
+		// Preserve Vite 6's effective JS and inherited CSS browser targets.
+		target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
 		outDir: path.resolve(projectRoot, 'assets/dist'),
 		emptyOutDir: true,
 		sourcemap: false,
