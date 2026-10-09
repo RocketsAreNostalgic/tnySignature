@@ -48,8 +48,8 @@ test('runtime floors and locked toolchain stay aligned', () => {
 	assert.equal(composer.require.php, '>=8.1');
 	assert.equal(composer.config.platform.php, '8.1.0');
 	assert.equal(pkg.packageManager, 'pnpm@11.13.1');
-	assert.equal(pkg.volta.node, '24.11.0');
-	assert.equal(pkg.engines.node, '>=24.11.0 <25');
+	assert.equal(pkg.volta.node, '24.21.0');
+	assert.equal(pkg.engines.node, '>=24.21.0 <25');
 	assert.match(plugin, /^ \* Requires at least: 5\.3$/m);
 	assert.match(plugin, /^ \* Requires PHP: 8\.1$/m);
 	assert.match(setup, /require\('\.\/package\.json'\)\.volta\.node/);

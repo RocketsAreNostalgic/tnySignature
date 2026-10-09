@@ -5,7 +5,7 @@ Tny Signature keeps PHP and frontend dependencies locked so local work and CI ev
 ## Toolchain
 
 - PHP: `>=8.1`
-- Node: `24.11.0`
+- Node: `24.21.0`
 - pnpm: `11.13.1`
 - Composer: v2
 
