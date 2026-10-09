@@ -50,3 +50,16 @@ version or evidence of WordPress 5.3 execution. The plugin's declared
 **WordPress 5.3 / PHP 8.1** floors and existing PHPCS compatibility checks remain
 unchanged. Full supported-runtime behavior proof remains separate from static
 analysis. No release or deployment work is part of this quality change.
+
+## WordPress frontend baseline
+
+Frontend tooling pins the shared candidate `3633371011f05dcea8bf8e13e2ca3005cb4e1d8f`,
+qualified in Starter, with WordPress Stylelint config 26.1.0, Stylelint 17.14.1
+and Stylelint-SCSS 7.2.0. The [owner-approved upstream baseline](https://github.com/RocketsAreNostalgic/.github/issues/65#issuecomment-6077430975)
+accepts upstream SCSS selector-check limitations and omits additional RAN
+custom-property value validators. Source selection, product-specific exceptions,
+build targets and existing quality/generated-asset gates remain repository-owned.
+This adoption does not authorize package publication or release/manual acceptance.
+
+Vite is updated from 6.4.3 to 7.3.7 to satisfy the supported WordPress theme
+peer range. Generated bundles must remain reproducible under the pinned toolchain.
