@@ -1190,7 +1190,7 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
 
   '@rocketsarenostalgic/quality-config@https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f}
+    resolution: {gitHosted: true, integrity: sha512-h/ilSxXHNMoizil35Ia2f1RmRWK9VRxKFWrGX9zs+W6JLyEqTDM0+Rt4HXYj3WeYe+fCosQEhNKu+SBgPE2rlQ==, tarball: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f}
     version: 0.1.0
     engines: {node: '>=24.11.0 <25', pnpm: '>=11 <12'}
     peerDependencies:
