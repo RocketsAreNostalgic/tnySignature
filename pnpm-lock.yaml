@@ -12,8 +12,8 @@ importers:
         specifier: 7.29.7
         version: 7.29.7
       '@rocketsarenostalgic/quality-config':
-        specifier: github:RocketsAreNostalgic/ran-quality-config#3633371011f05dcea8bf8e13e2ca3005cb4e1d8f
-        version: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f(@babel/core@7.29.7)(@wordpress/eslint-plugin@25.7.0(@babel/core@7.29.7)(@typescript-eslint/eslint-plugin@8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)(typescript@6.0.3))(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(esbuild@0.28.2)(eslint@9.39.5)(postcss@8.5.29)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)(vite@7.3.7(sass@1.104.1)))(@wordpress/prettier-config@4.51.0(prettier@3.9.5))(@wordpress/stylelint-config@26.1.0(esbuild@0.28.2)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(vite@7.3.7(sass@1.104.1)))(eslint@9.39.5)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)
+        specifier: github:RocketsAreNostalgic/ran-quality-config#c7ca14dfadb6584ff3baa1884579f59b2b85c757
+        version: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/c7ca14dfadb6584ff3baa1884579f59b2b85c757(@babel/core@7.29.7)(@wordpress/eslint-plugin@25.7.0(@babel/core@7.29.7)(@typescript-eslint/eslint-plugin@8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)(typescript@6.0.3))(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(esbuild@0.28.2)(eslint@9.39.5)(postcss@8.5.29)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)(vite@7.3.7(sass@1.104.1)))(@wordpress/prettier-config@4.51.0(prettier@3.9.5))(@wordpress/stylelint-config@26.1.0(esbuild@0.28.2)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(vite@7.3.7(sass@1.104.1)))(eslint@9.39.5)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)
       '@wordpress/browserslist-config':
         specifier: 6.54.0
         version: 6.54.0
@@ -1189,10 +1189,10 @@ packages:
     resolution: {integrity: sha512-SEeaJLb3qBNF/OaXnaR1NmmBbFYk1zC0ZH/52fATcRPLFg/p791YrcyFFy44Bo9sLaGuSuLp5Q6axbb/O+v/RA==}
     engines: {node: ^14.18.0 || >=16.0.0}
 
-  '@rocketsarenostalgic/quality-config@https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f':
-    resolution: {gitHosted: true, integrity: sha512-h/ilSxXHNMoizil35Ia2f1RmRWK9VRxKFWrGX9zs+W6JLyEqTDM0+Rt4HXYj3WeYe+fCosQEhNKu+SBgPE2rlQ==, tarball: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f}
+  '@rocketsarenostalgic/quality-config@https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/c7ca14dfadb6584ff3baa1884579f59b2b85c757':
+    resolution: {gitHosted: true, integrity: sha512-ekZ5UACslAb6FgtwFGtIt9qcC8/UCo8ClJP9mWRFU1i478gFmn+bVp9kqZM0xKV346PWswHo3dzZwXGer4VkEw==, tarball: https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/c7ca14dfadb6584ff3baa1884579f59b2b85c757}
     version: 0.1.0
-    engines: {node: '>=24.11.0 <25', pnpm: '>=11 <12'}
+    engines: {node: '>=24.21.0 <25', pnpm: '>=11 <12'}
     peerDependencies:
       '@babel/core': '>=7 <8'
       '@wordpress/eslint-plugin': 25.7.0
@@ -4898,7 +4898,7 @@ snapshots:
 
   '@pkgr/core@0.3.6': {}
 
-  ? '@rocketsarenostalgic/quality-config@https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/3633371011f05dcea8bf8e13e2ca3005cb4e1d8f(@babel/core@7.29.7)(@wordpress/eslint-plugin@25.7.0(@babel/core@7.29.7)(@typescript-eslint/eslint-plugin@8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)(typescript@6.0.3))(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(esbuild@0.28.2)(eslint@9.39.5)(postcss@8.5.29)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)(vite@7.3.7(sass@1.104.1)))(@wordpress/prettier-config@4.51.0(prettier@3.9.5))(@wordpress/stylelint-config@26.1.0(esbuild@0.28.2)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(vite@7.3.7(sass@1.104.1)))(eslint@9.39.5)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)'
+  ? '@rocketsarenostalgic/quality-config@https://codeload.github.com/RocketsAreNostalgic/ran-quality-config/tar.gz/c7ca14dfadb6584ff3baa1884579f59b2b85c757(@babel/core@7.29.7)(@wordpress/eslint-plugin@25.7.0(@babel/core@7.29.7)(@typescript-eslint/eslint-plugin@8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)(typescript@6.0.3))(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(esbuild@0.28.2)(eslint@9.39.5)(postcss@8.5.29)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)(vite@7.3.7(sass@1.104.1)))(@wordpress/prettier-config@4.51.0(prettier@3.9.5))(@wordpress/stylelint-config@26.1.0(esbuild@0.28.2)(postcss@8.5.29)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(vite@7.3.7(sass@1.104.1)))(eslint@9.39.5)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint-scss@7.2.0(stylelint@17.14.1(typescript@6.0.3)))(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)'
   : optionalDependencies:
       '@babel/core': 7.29.7
       '@wordpress/eslint-plugin': 25.7.0(@babel/core@7.29.7)(@typescript-eslint/eslint-plugin@8.70.0(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(eslint@9.39.5)(typescript@6.0.3))(@typescript-eslint/parser@8.70.0(eslint@9.39.5)(typescript@6.0.3))(esbuild@0.28.2)(eslint@9.39.5)(postcss@8.5.29)(prettier@3.9.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(stylelint@17.14.1(typescript@6.0.3))(typescript@6.0.3)(vite@7.3.7(sass@1.104.1))
