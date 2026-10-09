@@ -53,7 +53,7 @@ analysis. No release or deployment work is part of this quality change.
 
 ## WordPress frontend baseline
 
-Frontend tooling pins the shared candidate `3633371011f05dcea8bf8e13e2ca3005cb4e1d8f`,
+Frontend tooling pins the shared candidate `c7ca14dfadb6584ff3baa1884579f59b2b85c757`,
 qualified in Starter, with WordPress Stylelint config 26.1.0, Stylelint 17.14.1
 and Stylelint-SCSS 7.2.0. The [owner-approved upstream baseline](https://github.com/RocketsAreNostalgic/.github/issues/65#issuecomment-6077430975)
 accepts upstream SCSS selector-check limitations and omits additional RAN

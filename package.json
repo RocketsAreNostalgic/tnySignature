@@ -29,7 +29,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "7.29.7",
-		"@rocketsarenostalgic/quality-config": "github:RocketsAreNostalgic/ran-quality-config#3633371011f05dcea8bf8e13e2ca3005cb4e1d8f",
+		"@rocketsarenostalgic/quality-config": "github:RocketsAreNostalgic/ran-quality-config#c7ca14dfadb6584ff3baa1884579f59b2b85c757",
 		"@wordpress/browserslist-config": "6.54.0",
 		"@wordpress/eslint-plugin": "25.7.0",
 		"@wordpress/prettier-config": "4.51.0",
@@ -50,11 +50,11 @@
 		"extends @wordpress/browserslist-config"
 	],
 	"engines": {
-		"node": ">=24.11.0 <25",
+		"node": ">=24.21.0 <25",
 		"pnpm": ">=11 <12"
 	},
 	"volta": {
-		"node": "24.11.0"
+		"node": "24.21.0"
 	},
 	"packageManager": "pnpm@11.13.1"
 }
